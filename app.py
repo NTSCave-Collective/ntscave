@@ -1,4 +1,5 @@
 import pygame
+import player
 
 global running
 
@@ -18,13 +19,14 @@ def create_main_surface():
     while running:
         pygame.event.pump()
         # Create window with given size
-        pygame.display.set_mode(screen_size)
+        myWindow = pygame.display.set_mode(screen_size)
+        myWindow.fill([255,255,255])
         windowEvent = pygame.event.get()
+        player.drawCircle(myWindow)
         for event in windowEvent:
             if event.type == pygame.QUIT:
                 running = False
+        pygame.display.flip()
 
-
-main()
-
-
+if __name__ == "__main__":
+    main()
