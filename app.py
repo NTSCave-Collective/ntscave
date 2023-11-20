@@ -28,27 +28,17 @@ def create_main_surface(state):
         for event in globalEvents:
             if event.type == pygame.QUIT:
                 running = False
-            pygame.key.set_repeat(10)
-            if event.type == pygame.KEYDOWN:
-                player.playerMovement(event, state)
+
+        player.playerMovement(state)
+            
         renderer.render_frame(window, state)
         clock.tick(60)  # number of computation steps per second, should be greater equal to FPS-value
 
 class State():
-    def __init__(self, x: int = 0, y: int=0):
+    def __init__(self, x: int = 100, y: int=100):
         self.x = x
         self.y = y
-
-
-
-
-
-
-
-
-
-
-
+        self.vel = 1
 
 
 if __name__ == "__main__":
