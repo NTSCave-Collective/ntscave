@@ -8,7 +8,6 @@ def drawCircle(window, state):
     pygame.draw.circle(window, red, [state.x, state.y], radius)
 
 def playerMovement(event, state):
-    print(pygame.key.get_pressed)
     if event.key == pygame.K_LEFT:
         state.x -= 1
     if event.key == pygame.K_RIGHT:

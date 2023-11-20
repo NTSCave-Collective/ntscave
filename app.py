@@ -28,6 +28,7 @@ def create_main_surface(state):
         for event in globalEvents:
             if event.type == pygame.QUIT:
                 running = False
+            pygame.key.set_repeat(10)
             if event.type == pygame.KEYDOWN:
                 player.playerMovement(event, state)
         renderer.render_frame(window, state)
