@@ -1,6 +1,6 @@
 import pygame
 import renderer
-import time
+import player
 
 global running
 
@@ -20,14 +20,16 @@ def create_main_surface():
 
     # Create window with given size
     window = pygame.display.set_mode(screen_size)
-    window.fill([255,255,255])
-    
+
     while running:
         pygame.event.pump()
-        windowEvent = pygame.event.get()
-        for event in windowEvent:
+        globalEvents = pygame.event.get()
+        window.fill([255,255,255])
+        for event in globalEvents:
             if event.type == pygame.QUIT:
                 running = False
+            if event.type == pygame.KEYDOWN:
+                player.playerMovement(event)
         renderer.render_frame(window)
         clock.tick(60)  # number of computation steps per second, should be greater equal to FPS-value
 
