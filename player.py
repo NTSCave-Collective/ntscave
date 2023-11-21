@@ -1,6 +1,7 @@
 import pygame
 import tiles
 import os
+import grid
 
 def drawCircle(window, state):
     radius = 10
@@ -23,9 +24,14 @@ def drawCircle(window, state):
 def playerEvents(state):
     keys = pygame.key.get_pressed()
 
+    def collision(heading):
+        grid.gridMap
+        return True
+
     def movement():
         if keys[pygame.K_LEFT]:
-            state.x -= state.vel
+            if collision("left"):
+                state.x -= state.vel
             state.rightFacing = False
             state.leftFacing = True
             if not keys[pygame.K_UP]:
@@ -34,7 +40,8 @@ def playerEvents(state):
                 state.downFacing = False
 
         if keys[pygame.K_RIGHT]:
-            state.x += state.vel
+            if collision("right"):
+                state.x += state.vel
             state.rightFacing = True
             state.leftFacing = False
             if not keys[pygame.K_UP]:
@@ -43,7 +50,8 @@ def playerEvents(state):
                 state.downFacing = False
 
         if keys[pygame.K_UP]:
-            state.y -= state.vel
+            if collision("up"):
+                state.y -= state.vel
             state.upFacing = True
             state.downFacing = False
             if not keys[pygame.K_LEFT]:
@@ -52,7 +60,8 @@ def playerEvents(state):
                 state.rightFacing = False
 
         if keys[pygame.K_DOWN]:
-            state.y += state.vel
+            if collision("down"):
+                state.y += state.vel
             state.upFacing = False
             state.downFacing = True
             if not keys[pygame.K_LEFT]:

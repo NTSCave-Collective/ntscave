@@ -4,6 +4,8 @@ import tiles
 
 def draw_grid(gameObjects, screen_size, grid_color, grid_spacing):
     width, height = screen_size
+
+    global gridMap
     gridMap = [
         ["frontwall_center","frontwall_center","frontwall_center","frontwall_center","frontwall_center","frontwall_center","frontwall_center","frontwall_center",],
         ["frontwall_center","floor","floor","floor","floor","floor","floor","frontwall_center",],
