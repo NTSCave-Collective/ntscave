@@ -39,10 +39,6 @@ def create_main_surface(state):
         # Player events
         player.playerEvents(state)
 
-        print(state.leftFacing, state.rightFacing, state.upFacing, state.downFacing)
-
-        grid.draw_grid(gameObjects, screen_size, (0,0,0), 20)
-
         # Move all gameObjects based on the player position 
         camera.camera(window, gameObjects, state)
 
