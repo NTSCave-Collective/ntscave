@@ -4,6 +4,7 @@ tiles = {
     "floor": "assets/tiles/floor.png",
     "floor2": "assets/tiles/floor2.png",
     "floor3": "assets/tiles/floor3.png",
+    "floor_topleft": "assets/tiles/floor_topleft.png",
 
     "frontwall_center": "assets/tiles/frontwall_center.png",
     "frontwall_left": "assets/tiles/frontwall_left.png",

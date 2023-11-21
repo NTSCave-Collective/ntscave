@@ -26,14 +26,26 @@ RADIUS_BALL = 10
 # Background images
 BACKGROUND_IMAGES = [
         ["wallcorner_topleft","frontwall_center","frontwall_center","frontwall_center","frontwall_center","frontwall_center","frontwall_center","wallcorner_topright"],
-        ["wall_left","wall_right","floor","floor","floor","floor","floor","wall_right"],
+        ["wall_left","floor","floor","floor","floor","floor","floor","wall_right"],
         ["wall_left","floor2","floor","floor","floor","floor","floor","wall_right","frontwall_left","frontwall_center","frontwall_right"],
-        ["wall_left","floor3","floor3","floor","floor","floor","floor","wall_right"],
+        ["wall_left","floor3", "floor","floor","floor","floor","floor","wall_right"],
         ["wall_left","floor3","floor2","floor3","stairs_down","floor","floor3","wall_right"],
         ["wall_left","floor3","floor2","floor3","floor","floor","floor3","wall_right"],
         ["wall_left","floor3","floor","spike","spike1","spike2","spike3","wall_right"],
         ["wallcorner_bottomleft","wall_bottom","wall_bottom","wall_bottom","wall_bottom","wall_bottom","wall_bottom","wallcorner_bottomright"],
-    ]
+]
+
+MAP_SKELETONS = [
+    [None, "frontwall_center", None],
+    [None, "wallcorner_topleft", None],
+    ["wallcorner_topleft", "wallcorner_left", None],
+    ["wall_left", "floor", "floor"],
+    ["wall_left", "frontwall_center", None],
+    ["wall_left", "frontwall_center", None],
+]
+
+
+
 
 
 PLAYER_PNG_SIZE = 48

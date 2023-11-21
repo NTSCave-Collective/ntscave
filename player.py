@@ -49,10 +49,10 @@ def playerEvents(state):
     keys = pygame.key.get_pressed()
 
     def collision(heading):
-        tilePosX = floor(((state.x + tiles.colission_offsets[heading]) / CONSTANTS.PIXELS) % len(CONSTANTS.BACKGROUND_IMAGES[0]))
-        tilePosY = floor(((state.y + tiles.colission_offsets[heading]) / CONSTANTS.PIXELS) % len(CONSTANTS.BACKGROUND_IMAGES))
+        tilePosX = floor(((state.x + tiles.colission_offsets[heading]) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP_SKELETONS[0]))
+        tilePosY = floor(((state.y + tiles.colission_offsets[heading]) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP_SKELETONS))
         try:
-            currentTile = CONSTANTS.BACKGROUND_IMAGES[tilePosY][tilePosX]
+            currentTile = CONSTANTS.MAP_SKELETONS[tilePosY][tilePosX]
         except:
             return True
 
