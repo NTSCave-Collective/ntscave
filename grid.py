@@ -1,23 +1,19 @@
 import pygame
 import os
 import tiles
+import CONSTANTS
 
 def draw_grid(gameObjects, screen_size, grid_color, grid_spacing):
     width, height = screen_size
-    gridMap = [
-        ["frontwall_center","frontwall_center","frontwall_center","frontwall_center","frontwall_center","frontwall_center","frontwall_center","frontwall_center",],
-        ["frontwall_center","floor","floor","floor","floor","floor","floor","frontwall_center",],
-        ["frontwall_center","floor2","floor","floor","floor","floor","floor","frontwall_center","floor","frontwall_center","floor"],
-        ["frontwall_center","floor","floor3","floor","floor","floor","floor","frontwall_center",],
-        ["frontwall_center","floor","floor","floor","stairs_down","floor","floor","frontwall_center",],
-        ["frontwall_center","floor","floor","floor","floor","floor","floor","frontwall_center",],
-        ["frontwall_center","floor","floor","floor","floor","floor","floor2","frontwall_center",],
-        ["frontwall_center","frontwall_center","frontwall_center","frontwall_center","frontwall_center","frontwall_center","frontwall_center","frontwall_center",],
-    ]
+    global gridMap
+    gridMap = CONSTANTS.MAP
 
 
     for y in range(len(gridMap)):
         for x in range(len(gridMap[y])):
-            image = pygame.image.load(os.path.join(tiles.tiles[gridMap[y][x]]))
-            image = pygame.transform.scale(image, (64, 64))
-            gameObjects.blit(image, (0 + 64 * x , 0 + 64 * y))
+            try:
+                image = pygame.image.load(os.path.join(tiles.tiles[gridMap[y][x]]))
+                image = pygame.transform.scale(image, (CONSTANTS.PIXELS, CONSTANTS.PIXELS))
+                gameObjects.blit(image, (CONSTANTS.PIXELS * x , CONSTANTS.PIXELS * y))
+            except:
+                pass

@@ -2,13 +2,11 @@ import pygame
 import player
 import grid
 import camera
+import CONSTANTS
 
 def render_frame(window, gameObjects, state):
-    pygame.draw.circle(gameObjects, (0,0,0), [300, 300], 50)
-
-    grid.draw_grid(gameObjects, (1024, 768), (0,0,0), 20)
-
-    player.drawCircle(gameObjects, state)
+    grid.draw_grid(gameObjects, CONSTANTS.SCREEN_SIZE, CONSTANTS.BACKGROUND_COLOR, CONSTANTS.RADIUS_BALL)
+    player.drawPlayer(gameObjects, state)
 
     # Move all gameObjects based on the player position 
     camera.camera(window, gameObjects, state)
@@ -18,4 +16,4 @@ def render_frame(window, gameObjects, state):
 
 
 def clear_surface(window):
-    window.fill([255,255,255])
+    window.fill(CONSTANTS.BACKGROUND_COLOR)
