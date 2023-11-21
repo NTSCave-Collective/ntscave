@@ -1,26 +1,28 @@
 import pygame
-import CONSTANTS
 import os
 
-def draw_grid(window, screen_size, player_position):
+def draw_grid(gameObjects, screen_size, grid_color, grid_spacing):
     width, height = screen_size
-    player_x, player_y = player_position
+    gridMap = [
+        [1,1,1,1,1,1,1,1,],
+        [1,0,0,0,0,0,0,1,],
+        [1,0,0,0,0,0,0,1,0,1,0],
+        [1,0,0,0,0,0,0,1,],
+        [1,0,0,0,0,0,0,1,],
+        [1,0,0,0,0,0,0,1,],
+        [1,0,0,0,0,0,0,1,],
+        [1,1,1,1,1,1,1,1,],
+    ]
 
-    offset_x = (player_x % CONSTANTS.GRID_SPACING) - CONSTANTS.GRID_SPACING
-    offset_y = (player_y % CONSTANTS.GRID_SPACING) - CONSTANTS.GRID_SPACING
 
-    expansion_left = max(0, CONSTANTS.EXPANSION_THRESHOLD - player_x)
-    expansion_right = max(0, CONSTANTS.EXPANSION_THRESHOLD - (width - player_x))
-    expansion_top = max(0, CONSTANTS.EXPANSION_THRESHOLD - player_y)
-    expansion_bottom = max(0, CONSTANTS.EXPANSION_THRESHOLD - (height - player_y))
-
-    for x in range(offset_x - expansion_left, width + expansion_right, CONSTANTS.GRID_SPACING):
-        pygame.draw.line(window, CONSTANTS.GRID_COLOR, (x, 0), (x, height))
-    for y in range(offset_y - expansion_top, height + expansion_bottom, CONSTANTS.GRID_SPACING):
-        pygame.draw.line(window, CONSTANTS.GRID_COLOR, (0, y), (width, y))
-
-    image = pygame.image.load(os.path.join('data', '../assets/tiles/blackstone.png'))
-
-    for x in range(offset_x - expansion_left, width + expansion_right, CONSTANTS.GRID_SPACING):
-        for y in range(offset_y - expansion_top, height + expansion_bottom, CONSTANTS.GRID_SPACING):
-            window.blit(image, (x + CONSTANTS.GRID_SPACING // 2 - image.get_width() // 2, y + CONSTANTS.GRID_SPACING // 2 - image.get_height() // 2)) 
+    for y in range(len(gridMap)):
+        for x in range(len(gridMap[y])):
+            match gridMap[y][x]:
+                case 0:
+                    image = pygame.image.load(os.path.join('data', '../assets/tiles/blackstone.png'))
+                    image = pygame.transform.scale(image, (64, 64))
+                    gameObjects.blit(image, (0 + 64 * x , 0 + 64 * y))
+                case 1:
+                    image = pygame.image.load(os.path.join('data', '../assets/tiles/floor.png'))
+                    image = pygame.transform.scale(image, (64, 64))
+                    gameObjects.blit(image, (0 + 64 * x , 0 + 64 * y))

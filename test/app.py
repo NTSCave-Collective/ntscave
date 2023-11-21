@@ -44,11 +44,7 @@ def create_main_surface(state):
         draw_grid(window, CONSTANTS.SCREEN_SIZE, (state.x, state.y))
         player_events(state)
 
-        ###
-        # Hier is nog iets fout
-        # Als de bal snel diagonaal rond beweegt zal het op de x of y as vastlopen  
         renderer.render_frame(window, state)
-        ###
         pygame.display.flip()
         clock.tick(CONSTANTS.TICK)
 

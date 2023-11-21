@@ -6,3 +6,8 @@ def camera(window, gameObjects, state):
     window.blit(gameObjects, (1024/2 - state.x,768/2 - state.y))
     # Remove previous gameObjects
     renderer.clear_surface(gameObjects)
+
+
+def toggle_fullscreen(window):
+    pygame.display.toggle_fullscreen()
+    return pygame.display.get_surface()
