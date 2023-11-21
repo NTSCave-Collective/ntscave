@@ -1,9 +1,10 @@
 import pygame
 import renderer
+import CONSTANTS
 
 def camera(window, gameObjects, state):
     # Move every gameObject on the screen relative to the player position
-    window.blit(gameObjects, (1024/2 - state.x,768/2 - state.y))
+    window.blit(gameObjects, (CONSTANTS.SCREEN_WIDTH/2 - state.x, CONSTANTS.SCREEN_HEIGHT/2 - state.y))
     # Remove previous gameObjects
     renderer.clear_surface(gameObjects)
 

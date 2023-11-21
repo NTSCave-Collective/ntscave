@@ -55,12 +55,14 @@ def create_main_surface(state):
         
         # Set fps value
         clock.tick(CONSTANTS.TICK)
+        state.frame += 1
 
 class State():
     def __init__(self, x: int = 100, y: int=100):
         self.x = x
         self.y = y
         self.vel = 5
+        self.frame = 0
         
         self.attacking = False
 

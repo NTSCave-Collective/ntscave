@@ -9,16 +9,39 @@ def drawPlayer(window, state):
     # 48px x 24px
 
     state.attacking = False
+    
+    animframe = floor((state.frame % 40) / 10)
 
-    if state.downFacing:
-        player = pygame.image.load(os.path.join(tiles.player["down"])).convert_alpha()
-    elif state.rightFacing:
-        player = pygame.image.load(os.path.join(tiles.player["right"])).convert_alpha()
-    elif state.leftFacing:
-        player = pygame.image.load(os.path.join(tiles.player["left"])).convert_alpha()
-    elif state.upFacing:
-        pygame.draw.circle(window, CONSTANTS.COLOR_BALL, [state.x, state.y], CONSTANTS.RADIUS_BALL)
-        return
+    if state.attacking:
+        if state.downFacing:
+            player = pygame.image.load(os.path.join(tiles.player["down_attack"][animframe])).convert_alpha()
+        elif state.rightFacing:
+            player = pygame.image.load(os.path.join(tiles.player["right_attack"][animframe])).convert_alpha()
+        elif state.leftFacing:
+            player = pygame.image.load(os.path.join(tiles.player["left_attack"][animframe])).convert_alpha()
+        elif state.upFacing:
+            # player = pygame.image.load(os.path.join(tiles.player["up_attack"][animframe])).convert_alpha()
+            return
+    elif state.moving:
+        if state.downFacing:
+            player = pygame.image.load(os.path.join(tiles.player["down_moving"][animframe])).convert_alpha()
+        elif state.rightFacing:
+            player = pygame.image.load(os.path.join(tiles.player["right_moving"][animframe])).convert_alpha()
+        elif state.leftFacing:
+            player = pygame.image.load(os.path.join(tiles.player["left_moving"][animframe])).convert_alpha()
+        elif state.upFacing:
+            # player = pygame.image.load(os.path.join(tiles.player["up_moving"][animframe])).convert_alpha()
+            return
+    else:
+        if state.downFacing:
+            player = pygame.image.load(os.path.join(tiles.player["down"][animframe])).convert_alpha()
+        elif state.rightFacing:
+            player = pygame.image.load(os.path.join(tiles.player["right"][animframe])).convert_alpha()
+        elif state.leftFacing:
+            player = pygame.image.load(os.path.join(tiles.player["left"][animframe])).convert_alpha()
+        elif state.upFacing:
+            # player = pygame.image.load(os.path.join(tiles.player["up"][animframe])).convert_alpha()
+            return
 
     window.blit(player, (state.x - 24, state.y - 48))
 
@@ -41,7 +64,9 @@ def playerEvents(state):
         return True
 
     def movement():
+        state.moving = False
         if keys[pygame.K_LEFT]:
+            state.moving = True
             if collision("left"):
                 state.x -= state.vel
             state.rightFacing = False
@@ -52,6 +77,7 @@ def playerEvents(state):
                 state.downFacing = False
 
         if keys[pygame.K_RIGHT]:
+            state.moving = True
             if collision("right"):
                 state.x += state.vel
             state.rightFacing = True
@@ -62,6 +88,7 @@ def playerEvents(state):
                 state.downFacing = False
 
         if keys[pygame.K_UP]:
+            state.moving = True
             if collision("up"):
                 state.y -= state.vel
             state.upFacing = True
@@ -72,6 +99,7 @@ def playerEvents(state):
                 state.rightFacing = False
 
         if keys[pygame.K_DOWN]:
+            state.moving = True
             if collision("down"):
                 state.y += state.vel
             state.upFacing = False

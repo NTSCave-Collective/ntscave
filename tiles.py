@@ -25,9 +25,20 @@ tiles = {
 }
 
 player = {
-    "down": "assets/player/down.png",
-    "left": "assets/player/left.png",
-    "right": "assets/player/right.png"
+    "down": ["assets/player/down.png", "assets/player/down2.png", "assets/player/down3.png", "assets/player/down4.png"],
+    "left": ["assets/player/left.png", "assets/player/left.png", "assets/player/left.png", "assets/player/left.png"],
+    "right": ["assets/player/right.png", "assets/player/right.png", "assets/player/right.png", "assets/player/right.png"],
+    "up": ["assets/player/down.png", "assets/player/down2.png", "assets/player/down3.png", "assets/player/down4.png"],
+
+    "down_moving": ["assets/player/down.png", "assets/player/down2.png", "assets/player/down3.png", "assets/player/down4.png"],
+    "left_moving": ["assets/player/left.png", "assets/player/left.png", "assets/player/left.png", "assets/player/left.png"],
+    "right_moving": ["assets/player/right.png", "assets/player/right.png", "assets/player/right.png", "assets/player/right.png"],
+    "up_moving": ["assets/player/down.png", "assets/player/down2.png", "assets/player/down3.png", "assets/player/down4.png"],
+
+    "down_attack": ["assets/player/down.png", "assets/player/down2.png", "assets/player/down3.png", "assets/player/down4.png"],
+    "left_attack": ["assets/player/left.png", "assets/player/left.png", "assets/player/left.png", "assets/player/left.png"],
+    "right_attack": ["assets/player/right.png", "assets/player/right.png", "assets/player/right.png", "assets/player/right.png"],
+    "up_attack": ["assets/player/down.png", "assets/player/down2.png", "assets/player/down3.png", "assets/player/down4.png"]
 }
 
 collision = {
