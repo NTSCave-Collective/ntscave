@@ -6,7 +6,7 @@ def render_frame(window, state):
 
     player.drawCircle(window, state)
     
-    pygame.display.flip()
+    pygame.display.update()
 
 
 

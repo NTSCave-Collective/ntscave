@@ -1,5 +1,6 @@
 import pygame
 import CONSTANTS
+import os
 
 def draw_grid(window, screen_size, player_position):
     width, height = screen_size
@@ -17,3 +18,9 @@ def draw_grid(window, screen_size, player_position):
         pygame.draw.line(window, CONSTANTS.GRID_COLOR, (x, 0), (x, height))
     for y in range(offset_y - expansion_top, height + expansion_bottom, CONSTANTS.GRID_SPACING):
         pygame.draw.line(window, CONSTANTS.GRID_COLOR, (0, y), (width, y))
+
+    image = pygame.image.load(os.path.join('data', '../assets/tiles/blackstone.png'))
+
+    for x in range(offset_x - expansion_left, width + expansion_right, CONSTANTS.GRID_SPACING):
+        for y in range(offset_y - expansion_top, height + expansion_bottom, CONSTANTS.GRID_SPACING):
+            window.blit(image, (x + CONSTANTS.GRID_SPACING // 2 - image.get_width() // 2, y + CONSTANTS.GRID_SPACING // 2 - image.get_height() // 2)) 

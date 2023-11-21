@@ -27,6 +27,8 @@ def create_main_surface(state):
         clear_surface(window)
         global_events = pygame.event.get()
 
+        print(state.x, state.y)
+        
         for event in global_events:
             if event.type == pygame.QUIT:
                 running = False

@@ -4,7 +4,7 @@ BACKGROUND_COLOR = [255, 255, 0]
 TICK = 60
 
 # Grid constants 
-GRID_SPACING = 20
+GRID_SPACING = 100
 GRID_COLOR = [0, 0, 0]
 
 # Camera constants 
@@ -13,7 +13,7 @@ EXPANSION_THRESHOLD = 50
 # Player constants
 PLAYER_START_X_POSITION =  SCREEN_SIZE[0] // 2
 PLAYER_START_Y_POSITION = SCREEN_SIZE[1] // 2
-PLAYER_SPEED = 5
+PLAYER_SPEED = 2
 
 # Ball constants
 COLOR_BALL = [0, 0, 0]
