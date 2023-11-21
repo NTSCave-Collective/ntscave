@@ -38,4 +38,4 @@ collision = {
     "center": ["spike", "spike1", "spike2", "spike3", "stairs_down"]
 }
 
-colission_offsets = {"left": 24, "right": -24, "down": -16, "up": 0}
+colission_offsets = {"left": 24, "right": -24, "down": -42, "up": -24}

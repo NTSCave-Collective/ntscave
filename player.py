@@ -5,8 +5,9 @@ import grid
 from math import floor
 import CONSTANTS
 
-def drawCircle(window, state):
-    pygame.draw.circle(window, CONSTANTS.COLOR_BALL, [state.x, state.y], CONSTANTS.RADIUS_BALL)
+def drawPlayer(window, state):
+    # 48px x 24px
+
     state.attacking = False
 
     if state.downFacing:
@@ -19,7 +20,7 @@ def drawCircle(window, state):
         pygame.draw.circle(window, CONSTANTS.COLOR_BALL, [state.x, state.y], CONSTANTS.RADIUS_BALL)
         return
 
-    window.blit(player, (state.x-24, state.y-24))
+    window.blit(player, (state.x - 24, state.y - 48))
 
 def playerEvents(state):
     keys = pygame.key.get_pressed()

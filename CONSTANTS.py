@@ -24,7 +24,7 @@ RADIUS_BALL = 10
 # Background images
 BACKGROUND_IMAGES = [
         ["wallcorner_topleft","frontwall_center","frontwall_center","frontwall_center","frontwall_center","frontwall_center","frontwall_center","wallcorner_topright"],
-        ["wall_left","floor","floor","floor","floor","floor","floor","wall_right"],
+        ["wall_left","wall_right","floor","floor","floor","floor","floor","wall_right"],
         ["wall_left","floor2","floor","floor","floor","floor","floor","wall_right","frontwall_left","frontwall_center","frontwall_right"],
         ["wall_left","floor3","floor3","floor","floor","floor","floor","wall_right"],
         ["wall_left","floor3","floor2","floor3","stairs_down","floor","floor3","wall_right"],

@@ -6,7 +6,7 @@ import CONSTANTS
 
 def render_frame(window, gameObjects, state):
     grid.draw_grid(gameObjects, CONSTANTS.SCREEN_SIZE, CONSTANTS.BACKGROUND_COLOR, CONSTANTS.RADIUS_BALL)
-    player.drawCircle(gameObjects, state)
+    player.drawPlayer(gameObjects, state)
 
     # Move all gameObjects based on the player position 
     camera.camera(window, gameObjects, state)
