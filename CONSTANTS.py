@@ -5,7 +5,7 @@ TICK = 60
 SURFACE_SCREEN = 5000
 
 # Grid constants 
-GRID_SPACING = 100
+GRID_SPACING = 1000
 GRID_COLOR = [0, 0, 0]
 
 # Camera constants 

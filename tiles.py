@@ -32,7 +32,8 @@ player = {
 
 collision = {
     "left": ["wall_left", "wallcorner_bottomleft", "wallcorner_topleft"],
-    "right": ["wall_right"],
-    "up": ["frontwall_center", "wallcorner_topleft"],
+    "right": ["wall_right", "wallcorner_topright"],
+    "up": ["frontwall_left","frontwall_center", "frontwall_right", "wallcorner_topleft", "wallcorner_topright"],
     "down": ["wall_bottom", "wallcorner_bottomleft"],
+    "center": ["spike", "spike1", "spike2", "spike3", "stairs_down"]
 }
