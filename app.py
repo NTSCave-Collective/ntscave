@@ -3,6 +3,7 @@ import renderer
 import player
 import camera
 import grid
+import CONSTANTS
 
 global running
 
@@ -14,16 +15,16 @@ def main():
 
 def create_main_surface(state):
     # Tuple representing width and height in pixels
-    screen_size = (1024, 768)
     clock = pygame.time.Clock()
     
     running = True
 
     # Create window with given size
-    window = pygame.display.set_mode(screen_size)
+    window_flags = pygame.RESIZABLE | pygame.DOUBLEBUF
+    window = pygame.display.set_mode(CONSTANTS.SCREEN_SIZE, window_flags)
 
     # All gameObjects except the bg is added to this surface to be able to move the camera with the player
-    gameObjects = pygame.Surface((5000,5000), pygame.SRCALPHA, 32)
+    gameObjects = pygame.Surface((CONSTANTS.SURFACE_SCREEN, CONSTANTS.SURFACE_SCREEN), pygame.SRCALPHA, 32)
     gameObjects = gameObjects.convert_alpha()
 
     while running:
@@ -35,6 +36,15 @@ def create_main_surface(state):
         for event in globalEvents:
             if event.type == pygame.QUIT:
                 running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_f:
+                    camera.toggle_fullscreen(window)
+                elif event.key == pygame.K_ESCAPE:
+                    running = False
+            elif event.type == pygame.VIDEORESIZE:
+                CONSTANTS.SCREEN_SIZE = event.size
+                window = pygame.display.set_mode(CONSTANTS.SCREEN_SIZE, window_flags)
+
 
         # Player events
         player.playerEvents(state)
@@ -44,7 +54,7 @@ def create_main_surface(state):
         renderer.render_frame(window, gameObjects, state)
         
         # Set fps value
-        clock.tick(60)
+        clock.tick(CONSTANTS.TICK)
 
 class State():
     def __init__(self, x: int = 100, y: int=100):

@@ -3,11 +3,10 @@ import tiles
 import os
 import grid
 from math import floor
+import CONSTANTS
 
 def drawCircle(window, state):
-    radius = 10
-    red = (200,0,0)
-    pygame.draw.circle(window, red, [state.x, state.y], radius)
+    pygame.draw.circle(window, CONSTANTS.COLOR_BALL, [state.x, state.y], CONSTANTS.RADIUS_BALL)
     state.attacking = False
 
     if state.downFacing:
@@ -17,7 +16,7 @@ def drawCircle(window, state):
     elif state.leftFacing:
         player = pygame.image.load(os.path.join(tiles.player["left"])).convert_alpha()
     elif state.upFacing:
-        pygame.draw.circle(window, red, [state.x, state.y], radius)
+        pygame.draw.circle(window, CONSTANTS.COLOR_BALL, [state.x, state.y], CONSTANTS.RADIUS_BALL)
         return
 
     window.blit(player, (state.x-24, state.y-24))
@@ -28,34 +27,16 @@ def playerEvents(state):
     def collision(heading):
         tilePosX = floor(state.x / 64)
         tilePosY = floor(state.y / 64)
-        currentTile = grid.gridMap[tilePosX][tilePosY]
+        try:
+            currentTile = CONSTANTS.BACKGROUND_IMAGES[tilePosY][tilePosX]
+        except:
+            return True
 
         print(currentTile)
 
-        leftCollision = {
+        if currentTile in tiles.collision[heading]:
+            return False
 
-        }
-        rightCollision = {
-
-        }
-        bottomCollision = {
-
-        }
-        topCollision = {
-
-        }
-
-        match heading:
-            case "left":
-                if currentTile:
-                    pass
-
-            case "right":
-                pass
-            case "up":
-                pass                
-            case "down":
-                pass
         return True
 
     def movement():

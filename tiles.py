@@ -1,5 +1,3 @@
-import random
-
 tiles = {
     "floor": "assets/tiles/floor.png",
     "floor2": "assets/tiles/floor2.png",
@@ -30,4 +28,11 @@ player = {
     "down": "assets/player/down.png",
     "left": "assets/player/left.png",
     "right": "assets/player/right.png"
+}
+
+collision = {
+    "left": ["wall_left", "wallcorner_bottomleft", "wallcorner_topleft"],
+    "right": ["wall_right"],
+    "up": ["frontwall_center", "wallcorner_topleft"],
+    "down": ["wall_bottom", "wallcorner_bottomleft"],
 }
