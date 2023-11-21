@@ -39,11 +39,9 @@ def create_main_surface(state):
         # Player events
         player.playerEvents(state)
 
-        # Move all gameObjects based on the player position 
-        camera.camera(window, gameObjects, state)
 
         # All gameObjects get rendered in here
-        renderer.render_frame(gameObjects, state)
+        renderer.render_frame(window, gameObjects, state)
         
         # Set fps value
         clock.tick(60)

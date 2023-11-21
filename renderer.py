@@ -1,13 +1,17 @@
 import pygame
 import player
 import grid
+import camera
 
-def render_frame(window, state):
-    pygame.draw.circle(window, (0,0,0), [300, 300], 50)
+def render_frame(window, gameObjects, state):
+    pygame.draw.circle(gameObjects, (0,0,0), [300, 300], 50)
 
-    grid.draw_grid(window, (1024, 768), (0,0,0), 20)
+    grid.draw_grid(gameObjects, (1024, 768), (0,0,0), 20)
 
-    player.drawCircle(window, state)
+    player.drawCircle(gameObjects, state)
+
+    # Move all gameObjects based on the player position 
+    camera.camera(window, gameObjects, state)
     
     pygame.display.update()
 
