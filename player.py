@@ -2,6 +2,7 @@ import pygame
 import tiles
 import os
 import grid
+from math import floor
 
 def drawCircle(window, state):
     radius = 10
@@ -25,7 +26,36 @@ def playerEvents(state):
     keys = pygame.key.get_pressed()
 
     def collision(heading):
-        grid.gridMap
+        tilePosX = floor(state.x / 64)
+        tilePosY = floor(state.y / 64)
+        currentTile = grid.gridMap[tilePosX][tilePosY]
+
+        print(currentTile)
+
+        leftCollision = {
+
+        }
+        rightCollision = {
+
+        }
+        bottomCollision = {
+
+        }
+        topCollision = {
+
+        }
+
+        match heading:
+            case "left":
+                if currentTile:
+                    pass
+
+            case "right":
+                pass
+            case "up":
+                pass                
+            case "down":
+                pass
         return True
 
     def movement():
