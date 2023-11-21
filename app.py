@@ -2,6 +2,7 @@ import pygame
 import renderer
 import player
 import camera
+import grid
 
 global running
 
@@ -22,7 +23,7 @@ def create_main_surface(state):
     window = pygame.display.set_mode(screen_size)
 
     # All gameObjects except the bg is added to this surface to be able to move the camera with the player
-    gameObjects = pygame.Surface(screen_size, pygame.SRCALPHA, 32)
+    gameObjects = pygame.Surface((5000,5000), pygame.SRCALPHA, 32)
     gameObjects = gameObjects.convert_alpha()
 
     while running:
@@ -38,13 +39,9 @@ def create_main_surface(state):
         # Player events
         player.playerEvents(state)
 
-        print(state.leftFacing, state.rightFacing, state.upFacing, state.downFacing)
-
-        # Move all gameObjects based on the player position 
-        camera.camera(window, gameObjects, state)
 
         # All gameObjects get rendered in here
-        renderer.render_frame(gameObjects, state)
+        renderer.render_frame(window, gameObjects, state)
         
         # Set fps value
         clock.tick(60)
@@ -53,7 +50,7 @@ class State():
     def __init__(self, x: int = 100, y: int=100):
         self.x = x
         self.y = y
-        self.vel = 1
+        self.vel = 5
         
         self.attacking = False
 
