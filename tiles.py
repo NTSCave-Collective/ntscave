@@ -32,8 +32,10 @@ player = {
 
 collision = {
     "left": ["wall_left", "wallcorner_bottomleft", "wallcorner_topleft"],
-    "right": ["wall_right", "wallcorner_topright"],
+    "right": ["wall_right", "wallcorner_topright", "wallcorner_bottomright"],
     "up": ["frontwall_left","frontwall_center", "frontwall_right", "wallcorner_topleft", "wallcorner_topright"],
-    "down": ["wall_bottom", "wallcorner_bottomleft"],
+    "down": ["wall_bottom", "wallcorner_bottomleft", "wallcorner_bottomright"],
     "center": ["spike", "spike1", "spike2", "spike3", "stairs_down"]
 }
+
+colission_offsets = {"left": 24, "right": -24, "down": -16, "up": 0}
