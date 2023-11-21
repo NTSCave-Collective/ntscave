@@ -61,7 +61,7 @@ def create_main_surface(state):
         state.frame += 1
 
 class State():
-    def __init__(self, x: int = 100, y: int=100):
+    def __init__(self, x: int = 150, y: int=150):
         self.x = x
         self.y = y
         self.vel = 5
