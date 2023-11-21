@@ -27,6 +27,8 @@ def create_main_surface(state):
 
     while running:
         renderer.clear_surface(window)
+
+        pygame.event.pump()
         
         globalEvents = pygame.event.get()
         for event in globalEvents:
@@ -34,7 +36,9 @@ def create_main_surface(state):
                 running = False
 
         # Player events
-        player.playerMovement(state)
+        player.playerEvents(state)
+
+        print(state.leftFacing, state.rightFacing, state.upFacing, state.downFacing)
 
         # Move all gameObjects based on the player position 
         camera.camera(window, gameObjects, state)
@@ -50,6 +54,14 @@ class State():
         self.x = x
         self.y = y
         self.vel = 1
+        
+        self.attacking = False
+
+        self.leftFacing = False
+        self.rightFacing = False
+        self.upFacing = False
+        self.downFacing = True # Default facing down
+
 
 
 if __name__ == "__main__":
