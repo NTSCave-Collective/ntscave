@@ -1,11 +1,24 @@
 import pygame
-
+import tiles
+import os
 
 def drawCircle(window, state):
     radius = 10
     red = (200,0,0)
     pygame.draw.circle(window, red, [state.x, state.y], radius)
     state.attacking = False
+
+    if state.downFacing:
+        player = pygame.image.load(os.path.join(tiles.player["down"])).convert_alpha()
+    elif state.rightFacing:
+        player = pygame.image.load(os.path.join(tiles.player["right"])).convert_alpha()
+    elif state.leftFacing:
+        player = pygame.image.load(os.path.join(tiles.player["left"])).convert_alpha()
+    elif state.upFacing:
+        pygame.draw.circle(window, red, [state.x, state.y], radius)
+        return
+
+    window.blit(player, (state.x-24, state.y-24))
 
 def playerEvents(state):
     keys = pygame.key.get_pressed()
