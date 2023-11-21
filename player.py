@@ -49,26 +49,30 @@ def playerEvents(state):
     keys = pygame.key.get_pressed()
 
     def collision(heading):
-        tilePosX = floor(((state.x + tiles.colission_offsets[heading]) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP_SKELETONS[0]))
-        tilePosY = floor(((state.y + tiles.colission_offsets[heading]) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP_SKELETONS))
+        tilePosX = floor(((state.x) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP[0]))
+        tilePosY = floor(((state.y) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP))
+
         try:
-            currentTile = CONSTANTS.MAP_SKELETONS[tilePosY][tilePosX]
+            currentTile = CONSTANTS.MAP[tilePosY][tilePosX]
         except:
             return True
+        
+        playertileX = state.x % CONSTANTS.PIXELS // CONSTANTS.QUARTER
+        playertileY = state.y % CONSTANTS.PIXELS // CONSTANTS.QUARTER
 
         print(currentTile)
+        print(playertileX)
+        print(playertileY)
 
-        if currentTile in tiles.collision[heading]:
-            return False
-
-        return True
+        return not (tiles.bounds[currentTile][playertileY][playertileX] and not currentTile in tiles.event_for_bound_blocks)
 
     def movement():
         state.moving = False
         if keys[pygame.K_LEFT]:
             state.moving = True
-            if collision("left"):
-                state.x -= state.vel
+            state.x -= state.vel
+            if not collision("left"):
+                state.x += state.vel
             state.rightFacing = False
             state.leftFacing = True
             if not keys[pygame.K_UP]:
@@ -78,8 +82,9 @@ def playerEvents(state):
 
         if keys[pygame.K_RIGHT]:
             state.moving = True
-            if collision("right"):
-                state.x += state.vel
+            state.x += state.vel
+            if not collision("right"):
+                state.x -= state.vel
             state.rightFacing = True
             state.leftFacing = False
             if not keys[pygame.K_UP]:
@@ -89,8 +94,9 @@ def playerEvents(state):
 
         if keys[pygame.K_UP]:
             state.moving = True
-            if collision("up"):
-                state.y -= state.vel
+            state.y -= state.vel
+            if not collision("up"):
+                state.y += state.vel
             state.upFacing = True
             state.downFacing = False
             if not keys[pygame.K_LEFT]:
@@ -100,8 +106,9 @@ def playerEvents(state):
 
         if keys[pygame.K_DOWN]:
             state.moving = True
-            if collision("down"):
-                state.y += state.vel
+            state.y += state.vel
+            if not collision("down"):
+                state.y -= state.vel
             state.upFacing = False
             state.downFacing = True
             if not keys[pygame.K_LEFT]:

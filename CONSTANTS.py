@@ -44,11 +44,12 @@ MAP_SKELETONS = [
     ["wall_left", "frontwall_center", None],
 ]
 
-
+MAP = BACKGROUND_IMAGES
 
 
 
 PLAYER_PNG_SIZE = 48
 PIXELS = 64
+QUARTER = PIXELS//4
 SCALE = round(PIXELS / 64)
 PLAYER_SCALE = PLAYER_PNG_SIZE*SCALE

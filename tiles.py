@@ -1,4 +1,5 @@
 import CONSTANTS
+import BOUNDINGS
 
 tiles = {
     "floor": "assets/tiles/floor.png",
@@ -54,4 +55,38 @@ collision = {
     "center": ["spike", "spike1", "spike2", "spike3", "stairs_down"]
 }
 
-colission_offsets = {"left": 24*CONSTANTS.SCALE, "right": -24*CONSTANTS.SCALE, "down": -42*CONSTANTS.SCALE, "up": -24*CONSTANTS.SCALE}
+event_for_bound_blocks = ["spike", "spike1", "spike2", "spike3", "stairs_down"]
+
+bounds = {
+    None: BOUNDINGS.no_bounding,
+    
+    "floor": BOUNDINGS.no_bounding,
+    "floor2": BOUNDINGS.no_bounding,
+    "floor3": BOUNDINGS.no_bounding,
+
+    "frontwall_center": BOUNDINGS.top,
+    "frontwall_left": BOUNDINGS.top,
+    "frontwall_right": BOUNDINGS.top,
+
+    "wall_left": BOUNDINGS.left,
+    "wall_right": BOUNDINGS.right,
+    "wall_bottom": BOUNDINGS.bottom,
+
+    "wallcorner_left": BOUNDINGS.left,
+    "wallcorner_right": BOUNDINGS.right,
+    "wallcorner_topleft": BOUNDINGS.topleft_fill,
+    "wallcorner_topright": BOUNDINGS.topright_fill,
+    "wallcorner_bottomleft": BOUNDINGS.bottomleft_fill,
+    "wallcorner_bottomright": BOUNDINGS.bottomright_fill,
+    
+    "stairs_down": BOUNDINGS.center,
+
+    "spike": BOUNDINGS.center,
+    "spike1": BOUNDINGS.center,
+    "spike2": BOUNDINGS.center,
+    "spike3": BOUNDINGS.center,
+}
+
+
+
+

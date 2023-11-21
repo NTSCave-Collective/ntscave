@@ -6,7 +6,7 @@ import CONSTANTS
 def draw_grid(gameObjects, screen_size, grid_color, grid_spacing):
     width, height = screen_size
     global gridMap
-    gridMap = CONSTANTS.MAP_SKELETONS
+    gridMap = CONSTANTS.MAP
 
 
     for y in range(len(gridMap)):

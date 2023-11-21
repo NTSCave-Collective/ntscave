@@ -10,6 +10,7 @@ global running
 def main():
     # Initialize Pygame
     pygame.init()
+    print(CONSTANTS.SCALE)
     state = State()
     create_main_surface(state)
 
@@ -43,6 +44,8 @@ def create_main_surface(state):
                     running = False
             elif event.type == pygame.VIDEORESIZE:
                 CONSTANTS.SCREEN_SIZE = event.size
+                CONSTANTS.SCREEN_WIDTH = event.SCREEN_SIZE[0]
+                CONSTANTS.SCREEN_HEIGHT = event.SCREEN_SIZE[1]
                 window = pygame.display.set_mode(CONSTANTS.SCREEN_SIZE, window_flags)
 
 
