@@ -1,7 +1,6 @@
 import pygame
 import tiles
 import os
-import grid
 from math import floor
 import CONSTANTS
 

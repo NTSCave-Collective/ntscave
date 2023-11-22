@@ -20,6 +20,13 @@ tiles = {
     "wallcorner_topright": "assets/tiles/wallcorner_topright.png",
     "wallcorner_bottomleft": "assets/tiles/wallcorner_bottomleft.png",
     "wallcorner_bottomright": "assets/tiles/wallcorner_bottomright.png",
+
+    "singlewall_bottom_connected": "assets/tiles/singlewall_bottom_connected.png",
+    "singlewall_right_connected": "assets/tiles/singlewall_right_connected.png",
+    "singlewall_left_connected": "assets/tiles/singlewall_left_connected.png",
+    "singlewall_top_connected": "assets/tiles/singlewall_top_connected.png",
+
+    "wall_single": "assets/tiles/wall_single.png",
     
     "stairs_down": "assets/tiles/stairs_down.png",
 
