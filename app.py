@@ -51,9 +51,7 @@ def create_main_surface(state):
             elif event.type == pygame.VIDEORESIZE:
 
                 CONSTANTS.SCREEN_SIZE = event.size
-
                 window = pygame.display.set_mode(CONSTANTS.SCREEN_SIZE, window_flags)
-
 
         # Player events
         player.playerEvents(state)
@@ -81,7 +79,6 @@ class State():
                     validTile = True
             except:
                 pass
-
         self.vel = CONSTANTS.PLAYER_SPEED
         self.frame = 0
 
