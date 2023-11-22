@@ -4,8 +4,8 @@ import numpy as np
 
 
 def generateRoom():
-    roomHeight = 16
-    roomWidth = 16
+    roomHeight = 24
+    roomWidth = 24
 
     room = [[0 for _ in range(roomWidth)] for _ in range(roomHeight)]
 
@@ -62,16 +62,16 @@ def generateRoom():
                     else:
                         new_map[i][j] = FLOOR
 
-    for i in range(len(new_map)):
-        for j in range(len(new_map[i])):
-            if j == 0:
-                new_map[i][0] = FLOOR
-            elif j == roomWidth - 1:
-                new_map[i][roomWidth - 1] = FLOOR
-            elif i == 0:
-                new_map[0][j] = FLOOR
-            elif i == roomHeight - 1:
-                new_map[roomHeight - 1][j] = FLOOR
+    # for i in range(len(new_map)):
+    #     for j in range(len(new_map[i])):
+    #         if j == 0:
+    #             new_map[i][0] = FLOOR
+    #         elif j == roomWidth - 1:
+    #             new_map[i][roomWidth - 1] = FLOOR
+    #         elif i == 0:
+    #             new_map[0][j] = FLOOR
+    #         elif i == roomHeight - 1:
+    #             new_map[roomHeight - 1][j] = FLOOR
 
     for i in range(len(new_map)):
         for j in range(len(new_map[i])):
@@ -133,19 +133,40 @@ def generateRoom():
 
             # outside walls
             elif j == 0:
-                room[i][0] = "wall_left"
+                if topRightNeighbor == WALL and rightNeighbor == WALL and bottomRightNeighbor == WALL:
+                    room[i][0] = None
+                elif topRightNeighbor == WALL and bottomRightNeighbor == WALL:
+                    room[i][0] = "wall_left"
+                else:
+                    room[i][0] = random.choices(["frontwall_center", "frontwall_left", "frontwall_right"], weights=(50, 25, 25), k=1)[0]
+
             elif j == roomWidth - 1:
-                room[i][roomWidth - 1] = "wall_right"
+                if topLeftNeighbor == FLOOR and bottomLeftNeighbor == FLOOR:
+                    room[i][roomWidth - 1] = random.choices(["frontwall_center", "frontwall_left", "frontwall_right"], weights=(50, 25, 25), k=1)[0]
+                elif leftNeighbor == FLOOR:
+                    room[i][roomWidth - 1] = "wall_right"
+                else:
+                    room[i][roomWidth - 1] = None
             elif i == 0:
-                room[0][j] = random.choices(["frontwall_center", "frontwall_left", "frontwall_right"], weights=(50, 25, 25), k=1)[0]
+                if bottomLeftNeighbor == FLOOR and bottomRightNeighbor == FLOOR:
+                    room[0][j] = random.choices(["frontwall_center", "frontwall_left", "frontwall_right"], weights=(50, 25, 25), k=1)[0]
+                elif bottomNeighbor == FLOOR:
+                    room[0][j] = random.choices(["frontwall_center", "frontwall_left", "frontwall_right"], weights=(50, 25, 25), k=1)[0]
+                else:
+                    room[0][j] = None
             elif i == roomHeight - 1:
-                room[roomHeight - 1][j] = "wall_bottom"
+                if topLeftNeighbor == FLOOR and topRightNeighbor == FLOOR:
+                    room[roomHeight - 1][j] = random.choices(["frontwall_center", "frontwall_left", "frontwall_right"], weights=(50, 25, 25), k=1)[0]
+                elif topNeighbor == FLOOR:
+                    room[roomHeight - 1][j] = "wall_bottom"
+                else:
+                    room[roomHeight - 1][j] = None
 
             elif new_map[i][j] == 0:
                 if leftNeighbor == WALL and rightNeighbor == WALL and topNeighbor == WALL and bottomNeighbor == WALL:
                     room[i][j] = None
                 else:
-                    room[i][j] = "frontwall_center"
+                    room[i][j] = random.choices(["frontwall_center", "frontwall_left", "frontwall_right"], weights=(50, 25, 25), k=1)[0]
                     
 
                 #process tile (i,j)
