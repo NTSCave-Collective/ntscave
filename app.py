@@ -3,7 +3,6 @@ import renderer
 import player
 import camera
 import CONSTANTS
-import numpy as np
 import random
 
 global running
@@ -65,42 +64,24 @@ def create_main_surface(state):
 
 class State():
     def __init__(self):
-        # npArr = np.array(CONSTANTS.MAP)
-        # allFloors = np.where(npArr == "floor")
-        # randIndex = random.randint(0, allFloors[0].size)
-        # self.x = allFloors[0][randIndex] * CONSTANTS.PIXELS + 32
-        # self.y = allFloors[1][randIndex] * CONSTANTS.PIXELS
-
         map = CONSTANTS.MAP
-
+        print(map)
         validTile = False
         while not validTile:
             randY = random.randint(0, len(map))
             randX = random.randint(0, len(map[0]))
             try:
                 if "floor" in map[randY][randX]:
-                    print(map)
-                    print(map[randX][randY], randX, randY)
                     self.x = randX * CONSTANTS.PIXELS + 32
                     self.y = randY * CONSTANTS.PIXELS + 32
                     validTile = True
             except:
                 pass
 
-        fqefq = [
-            ['frontwall_center', 'frontwall_center', 'frontwall_left', 'frontwall_center', 'frontwall_left', 'frontwall_left'],
-            ['frontwall_center', 'frontwall_right', 'frontwall_center', 'frontwall_center', 'frontwall_center', 'frontwall_center'],
-            ['frontwall_right', 'floor', 'frontwall_center', 'frontwall_center', 'frontwall_center', 'frontwall_right'],
-            ['frontwall_left', 'floor', 'floor3', 'frontwall_left', 'frontwall_center', 'frontwall_right'],
-            ['frontwall_left', 'floor', 'floor3', 'frontwall_center', 'frontwall_center', 'frontwall_right'],
-            ['frontwall_center', 'frontwall_center', 'frontwall_center', 'frontwall_right', 'frontwall_center', 'frontwall_center']
-        ]
-
         self.vel = 5
         self.frame = 0
 
         self.attacking = False
-
         self.leftFacing = False
         self.rightFacing = False
         self.upFacing = False

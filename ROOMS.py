@@ -1,73 +1,94 @@
 import random
 import numpy as np
-import math
 
 
-roomHeight = 12
-roomWidth = 12
 
-room_1 = [[0 for _ in range(roomWidth)] for _ in range(roomHeight)]
+def generateRoom():
+    roomHeight = 12
+    roomWidth = 12
+
+    room = [[0 for _ in range(roomWidth)] for _ in range(roomHeight)]
 
 
-#######################################################################################################################
-## SOURCE: https://medium.com/@yvanscher/cellular-automata-how-to-create-realistic-worlds-for-your-game-2a9ec35f5ba9 ##
-#######################################################################################################################
+    #######################################################################################################################
+    ## SOURCE: https://medium.com/@yvanscher/cellular-automata-how-to-create-realistic-worlds-for-your-game-2a9ec35f5ba9 ##
+    #######################################################################################################################
 
-shape = (roomWidth, roomHeight)
-WALL = 0
-FLOOR = 1
+    shape = (roomWidth, roomHeight)
+    WALL = 0
+    FLOOR = 1
 
-# set the probability of filling
-# a wall at 40% not 50%
-fill_prob = 0.4
+    # set the probability of filling
+    # a wall at 40% not 50%
+    fill_prob = 0.4
 
-new_map = np.ones(shape)
-for i in range(shape[0]):
-    for j in range(shape[1]):
-        choice = random.uniform(0, 1)
-        # replace 0.5 with fill_prob
-        new_map[i, j] = WALL if choice < fill_prob else FLOOR
-
-generations = 6
-for generation in range(generations):
+    new_map = np.ones(shape)
     for i in range(shape[0]):
         for j in range(shape[1]):
-            # get the number of walls 1 away from each index
-            # get the number of walls 2 away from each index
-            submap = new_map[max(i-1, 0):min(i+2, new_map.shape[0]),max(j-1, 0):min(j+2, new_map.shape[1])]
-            wallcount_1away = len(np.where(submap.flatten() == WALL)[0])
-            submap = new_map[max(i-2, 0):min(i+3, new_map.shape[0]),max(j-2, 0):min(j+3, new_map.shape[1])]
-            wallcount_2away = len(np.where(submap.flatten() == WALL)[0])
-            # this consolidates walls
-            # for first five generations build a scaffolding of walls
-            if generation < 5:
-                # if looking 1 away in all directions you see 5 or more walls
-                # consolidate this point into a wall, if that doesnt happpen
-                # and if looking 2 away in all directions you see less than
-                # 7 walls, add a wall, this consolidates and adds walls
-                if wallcount_1away >= 5 or wallcount_2away <= 7:
-                    new_map[i][j] = WALL
-                else:
-                    new_map[i][j] = FLOOR
-            # this consolidates open space, fills in standalone walls,
-            # after generation 5 consolidate walls and increase walking space
-            # if there are more than 5 walls nearby make that point a wall,
-            # otherwise add a floor
-            else:
-                # if looking 1 away in all direction you see 5 walls
-                # consolidate this point into a wall,
-                if wallcount_1away >= 5:
-                    new_map[i][j] = WALL
-                else:
-                    new_map[i][j] = FLOOR
+            choice = random.uniform(0, 1)
+            # replace 0.5 with fill_prob
+            new_map[i, j] = WALL if choice < fill_prob else FLOOR
 
-for i in range(len(new_map)):
-    for j in range(len(new_map[i])):
-        # WIP: PUT CORRECT WALL
-        if new_map[i, j] == 0.0 or i == 0 or i == roomHeight - 1 or j == 0 or j == roomWidth - 1:
-            room_1[i][j] = random.choices(["frontwall_center", "frontwall_left", "frontwall_right"], weights=(50, 25, 25), k=1)[0]
-        else:
-            room_1[i][j] = random.choices(["floor", "floor2", "floor3"], weights=(10,10,10), k=1)[0]
+    generations = 6
+    for generation in range(generations):
+        for i in range(shape[0]):
+            for j in range(shape[1]):
+                # get the number of walls 1 away from each index
+                # get the number of walls 2 away from each index
+                submap = new_map[max(i-1, 0):min(i+2, new_map.shape[0]),max(j-1, 0):min(j+2, new_map.shape[1])]
+                wallcount_1away = len(np.where(submap.flatten() == WALL)[0])
+                submap = new_map[max(i-2, 0):min(i+3, new_map.shape[0]),max(j-2, 0):min(j+3, new_map.shape[1])]
+                wallcount_2away = len(np.where(submap.flatten() == WALL)[0])
+                # this consolidates walls
+                # for first five generations build a scaffolding of walls
+                if generation < 5:
+                    # if looking 1 away in all directions you see 5 or more walls
+                    # consolidate this point into a wall, if that doesnt happpen
+                    # and if looking 2 away in all directions you see less than
+                    # 7 walls, add a wall, this consolidates and adds walls
+                    if wallcount_1away >= 5 or wallcount_2away <= 7:
+                        new_map[i][j] = WALL
+                    else:
+                        new_map[i][j] = FLOOR
+                # this consolidates open space, fills in standalone walls,
+                # after generation 5 consolidate walls and increase walking space
+                # if there are more than 5 walls nearby make that point a wall,
+                # otherwise add a floor
+                else:
+                    # if looking 1 away in all direction you see 5 walls
+                    # consolidate this point into a wall,
+                    if wallcount_1away >= 5:
+                        new_map[i][j] = WALL
+                    else:
+                        new_map[i][j] = FLOOR
+
+    for i in range(len(new_map)):
+        for j in range(len(new_map[i])):
+            # WIP: PUT CORRECT WALL
+
+            # CORNERS
+            if i == 0 and j == 0:
+                room[0][0] = "wallcorner_topleft"
+            elif i == 0 and j == roomWidth - 1:
+                room[0][j] = "wallcorner_topright"
+            elif i == roomHeight - 1 and j == 0:
+                room[i][0] = "wallcorner_bottomleft"
+            elif i == roomHeight - 1 and j == roomWidth - 1:
+                room[i][j] = "wallcorner_bottomright"
+
+            # outside walls
+            elif j == 0:
+                room[i][0] = "wall_left"
+            elif j == roomWidth - 1:
+                room[i][roomWidth - 1] = "wall_right"
+            elif i == 0:
+                room[0][j] = random.choices(["frontwall_center", "frontwall_left", "frontwall_right"], weights=(50, 25, 25), k=1)[0]
+            
+            else:
+                room[i][j] = random.choices(["floor", "floor2", "floor3"], weights=(10,10,10), k=1)[0]
+
+
+    return room
 
 
 
@@ -79,7 +100,7 @@ for i in range(len(new_map)):
 
 # print(new_map)
 
-# print(room_1)
+# print(room)
 
 
 
@@ -138,27 +159,27 @@ for i in range(len(new_map)):
 #     randomOffsetR = random.randint(0,2)
 
 #     for i in range(randomOffsetL):
-#         room_1[0].append(None)
+#         room[0].append(None)
     
 #     prev = None
 
 #     for i in range(wallDistance):
 #         if i == 0:
-#             room_1[0].append("wallcorner_topleft")
+#             room[0].append("wallcorner_topleft")
 #         elif i == wallDistance - 1:
-#             room_1[0].append("wallcorner_topright")
+#             room[0].append("wallcorner_topright")
 #         else:
-#             if room_1[0][i - 1] == "frontwall_left":
-#                 room_1[0].append(random.choice(["frontwall_center", "frontwall_left"]))
-#             elif room_1[0][i - 1] == "frontwall_right":
-#                 room_1[0].append(random.choice(["frontwall_center", "frontwall_right"]))
+#             if room[0][i - 1] == "frontwall_left":
+#                 room[0].append(random.choice(["frontwall_center", "frontwall_left"]))
+#             elif room[0][i - 1] == "frontwall_right":
+#                 room[0].append(random.choice(["frontwall_center", "frontwall_right"]))
 #             else:
-#                 room_1[0].append(random.choices(["frontwall_center", "frontwall_left", "frontwall_right"], weights=(50, 25, 25), k=1)[0])
+#                 room[0].append(random.choices(["frontwall_center", "frontwall_left", "frontwall_right"], weights=(50, 25, 25), k=1)[0])
                     
 #     for i in range(randomOffsetR):
-#         room_1[0].append(None)
+#         room[0].append(None)
     
-#     # print(room_1)
+#     # print(room)
 
 
 # generateRoom()

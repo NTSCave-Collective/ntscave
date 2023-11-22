@@ -46,7 +46,7 @@ MAP_SKELETONS = [
     ["wall_left", "frontwall_center", None],
 ]
 
-MAP = ROOMS.room_1
+MAP = ROOMS.generateRoom()
 
 
 
