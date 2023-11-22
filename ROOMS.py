@@ -3,8 +3,8 @@ import numpy as np
 import math
 
 
-roomHeight = 12
-roomWidth = 12
+roomHeight = 20
+roomWidth = 20
 
 room_1 = [[0 for _ in range(roomWidth)] for _ in range(roomHeight)]
 

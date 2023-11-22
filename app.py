@@ -6,7 +6,6 @@ import CONSTANTS
 import numpy as np
 import random
 import enemy 
-from enemy import spawn_enemies_on_floor
 
 global running
 
@@ -34,7 +33,7 @@ def create_main_surface(state):
     gameObjects = gameObjects.convert_alpha()
 
     num_random_enemies = random.randint(1, 5)
-    enemies = spawn_enemies_on_floor(num_random_enemies)
+    enemies = enemy.spawn_enemies_on_floor((state.x, state.y), num_random_enemies)
 
     state.enemies = enemies
     
