@@ -4,6 +4,15 @@ import os
 from math import floor
 import CONSTANTS
 
+global player_cache
+player_cache = {}
+
+def get_image(key):
+    if not key in player_cache:
+        print(f"loading {key}")
+        player_cache[key] = pygame.image.load(os.path.join(key)).convert_alpha()
+    return player_cache[key]
+
 def drawPlayer(window, state):
     # 48px x 24px
 
@@ -22,22 +31,22 @@ def drawPlayer(window, state):
             pass
     if state.moving:
         if state.downFacing:
-            player = pygame.image.load(os.path.join(tiles.player["down_moving"][animframe])).convert_alpha()
+            player = get_image(tiles.player["down_moving"][animframe])
         elif state.rightFacing:
-            player = pygame.image.load(os.path.join(tiles.player["right_moving"][animframe])).convert_alpha()
+            player = get_image(tiles.player["right_moving"][animframe])
         elif state.leftFacing:
-            player = pygame.image.load(os.path.join(tiles.player["left_moving"][animframe])).convert_alpha()
+            player = get_image(tiles.player["left_moving"][animframe])
         elif state.upFacing:
-            player = pygame.image.load(os.path.join(tiles.player["up_moving"][animframe])).convert_alpha()
+            player = get_image(tiles.player["up_moving"][animframe])
     else:
         if state.downFacing:
-            player = pygame.image.load(os.path.join(tiles.player["down"][animframe])).convert_alpha()
+            player = get_image(tiles.player["down"][animframe])
         elif state.rightFacing:
-            player = pygame.image.load(os.path.join(tiles.player["right"][animframe])).convert_alpha()
+            player = get_image(tiles.player["right"][animframe])
         elif state.leftFacing:
-            player = pygame.image.load(os.path.join(tiles.player["left"][animframe])).convert_alpha()
+            player = get_image(tiles.player["left"][animframe])
         elif state.upFacing:
-            player = pygame.image.load(os.path.join(tiles.player["up"][animframe])).convert_alpha()
+            player = get_image(tiles.player["up"][animframe])
 
     player = pygame.transform.scale(player, (CONSTANTS.PIXELS, CONSTANTS.PIXELS))
     window.blit(player, (state.x - CONSTANTS.PIXELS/2, state.y - CONSTANTS.PIXELS))

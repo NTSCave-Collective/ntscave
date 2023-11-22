@@ -40,10 +40,17 @@ def draw_grid(gameObjects, state):
     topBound = max(0, floor(((state.y - CONSTANTS.SCREEN_SIZE[1])/2 / CONSTANTS.PIXELS)))
     bottomBound = min(len(CONSTANTS.MAP), floor(((state.y) - CONSTANTS.SCREEN_SIZE[1]/2 / CONSTANTS.PIXELS)))
     """
+
+
+
     for y in range(len(CONSTANTS.MAP)):
         for x in range(len(CONSTANTS.MAP[y])):
-            image = get_image(CONSTANTS.MAP[y][x])
-            gameObjects.blit(image, (CONSTANTS.PIXELS * x , CONSTANTS.PIXELS * y))
+            actualX = CONSTANTS.PIXELS * x
+            actualY = CONSTANTS.PIXELS * y
+
+            if ((state.x - CONSTANTS.BOUND) < actualX < (state.x + CONSTANTS.BOUND)) and ((state.y - CONSTANTS.BOUND) < actualY < (state.y + CONSTANTS.BOUND)):
+                image = get_image(CONSTANTS.MAP[y][x])
+                gameObjects.blit(image, (CONSTANTS.PIXELS * x , CONSTANTS.PIXELS * y))
 
 
 def camera(window, gameObjects, state):

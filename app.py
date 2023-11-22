@@ -6,6 +6,7 @@ import enemy
 import rendering
 global running
 import ROOMS
+import math
 
 
 def main():
@@ -27,7 +28,7 @@ def create_main_surface(state):
 
     # All gameObjects except the bg is added to this surface to be able to move the camera with the player
     gameObjects = pygame.Surface(
-        (CONSTANTS.SURFACE_SCREEN, CONSTANTS.SURFACE_SCREEN), pygame.SRCALPHA, 32)
+        (CONSTANTS.SURFACE_WIDTH, CONSTANTS.SURFACE_HEIGHT), pygame.SRCALPHA, 32)
     gameObjects = gameObjects.convert_alpha()
 
     num_random_enemies = random.randint(1, 5)
@@ -57,8 +58,10 @@ def create_main_surface(state):
             elif event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.VIDEORESIZE:
-
                 CONSTANTS.SCREEN_SIZE = event.size
+                CONSTANTS.SCREEN_WIDTH = CONSTANTS.SCREEN_SIZE[0]
+                CONSTANTS.SCREEN_HEIGHT = CONSTANTS.SCREEN_SIZE[1]
+                CONSTANTS.BOUND = math.ceil(max(CONSTANTS.SCREEN_HEIGHT, CONSTANTS.SCREEN_WIDTH)/2)+2
                 window = pygame.display.set_mode(CONSTANTS.SCREEN_SIZE, window_flags, vsync=CONSTANTS.VSYNC)
 
         # Player events

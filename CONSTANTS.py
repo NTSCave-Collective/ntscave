@@ -1,13 +1,24 @@
 import ROOMS
+import math
 
 # Initial Screen constants
 SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = 768
 SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
 BACKGROUND_COLOR = [34, 34, 34]
-TICK =  60
-SURFACE_SCREEN = 5000
-VSYNC = 1
+TICK =  120
+
+PIXELS = 64
+
+roomHeight = 100
+roomWidth = 100
+
+BOUND = math.ceil(max(SCREEN_HEIGHT, SCREEN_WIDTH)/2)+2
+
+SURFACE_WIDTH = PIXELS * roomWidth
+SURFACE_HEIGHT = PIXELS * roomHeight
+
+VSYNC = 0
 # Grid constants 
 GRID_SPACING = 1000
 GRID_COLOR = [0, 0, 0]
@@ -45,5 +56,3 @@ MAP_SKELETONS = [
 ]
 
 MAP = BACKGROUND_IMAGES
-
-PIXELS = 64
