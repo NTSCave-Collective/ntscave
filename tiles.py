@@ -1,5 +1,7 @@
 import CONSTANTS
 import BOUNDINGS
+import pygame
+import os
 
 tiles = {
     "floor": "assets/tiles/floor.png",
@@ -36,6 +38,7 @@ tiles = {
     "spike3": "assets/tiles/spike3.png",
     "spike_blocked": "assets/tiles/spike3.png"
 }
+
 
 player = {
     "down": ["assets/player/down.png", "assets/player/down2.png", "assets/player/down3.png", "assets/player/down4.png"],

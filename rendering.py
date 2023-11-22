@@ -7,6 +7,9 @@ import player
 import CONSTANTS
 import enemy
 
+global image_cache
+image_cache = {}
+
 def render_frame(window, gameObjects, state):
     draw_grid(gameObjects, CONSTANTS.SCREEN_SIZE, state)
 
@@ -23,6 +26,12 @@ def render_frame(window, gameObjects, state):
 def clear_surface(window):
     window.fill(CONSTANTS.BACKGROUND_COLOR)
 
+def get_image(key):
+    if not key in image_cache:
+        print("loading {key}")
+        image_cache[key] = pygame.image.load(os.path.join(tiles.tiles[key]))
+    return image_cache[key]
+
 def draw_grid(gameObjects, screen_size, state):
     width, height = screen_size
 
@@ -34,12 +43,11 @@ def draw_grid(gameObjects, screen_size, state):
 
     for y in range(topBound, bottomBound):
         for x in range(leftBound, rightBound):
-            try:
-                image = pygame.image.load(os.path.join(tiles.tiles[CONSTANTS.MAP[y][x]]))
+            if CONSTANTS.MAP[y][x] != None:
+                image = get_image(CONSTANTS.MAP[y][x])
                 image = pygame.transform.scale(image, (CONSTANTS.PIXELS, CONSTANTS.PIXELS))
                 gameObjects.blit(image, (CONSTANTS.PIXELS * x , CONSTANTS.PIXELS * y))
-            except:
-                pass
+
 
 def camera(window, gameObjects, state):
     # Move every gameObject on the screen relative to the player position
@@ -55,17 +63,3 @@ def toggle_fullscreen(window):
 def draw_enemies(game_objects, state):
     for enemy in state.enemies:
         enemy.draw(game_objects, state.frame)
-
-def draw_grid_with_enemies(game_objects, screen_size, grid_color, grid_spacing, enemies, state):
-    width, height = screen_size
-
-    for y in range(len(grid_map)):
-        for x in range(len(grid_map[y])):
-            try:
-                image = pygame.image.load(os.path.join(tiles.tiles[grid_map[y][x]]))
-                image = pygame.transform.scale(image, (CONSTANTS.PIXELS, CONSTANTS.PIXELS))
-                game_objects.blit(image, (CONSTANTS.PIXELS * x, CONSTANTS.PIXELS * y))
-            except:
-                pass
-
-    draw_enemies(game_objects, enemies, state)
