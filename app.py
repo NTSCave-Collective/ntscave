@@ -37,19 +37,21 @@ def create_main_surface(state):
 
         globalEvents = pygame.event.get()
         for event in globalEvents:
-            if event.type == pygame.QUIT:
-                running = False
-            elif event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_f:
                     camera.toggle_fullscreen(window)
+                if event.key == pygame.K_y:
+                    CONSTANTS.MAP = CONSTANTS.BACKGROUND_IMAGES
+                if event.key == pygame.K_u:
+                    CONSTANTS.MAP = CONSTANTS.MAP_SKELETONS
                 elif event.key == pygame.K_ESCAPE:
                     running = False
+            elif event.type == pygame.QUIT:
+                running = False
             elif event.type == pygame.VIDEORESIZE:
+
                 CONSTANTS.SCREEN_SIZE = event.size
-                CONSTANTS.SCREEN_WIDTH = event.SCREEN_SIZE[0]
-                CONSTANTS.SCREEN_HEIGHT = event.SCREEN_SIZE[1]
-                window = pygame.display.set_mode(
-                    CONSTANTS.SCREEN_SIZE, window_flags)
+                window = pygame.display.set_mode(CONSTANTS.SCREEN_SIZE, window_flags)
 
         # Player events
         player.playerEvents(state)
@@ -77,9 +79,12 @@ class State():
                     validTile = True
             except:
                 pass
-
-        self.vel = 5
+        self.vel = CONSTANTS.PLAYER_SPEED
         self.frame = 0
+
+        self.level = 1
+
+        self.hp = 100
 
         self.attacking = False
         self.leftFacing = False
