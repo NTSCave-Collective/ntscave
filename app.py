@@ -1,11 +1,11 @@
 import pygame
-import renderer
 import player
-import camera
 import CONSTANTS
 import random
-
+import enemy 
+import rendering
 global running
+import ROOMS
 
 
 def main():
@@ -22,28 +22,36 @@ def create_main_surface(state):
     running = True
 
     # Create window with given size
-    window_flags = pygame.RESIZABLE | pygame.DOUBLEBUF
-    window = pygame.display.set_mode(CONSTANTS.SCREEN_SIZE, window_flags)
+    window_flags = pygame.RESIZABLE | pygame.DOUBLEBUF | pygame.SCALED
+    window = pygame.display.set_mode(CONSTANTS.SCREEN_SIZE, window_flags, vsync=CONSTANTS.VSYNC)
 
     # All gameObjects except the bg is added to this surface to be able to move the camera with the player
     gameObjects = pygame.Surface(
         (CONSTANTS.SURFACE_SCREEN, CONSTANTS.SURFACE_SCREEN), pygame.SRCALPHA, 32)
     gameObjects = gameObjects.convert_alpha()
 
+    num_random_enemies = random.randint(1, 5)
+    enemies = enemy.spawn_enemies_on_floor((state.x, state.y), num_random_enemies)
+
+    state.enemies = enemies
+    
+    
     while running:
-        renderer.clear_surface(window)
+        rendering.clear_surface(window)
 
         pygame.event.pump()
 
         globalEvents = pygame.event.get()
         for event in globalEvents:
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_f:
-                    camera.toggle_fullscreen(window)
-                if event.key == pygame.K_y:
-                    CONSTANTS.MAP = CONSTANTS.BACKGROUND_IMAGES
                 if event.key == pygame.K_u:
                     CONSTANTS.MAP = CONSTANTS.MAP_SKELETONS
+                if event.key == pygame.K_y:
+                    CONSTANTS.MAP = CONSTANTS.BACKGROUND_IMAGES
+                if event.key == pygame.K_f:
+                    rendering.toggle_fullscreen(window)
+                if event.key == pygame.K_i:
+                    CONSTANTS.MAP = ROOMS.generateRoom()
                 elif event.key == pygame.K_ESCAPE:
                     running = False
             elif event.type == pygame.QUIT:
@@ -51,17 +59,18 @@ def create_main_surface(state):
             elif event.type == pygame.VIDEORESIZE:
 
                 CONSTANTS.SCREEN_SIZE = event.size
-                window = pygame.display.set_mode(CONSTANTS.SCREEN_SIZE, window_flags)
+                window = pygame.display.set_mode(CONSTANTS.SCREEN_SIZE, window_flags, vsync=CONSTANTS.VSYNC)
 
         # Player events
         player.playerEvents(state)
 
         # All gameObjects get rendered in here
-        renderer.render_frame(window, gameObjects, state)
+        rendering.render_frame(window, gameObjects, state)
 
         # Set fps value
         clock.tick(CONSTANTS.TICK)
         state.frame += 1
+        print(clock.get_fps())
 
 
 class State():
@@ -91,6 +100,7 @@ class State():
         self.rightFacing = False
         self.upFacing = False
         self.downFacing = True  # Default facing down
+        self.enemies = []
 
 
 if __name__ == "__main__":

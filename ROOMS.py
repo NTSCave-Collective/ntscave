@@ -2,6 +2,8 @@ import random
 import numpy as np
 
 
+roomHeight = 20
+roomWidth = 20
 
 def generateRoom():
     roomHeight = 24

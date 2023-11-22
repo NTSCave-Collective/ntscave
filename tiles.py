@@ -1,5 +1,7 @@
 import CONSTANTS
 import BOUNDINGS
+import pygame
+import os
 
 tiles = {
     "floor": "assets/tiles/floor.png",
@@ -37,6 +39,7 @@ tiles = {
     "spike_blocked": "assets/tiles/spike3.png"
 }
 
+
 player = {
     "down": ["assets/player/down.png", "assets/player/down2.png", "assets/player/down3.png", "assets/player/down4.png"],
     "left": ["assets/player/left.png", "assets/player/left2.png", "assets/player/left3.png", "assets/player/left4.png"],
@@ -48,6 +51,17 @@ player = {
     "right_moving": ["assets/player/right_moving.png", "assets/player/right_moving2.png", "assets/player/right_moving3.png", "assets/player/right_moving4.png"],
     "up_moving": ["assets/player/up_moving.png", "assets/player/up_moving2.png", "assets/player/up_moving3.png", "assets/player/up_moving4.png"],
 }
+
+species_list = ["worm"]
+
+worm = {
+    "left": ["assets/enemy/worm_left1.png", "assets/enemy/worm_left2.png", "assets/enemy/worm_left3.png", "assets/enemy/worm_left2.png"],
+    "up": ["assets/enemy/worm_left1.png", "assets/enemy/worm_left2.png", "assets/enemy/worm_left3.png", "assets/enemy/worm_left2.png"],
+    "right": ["assets/enemy/worm_right1.png", "assets/enemy/worm_right2.png", "assets/enemy/worm_right3.png", "assets/enemy/worm_right2.png"],
+    "down": ["assets/enemy/worm_right1.png", "assets/enemy/worm_right2.png", "assets/enemy/worm_right3.png", "assets/enemy/worm_right2.png"],
+}
+
+name_to_entity = {"worm": worm}
 
 collision = {
     "left": ["wall_left", "wallcorner_bottomleft", "wallcorner_topleft", "wallcorner_left"],
