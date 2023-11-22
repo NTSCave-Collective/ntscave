@@ -10,12 +10,11 @@ def render_frame(window, gameObjects, state):
 
     # Draw enemies on the board
     enemy.draw_enemies(gameObjects, state.enemies)
-    
+
     # Move all gameObjects based on the player position 
     camera.camera(window, gameObjects, state)
     
     pygame.display.update()
-
 
 
 def clear_surface(window):

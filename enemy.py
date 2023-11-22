@@ -9,10 +9,11 @@ class Enemy:
     def __init__(self, x, y):
         self.x = x
         self.y = y
+        self.size = 20  # Adjust the size as needed
         self.color = (255, 0, 0)  # Red color for the enemy
 
     def draw(self, window):
-        pygame.draw.rect(window, self.color, (self.x, self.y,))
+        pygame.draw.rect(window, self.color, (self.x, self.y, self.size, self.size))
 
 def spawn_enemies_on_floor(num_random_enemies):
     enemies = []

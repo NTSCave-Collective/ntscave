@@ -35,6 +35,7 @@ def create_main_surface(state):
 
     num_random_enemies = random.randint(1, 5)
     enemies = spawn_enemies_on_floor(num_random_enemies)
+
     state.enemies = enemies
     
     while running:
