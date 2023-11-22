@@ -3,6 +3,8 @@ import renderer
 import player
 import camera
 import CONSTANTS
+import numpy as np
+import random
 
 global running
 
@@ -59,9 +61,23 @@ def create_main_surface(state):
         state.frame += 1
 
 class State():
-    def __init__(self, x: int = 150, y: int=150):
-        self.x = x
-        self.y = y
+    def __init__(self):
+        # npArr = np.array(CONSTANTS.MAP)
+        # allFloors = np.where(npArr == "floor")
+        # randIndex = random.randint(0, allFloors[0].size)
+        # self.x = allFloors[0][randIndex] * CONSTANTS.PIXELS + 32
+        # self.y = allFloors[1][randIndex] * CONSTANTS.PIXELS
+
+        validTile = False
+        while not validTile:
+            print("RERUNNING")
+            randX = random.randint(0, len(CONSTANTS.MAP[0]))
+            randY = random.randint(0, len(CONSTANTS.MAP))
+            if CONSTANTS.MAP[randX][randY] == "floor" or CONSTANTS.MAP[randX][randY] == "floor2" or CONSTANTS.MAP[randX][randY] == "floor3":
+                self.x = randX * 64 + 32
+                self.y = randY * 64
+                validTile = True
+
         self.vel = 5
         self.frame = 0
         

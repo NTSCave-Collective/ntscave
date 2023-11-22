@@ -8,6 +8,11 @@ roomWidth = 24
 
 room_1 = [[0 for _ in range(roomWidth)] for _ in range(roomHeight)]
 
+
+#######################################################################################################################
+## SOURCE: https://medium.com/@yvanscher/cellular-automata-how-to-create-realistic-worlds-for-your-game-2a9ec35f5ba9 ##
+#######################################################################################################################
+
 shape = (roomWidth, roomHeight)
 WALL = 0
 FLOOR = 1
@@ -21,14 +26,7 @@ for i in range(shape[0]):
     for j in range(shape[1]):
         choice = random.uniform(0, 1)
         # replace 0.5 with fill_prob
-        # print(i, j)
-        if i == 0 or i == roomHeight - 1 or j == 0 or j == roomWidth - 1:
-            new_map[i, j] = WALL
-        else:
-            new_map[i, j] = WALL if choice < fill_prob else FLOOR
-
-
-print(new_map)
+        new_map[i, j] = WALL if choice < fill_prob else FLOOR
 
 generations = 6
 for generation in range(generations):
@@ -80,7 +78,7 @@ for i in range(len(new_map)):
 
 # print(new_map)
 
-# print(room_1)
+print(room_1)
 
 
 
