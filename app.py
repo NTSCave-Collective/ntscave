@@ -5,6 +5,8 @@ import camera
 import CONSTANTS
 import numpy as np
 import random
+import enemy 
+from enemy import spawn_enemies_on_floor
 
 global running
 
@@ -31,6 +33,10 @@ def create_main_surface(state):
         (CONSTANTS.SURFACE_SCREEN, CONSTANTS.SURFACE_SCREEN), pygame.SRCALPHA, 32)
     gameObjects = gameObjects.convert_alpha()
 
+    num_random_enemies = random.randint(1, 5)
+    enemies = spawn_enemies_on_floor(num_random_enemies)
+    state.enemies = enemies
+    
     while running:
         renderer.clear_surface(window)
 
@@ -79,8 +85,6 @@ class State():
             randX = random.randint(0, len(map[0]))
             try:
                 if "floor" in map[randY][randX]:
-                    print(map)
-                    print(map[randX][randY], randX, randY)
                     self.x = randX * CONSTANTS.PIXELS + 32
                     self.y = randY * CONSTANTS.PIXELS + 32
                     validTile = True
@@ -105,6 +109,7 @@ class State():
         self.rightFacing = False
         self.upFacing = False
         self.downFacing = True  # Default facing down
+        self.enemies = []
 
 
 if __name__ == "__main__":
