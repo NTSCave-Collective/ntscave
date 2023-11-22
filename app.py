@@ -68,14 +68,15 @@ class State():
         # self.x = allFloors[0][randIndex] * CONSTANTS.PIXELS + 32
         # self.y = allFloors[1][randIndex] * CONSTANTS.PIXELS
 
+        map = CONSTANTS.MAP
+
         validTile = False
         while not validTile:
-            print("RERUNNING")
-            randX = random.randint(0, len(CONSTANTS.MAP[0]))
-            randY = random.randint(0, len(CONSTANTS.MAP))
-            if CONSTANTS.MAP[randX][randY] == "floor" or CONSTANTS.MAP[randX][randY] == "floor2" or CONSTANTS.MAP[randX][randY] == "floor3":
+            randY = random.randint(0, len(map[0]))
+            randX = random.randint(0, len(map))
+            if "floor" in map[randX][randY]:
                 self.x = randX * 64 + 32
-                self.y = randY * 64
+                self.y = randY * 64 + 32
                 validTile = True
 
         self.vel = 5

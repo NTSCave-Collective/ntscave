@@ -3,8 +3,8 @@ import numpy as np
 import math
 
 
-roomHeight = 24
-roomWidth = 24
+roomHeight = 16
+roomWidth = 16
 
 room_1 = [[0 for _ in range(roomWidth)] for _ in range(roomHeight)]
 
@@ -78,7 +78,7 @@ for i in range(len(new_map)):
 
 # print(new_map)
 
-print(room_1)
+# print(room_1)
 
 
 
