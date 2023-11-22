@@ -3,8 +3,8 @@ import numpy as np
 import math
 
 
-roomHeight = 16
-roomWidth = 16
+roomHeight = 12
+roomWidth = 12
 
 room_1 = [[0 for _ in range(roomWidth)] for _ in range(roomHeight)]
 
@@ -63,6 +63,7 @@ for generation in range(generations):
 
 for i in range(len(new_map)):
     for j in range(len(new_map[i])):
+        # WIP: PUT CORRECT WALL
         if new_map[i, j] == 0.0 or i == 0 or i == roomHeight - 1 or j == 0 or j == roomWidth - 1:
             room_1[i][j] = random.choices(["frontwall_center", "frontwall_left", "frontwall_right"], weights=(50, 25, 25), k=1)[0]
         else:
