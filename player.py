@@ -10,19 +10,18 @@ def drawPlayer(window, state):
 
     state.attacking = False
     
-    animframe = floor((state.frame % 40) / 10)
+    animframe = floor((state.frame % 60) / 15)
 
     if state.attacking:
         if state.downFacing:
-            player = pygame.image.load(os.path.join(tiles.player["down_attack"][animframe])).convert_alpha()
+            pass
         elif state.rightFacing:
-            player = pygame.image.load(os.path.join(tiles.player["right_attack"][animframe])).convert_alpha()
+            pass
         elif state.leftFacing:
-            player = pygame.image.load(os.path.join(tiles.player["left_attack"][animframe])).convert_alpha()
+            pass
         elif state.upFacing:
-            # player = pygame.image.load(os.path.join(tiles.player["up_attack"][animframe])).convert_alpha()
-            return
-    elif state.moving:
+            pass
+    if state.moving:
         if state.downFacing:
             player = pygame.image.load(os.path.join(tiles.player["down_moving"][animframe])).convert_alpha()
         elif state.rightFacing:
@@ -30,8 +29,7 @@ def drawPlayer(window, state):
         elif state.leftFacing:
             player = pygame.image.load(os.path.join(tiles.player["left_moving"][animframe])).convert_alpha()
         elif state.upFacing:
-            # player = pygame.image.load(os.path.join(tiles.player["up_moving"][animframe])).convert_alpha()
-            return
+            player = pygame.image.load(os.path.join(tiles.player["up_moving"][animframe])).convert_alpha()
     else:
         if state.downFacing:
             player = pygame.image.load(os.path.join(tiles.player["down"][animframe])).convert_alpha()
@@ -40,15 +38,29 @@ def drawPlayer(window, state):
         elif state.leftFacing:
             player = pygame.image.load(os.path.join(tiles.player["left"][animframe])).convert_alpha()
         elif state.upFacing:
-            # player = pygame.image.load(os.path.join(tiles.player["up"][animframe])).convert_alpha()
-            return
+            player = pygame.image.load(os.path.join(tiles.player["up"][animframe])).convert_alpha()
 
-    window.blit(player, (state.x - 24, state.y - 48))
+    player = pygame.transform.scale(player, (CONSTANTS.PIXELS, CONSTANTS.PIXELS))
+    window.blit(player, (state.x - CONSTANTS.PIXELS/2, state.y - CONSTANTS.PIXELS))
 
 def playerEvents(state):
     keys = pygame.key.get_pressed()
 
     def collision(heading):
+        tilePosY = floor(((state.y) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP))
+        tilePosX = floor(((state.x) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP[tilePosY]))
+
+        try:
+            currentTile = CONSTANTS.MAP[tilePosY][tilePosX]
+        except:
+            return True
+        
+        playertileX = floor((state.x % CONSTANTS.PIXELS) // (CONSTANTS.PIXELS/4))
+        playertileY = floor((state.y % CONSTANTS.PIXELS) // (CONSTANTS.PIXELS/4))
+
+        return not (tiles.bounds[currentTile][playertileY][playertileX] and not currentTile in tiles.event_for_bound_blocks)
+
+    def collisionEvents():
         tilePosX = floor(((state.x) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP[0]))
         tilePosY = floor(((state.y) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP))
 
@@ -60,11 +72,8 @@ def playerEvents(state):
         playertileX = state.x % CONSTANTS.PIXELS // CONSTANTS.QUARTER
         playertileY = state.y % CONSTANTS.PIXELS // CONSTANTS.QUARTER
 
-        print(currentTile)
-        print(playertileX)
-        print(playertileY)
-
-        return not (tiles.bounds[currentTile][playertileY][playertileX] and not currentTile in tiles.event_for_bound_blocks)
+        if tiles.bounds[currentTile][playertileY][playertileX] and currentTile in tiles.event_for_bound_blocks:
+            tiles.tileEvents(currentTile, state)
 
     def movement():
         state.moving = False
@@ -115,6 +124,8 @@ def playerEvents(state):
                 state.leftFacing = False
             if not keys[pygame.K_RIGHT]:
                 state.rightFacing = False
+        
+        # collisionEvents()
 
     def attack():
         if keys[pygame.K_SPACE]:
