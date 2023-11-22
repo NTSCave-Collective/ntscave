@@ -5,7 +5,6 @@ tiles = {
     "floor": "assets/tiles/floor.png",
     "floor2": "assets/tiles/floor2.png",
     "floor3": "assets/tiles/floor3.png",
-    "floor_topleft": "assets/tiles/floor_topleft.png",
 
     "frontwall_center": "assets/tiles/frontwall_center.png",
     "frontwall_left": "assets/tiles/frontwall_left.png",
@@ -27,24 +26,20 @@ tiles = {
     "spike": "assets/tiles/spike0.png",
     "spike1": "assets/tiles/spike1.png",
     "spike2": "assets/tiles/spike2.png",
-    "spike3": "assets/tiles/spike3.png"
+    "spike3": "assets/tiles/spike3.png",
+    "spike_blocked": "assets/tiles/spike3.png"
 }
 
 player = {
     "down": ["assets/player/down.png", "assets/player/down2.png", "assets/player/down3.png", "assets/player/down4.png"],
-    "left": ["assets/player/left.png", "assets/player/left.png", "assets/player/left.png", "assets/player/left.png"],
-    "right": ["assets/player/right.png", "assets/player/right.png", "assets/player/right.png", "assets/player/right.png"],
-    "up": ["assets/player/down.png", "assets/player/down2.png", "assets/player/down3.png", "assets/player/down4.png"],
+    "left": ["assets/player/left.png", "assets/player/left2.png", "assets/player/left3.png", "assets/player/left4.png"],
+    "right": ["assets/player/right.png", "assets/player/right2.png", "assets/player/right3.png", "assets/player/right4.png"],
+    "up": ["assets/player/up.png", "assets/player/up2.png", "assets/player/up3.png", "assets/player/up4.png"],
 
-    "down_moving": ["assets/player/down.png", "assets/player/down_moving2.png", "assets/player/down_moving3.png", "assets/player/down_moving4.png"],
-    "left_moving": ["assets/player/left.png", "assets/player/left.png", "assets/player/left.png", "assets/player/left.png"],
-    "right_moving": ["assets/player/right.png", "assets/player/right.png", "assets/player/right.png", "assets/player/right.png"],
-    "up_moving": ["assets/player/down.png", "assets/player/down2.png", "assets/player/down3.png", "assets/player/down4.png"],
-
-    "down_attack": ["assets/player/down.png", "assets/player/down2.png", "assets/player/down3.png", "assets/player/down4.png"],
-    "left_attack": ["assets/player/left.png", "assets/player/left.png", "assets/player/left.png", "assets/player/left.png"],
-    "right_attack": ["assets/player/right.png", "assets/player/right.png", "assets/player/right.png", "assets/player/right.png"],
-    "up_attack": ["assets/player/down.png", "assets/player/down2.png", "assets/player/down3.png", "assets/player/down4.png"]
+    "down_moving": ["assets/player/down_moving.png", "assets/player/down_moving2.png", "assets/player/down_moving3.png", "assets/player/down_moving4.png"],
+    "left_moving": ["assets/player/left_moving.png", "assets/player/left_moving2.png", "assets/player/left_moving3.png", "assets/player/left_moving4.png"],
+    "right_moving": ["assets/player/right_moving.png", "assets/player/right_moving2.png", "assets/player/right_moving3.png", "assets/player/right_moving4.png"],
+    "up_moving": ["assets/player/up_moving.png", "assets/player/up_moving2.png", "assets/player/up_moving3.png", "assets/player/up_moving4.png"],
 }
 
 collision = {
@@ -52,7 +47,7 @@ collision = {
     "right": ["wall_right", "wallcorner_topright", "wallcorner_bottomright", "wallcorner_right"],
     "up": ["frontwall_left","frontwall_center", "frontwall_right", "wallcorner_topleft", "wallcorner_topright"],
     "down": ["wall_bottom", "wallcorner_bottomleft", "wallcorner_bottomright"],
-    "center": ["spike", "spike1", "spike2", "spike3", "stairs_down"]
+    "center": ["spike", "spike1", "spike2", "spike3", "stairs_down", "spike_blocked"]
 }
 
 event_for_bound_blocks = ["spike", "spike1", "spike2", "spike3", "stairs_down"]
@@ -87,6 +82,27 @@ bounds = {
     "spike3": BOUNDINGS.center,
 }
 
+def next_level(state):
+    state.level += 1
+    print(state.level)
+
+def do_nothing():
+    pass
+
+def activate_spike():
+    pass
+
+def spike_damage(state):
+    state.hp -= 33
+    print(state.hp)
 
 
+def tileEvents(tile, state):
+    return {
+        "stairs_down": next_level(state),
 
+        "spike": activate_spike(),
+        "spike1": do_nothing(),
+        "spike2": spike_damage(state),
+        "spike3": do_nothing()
+    }[tile]

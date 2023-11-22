@@ -3,7 +3,7 @@ import os
 import tiles
 import CONSTANTS
 
-def draw_grid(gameObjects, screen_size, grid_color, grid_spacing):
+def draw_grid(gameObjects, screen_size):
     width, height = screen_size
     global gridMap
     gridMap = CONSTANTS.MAP
