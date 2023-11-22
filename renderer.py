@@ -9,7 +9,7 @@ def render_frame(window, gameObjects, state):
     player.drawPlayer(gameObjects, state)
 
     # Draw enemies on the board
-    enemy.draw_enemies(gameObjects, state.enemies)
+    enemy.draw_enemies(gameObjects, state)
 
     # Move all gameObjects based on the player position 
     camera.camera(window, gameObjects, state)

@@ -47,6 +47,17 @@ player = {
     "up_attack": ["assets/player/down.png", "assets/player/down2.png", "assets/player/down3.png", "assets/player/down4.png"]
 }
 
+species_list = ["worm"]
+
+worm = {
+    "left": ["assets/enemy/worm_left1.png", "assets/enemy/worm_left2.png", "assets/enemy/worm_left3.png", "assets/enemy/worm_left2.png"],
+    "up": ["assets/enemy/worm_left1.png", "assets/enemy/worm_left2.png", "assets/enemy/worm_left3.png", "assets/enemy/worm_left2.png"],
+    "right": ["assets/enemy/worm_right1.png", "assets/enemy/worm_right2.png", "assets/enemy/worm_right3.png", "assets/enemy/worm_right2.png"],
+    "down": ["assets/enemy/worm_right1.png", "assets/enemy/worm_right2.png", "assets/enemy/worm_right3.png", "assets/enemy/worm_right2.png"],
+}
+
+name_to_entity = {"worm": worm}
+
 collision = {
     "left": ["wall_left", "wallcorner_bottomleft", "wallcorner_topleft", "wallcorner_left"],
     "right": ["wall_right", "wallcorner_topright", "wallcorner_bottomright", "wallcorner_right"],
