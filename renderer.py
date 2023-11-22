@@ -5,7 +5,7 @@ import camera
 import CONSTANTS
 import enemy
 def render_frame(window, gameObjects, state):
-    grid.draw_grid(gameObjects, CONSTANTS.SCREEN_SIZE, CONSTANTS.BACKGROUND_COLOR, CONSTANTS.RADIUS_BALL)
+    grid.draw_grid(gameObjects, CONSTANTS.SCREEN_SIZE)
     player.drawPlayer(gameObjects, state)
 
     # Draw enemies on the board
