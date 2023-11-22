@@ -60,10 +60,6 @@ def playerEvents(state):
         playertileX = state.x % CONSTANTS.PIXELS // CONSTANTS.QUARTER
         playertileY = state.y % CONSTANTS.PIXELS // CONSTANTS.QUARTER
 
-        print(currentTile)
-        print(playertileX)
-        print(playertileY)
-
         return not (tiles.bounds[currentTile][playertileY][playertileX] and not currentTile in tiles.event_for_bound_blocks)
 
     def movement():

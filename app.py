@@ -2,7 +2,6 @@ import pygame
 import renderer
 import player
 import camera
-import grid
 import CONSTANTS
 
 global running
@@ -10,7 +9,6 @@ global running
 def main():
     # Initialize Pygame
     pygame.init()
-    print(CONSTANTS.SCALE)
     state = State()
     create_main_surface(state)
 

@@ -1,3 +1,5 @@
+import ROOMS
+
 # Initial Screen constants
 SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = 768
@@ -44,7 +46,7 @@ MAP_SKELETONS = [
     ["wall_left", "frontwall_center", None],
 ]
 
-MAP = BACKGROUND_IMAGES
+MAP = ROOMS.room_1
 
 
 
