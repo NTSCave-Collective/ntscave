@@ -4,6 +4,7 @@ import pygame
 import os
 
 tiles = {
+    None: "assets/tiles/none.png",
     "floor": "assets/tiles/floor.png",
     "floor2": "assets/tiles/floor2.png",
     "floor3": "assets/tiles/floor3.png",

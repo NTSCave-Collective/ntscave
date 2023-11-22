@@ -6,8 +6,8 @@ roomHeight = 20
 roomWidth = 20
 
 def generateRoom():
-    roomHeight = 24
-    roomWidth = 24
+    roomHeight = 100
+    roomWidth = 100
 
     room = [[0 for _ in range(roomWidth)] for _ in range(roomHeight)]
 
