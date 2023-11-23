@@ -2,6 +2,7 @@ import random
 import numpy as np
 import CONSTANTS
 import enemy
+from math import floor
 
 def generateRoom():
 
@@ -276,37 +277,27 @@ def swap_map(state, map):
     CONSTANTS.MAP = map
 
     validTile = False
-    attempts = 0
     while not validTile:
-        randY = random.randint(0, len(CONSTANTS.MAP)-1)
-        randX = random.randint(0, len(CONSTANTS.MAP[randY])-1)
         try:
+            randY = random.randint(0, len(CONSTANTS.MAP)-1)
+            randX = random.randint(0, len(CONSTANTS.MAP[randY])-1)
             if "floor" in str(CONSTANTS.MAP[randY][randX]):
                 state.x = randX * CONSTANTS.PIXELS + CONSTANTS.PIXELS/2
                 state.y = randY * CONSTANTS.PIXELS + CONSTANTS.PIXELS/2
                 validTile = True
             else:
                 raise Exception
-            stairs_placed = False
-            attempts2 = 0
-            while not stairs_placed:
-                attempts2 += 1
-                i = random.randint(0, len(CONSTANTS.MAP)-1)
-                j = random.randint(0, len(CONSTANTS.MAP[i])-1)
-                k = random.randint(0,10)
-                if "floor" in str(CONSTANTS.MAP[i][j]) and k == 5:
-                    CONSTANTS.MAP[i][j] = "stairs_down"
-                    stairs_placed = True
-                    print("while in2")
-                if attempts2 > 50:
-                    raise Exception
         except:
-            attempts += 1
-        if attempts > 15:
             if map == "random":
                 CONSTANTS.MAP = generateRoom()
-            else:
-                CONSTANTS.MAP = generateRoom()
-            attempts = 0
+
+    if map == "random":
+        stairs_placed = False
+        while not stairs_placed:
+            i = random.randint(0, len(CONSTANTS.MAP)-1)
+            j = random.randint(0, len(CONSTANTS.MAP[i])-1)
+            if "floor" in str(CONSTANTS.MAP[i][j]) and random.randint(0,10) == 5 and (i, j) != (floor(((state.x) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP[i])), floor(((state.y) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP))):
+                CONSTANTS.MAP[i][j] = "stairs_down"
+                stairs_placed = True
 
     enemy.generate_enemies(state)
