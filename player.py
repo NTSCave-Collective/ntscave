@@ -5,7 +5,7 @@ from math import floor
 import CONSTANTS
 import ROOMS
 from enemy import is_collision
-
+from enemy import is_enemy_collision
 
 global player_cache
 player_cache = {}
@@ -37,7 +37,18 @@ def drawPlayer(window, state):
         elif state.upFacing:
             player = get_image(tiles.player["up"][animframe])
 
+    check_for_spike_damage(state)
+    print(state.hearts)
     window.blit(player, (state.x - CONSTANTS.PIXELS/2, state.y - CONSTANTS.PIXELS))
+    # Draw hitbox (for debugging purposes)
+    pygame.draw.rect(window, (255, 0, 0), (state.hitbox_x, state.hitbox_y, state.hitbox_width, state.hitbox_height), 2)
+    state.update_hitbox_position()
+
+def check_for_spike_damage(state):
+    tilePosY = floor(((state.y) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP))
+    tilePosX = floor(((state.x) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP[tilePosY]))
+    tiles.tileEvents(tilePosX, tilePosY, CONSTANTS.MAP[tilePosX][tilePosY], state)
+        
 
 def newLevel(window, state):
     if state.frame < state.newLevel_frame + CONSTANTS.TICK*2:
@@ -66,16 +77,16 @@ def attack(window, state):
     animframe = floor((state.attackframe % CONSTANTS.TICK) / (CONSTANTS.TICK/4))
     if state.downFacing:
         slash = get_image(tiles.slash["down"][animframe])
-        y_move += CONSTANTS.PIXELS/2
+        y_move += CONSTANTS.ATTACKDISTANCE
     elif state.rightFacing:
         slash = get_image(tiles.slash["right"][animframe])
-        x_move += CONSTANTS.PIXELS/2
+        x_move += CONSTANTS.ATTACKDISTANCE
     elif state.leftFacing:
         slash = get_image(tiles.slash["left"][animframe])
-        x_move -= CONSTANTS.PIXELS/2
+        x_move -= CONSTANTS.ATTACKDISTANCE
     elif state.upFacing:
         slash = get_image(tiles.slash["up"][animframe])
-        y_move -= CONSTANTS.PIXELS/2
+        y_move -= CONSTANTS.ATTACKDISTANCE
     
     if animframe == 1:
         handle_player_attack(state)
@@ -88,10 +99,13 @@ def attack(window, state):
         state.attackframe = None
 
 def handle_player_attack(state):
+            
     if state.attacking:
         for enemy in state.enemies:
             if is_collision(state.x, state.y, enemy.hitbox_x, enemy.hitbox_y, enemy.hitbox_width, enemy.hitbox_height):
                 state.enemies.remove(enemy)
+
+
 
 def playerEvents(state):
     keys = pygame.key.get_pressed()
