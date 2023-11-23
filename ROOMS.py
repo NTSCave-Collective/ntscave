@@ -65,11 +65,9 @@ def swap_map(state, map):
     state.x += 32
     state.y += 32
     enemy.generate_enemies(state)
-
-
-
-
-
+    CONSTANTS.SURFACE_WIDTH = CONSTANTS.PIXELS * len(CONSTANTS.MAP)
+    CONSTANTS.SURFACE_HEIGHT = CONSTANTS.PIXELS * max([len(y) for y in CONSTANTS.MAP])
+    state.newLevelWidth = True
 
 def generateRoom(state):
 

@@ -39,7 +39,7 @@ def drawPlayer(window, state):
 
     window.blit(player, (state.x - CONSTANTS.PIXELS/2, state.y - CONSTANTS.PIXELS))
     # Draw hitbox (for debugging purposes)
-    pygame.draw.rect(window, (255, 0, 0), (state.hitbox_x, state.hitbox_y, state.hitbox_width, state.hitbox_height), 2)
+    #pygame.draw.rect(window, (255, 0, 0), (state.hitbox_x, state.hitbox_y, state.hitbox_width, state.hitbox_height), 2)
     state.update_hitbox_position()
         
 

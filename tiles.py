@@ -55,7 +55,7 @@ player = {
     "right_moving": ["assets/player/right_moving.png", "assets/player/right_moving2.png", "assets/player/right_moving3.png", "assets/player/right_moving4.png"],
     "up_moving": ["assets/player/up_moving.png", "assets/player/up_moving2.png", "assets/player/up_moving3.png", "assets/player/up_moving4.png"],
 
-    "spin": ["assets/player/down_moving.png", "assets/player/left_moving2.png", "assets/player/right_moving3.png", "assets/player/up_moving4.png"]
+    "spin": ["assets/player/down_moving.png", "assets/player/right_moving2.png", "assets/player/up_moving3.png", "assets/player/left_moving4.png"]
 }
 
 worm = {
@@ -133,6 +133,8 @@ def next_level(state):
     state.level += 1
     CONSTANTS.roomHeight += 2
     CONSTANTS.roomWidth += 2
+    if CONSTANTS.roomHeight > 150 or CONSTANTS.roomWidth > 150:
+        CONSTANTS.TICK = 30
     CONSTANTS.SURFACE_WIDTH = CONSTANTS.PIXELS * CONSTANTS.roomWidth
     CONSTANTS.SURFACE_HEIGHT = CONSTANTS.PIXELS * CONSTANTS.roomHeight
     state.newLevel_frame = state.frame

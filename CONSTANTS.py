@@ -10,13 +10,7 @@ TICK =  60
 
 PIXELS = 64
 
-roomHeight = 12
-roomWidth = 12
-
-BOUND = math.ceil(max(SCREEN_HEIGHT, SCREEN_WIDTH)/2 /PIXELS +2) *PIXELS
-
-SURFACE_WIDTH = PIXELS * roomWidth
-SURFACE_HEIGHT = PIXELS * roomHeight
+BOUND = math.ceil(max(SCREEN_HEIGHT, SCREEN_WIDTH)/2 /PIXELS +2)
 
 VSYNC = 0
 # Grid constants 
@@ -58,3 +52,9 @@ MAP_SKELETONS = [
 ]
 
 MAP = BACKGROUND_IMAGES
+
+roomHeight = 12
+roomWidth = 12
+
+SURFACE_WIDTH = PIXELS * len(MAP)
+SURFACE_HEIGHT = PIXELS * max([len(y) for y in MAP])
