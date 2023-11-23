@@ -27,10 +27,26 @@ class Enemy:
         self.awayframe = 0
         self.awayangle = 0
         
+        # Define hitbox dimensions
+        self.hitbox_width = CONSTANTS.PIXELS
+        self.hitbox_height = CONSTANTS.PIXELS
+
+        # Adjust hitbox position relative to enemy position
+        self.hitbox_x = self.x - self.hitbox_width / 2
+        self.hitbox_y = self.y - self.hitbox_height / 2
+
         self.leftFacing = False
         self.rightFacing = False
         self.upFacing = False
         self.downFacing = True  # Default facing down
+
+        # Initialize hitbox position based on enemy position
+        self.update_hitbox_position()
+
+    def update_hitbox_position(self):
+        # Update hitbox position based on enemy position
+        self.hitbox_x = self.x - self.hitbox_width / 2
+        self.hitbox_y = self.y - self.hitbox_height / 2
 
     def draw(self, window, state):
 
@@ -45,7 +61,10 @@ class Enemy:
         elif self.upFacing:
             enemy = pygame.image.load(os.path.join(tiles.name_to_entity[self.species]["left"][animframe])).convert_alpha()
 
-        window.blit(enemy, (self.x - CONSTANTS.PIXELS/2, self.y - CONSTANTS.PIXELS))
+        window.blit(enemy, (self.x - CONSTANTS.PIXELS/2, self.y - CONSTANTS.PIXELS/2))
+        # Draw hitbox (for debugging purposes)
+        pygame.draw.rect(window, (255, 0, 0), (self.hitbox_x, self.hitbox_y, self.hitbox_width, self.hitbox_height), 2)
+        self.update_hitbox_position()
 
     def collision(self):
         tilePosY = floor(((self.y) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP))
@@ -91,7 +110,6 @@ class Enemy:
             
         except ZeroDivisionError:
             pass
-
 
 def spawn_enemies_on_floor(state, num_random_enemies):
     enemies = []
@@ -148,3 +166,14 @@ def generate_enemies(state):
     enemies = spawn_enemies_on_floor(state, num_random_enemies)
 
     state.enemies = enemies
+
+
+
+def is_collision(player_x, player_y, enemy_hitbox_x, enemy_hitbox_y, enemy_hitbox_width, enemy_hitbox_height):
+    # Check for collision considering hitbox
+    return (
+        player_x + CONSTANTS.ATTACK_DISTANCE > enemy_hitbox_x and
+        player_x - CONSTANTS.ATTACK_DISTANCE < enemy_hitbox_x + enemy_hitbox_width and
+        player_y + CONSTANTS.ATTACK_DISTANCE > enemy_hitbox_y and
+        player_y - CONSTANTS.ATTACK_DISTANCE < enemy_hitbox_y + enemy_hitbox_height
+    )
