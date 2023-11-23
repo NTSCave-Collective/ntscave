@@ -13,7 +13,7 @@ pi = math.pi
 def get_image(key):
     if not key in enemy_cache:
         # print(f"loading {key}")
-        enemy_cache[key] = pygame.image.load(key).convert_alpha()
+        enemy_cache[key] = pygame.image.load(os.path.join(key)).convert_alpha()
     return enemy_cache[key]
 
 class Enemy:
@@ -21,11 +21,15 @@ class Enemy:
         self.x = x
         self.y = y
         self.species = species
-        self.vel = {"worm": 2}[self.species]
-
+        self.vel = {"worm": 2, "trojan": 3.6}[self.species]
+        self.damage = {"worm": 0.5, "trojan": 1}[self.species]
+        self.health = {"worm": 1, "trojan": 3}[self.species]
         self.away = False
         self.awayframe = 0
         self.awayangle = 0
+
+        self.hit = False
+        self.hitframe = -CONSTANTS.TICK
         
         # Define hitbox dimensions
         self.hitbox_width = CONSTANTS.PIXELS
@@ -49,21 +53,27 @@ class Enemy:
         self.hitbox_y = self.y - self.hitbox_height / 2
 
     def draw(self, window, state):
+        if math.hypot(state.x-self.x, state.y-self.y) > (CONSTANTS.BOUND+1)*64:
+            return
 
+        if self.hit and (self.hitframe + CONSTANTS.TICK) < state.frame:
+            self.hit = False
+            
         animframe = floor((state.frame % CONSTANTS.TICK) / (CONSTANTS.TICK/4))
 
         if self.downFacing:
-            enemy = pygame.image.load(os.path.join(tiles.name_to_entity[self.species]["down"][animframe])).convert_alpha()
+            enemy = get_image(tiles.name_to_entity[self.species]["down"][animframe]).convert_alpha()
         elif self.rightFacing:
-            enemy = pygame.image.load(os.path.join(tiles.name_to_entity[self.species]["right"][animframe])).convert_alpha()
+            enemy = get_image(tiles.name_to_entity[self.species]["right"][animframe]).convert_alpha()
         elif self.leftFacing:
-            enemy = pygame.image.load(os.path.join(tiles.name_to_entity[self.species]["left"][animframe])).convert_alpha()
+            enemy = get_image(tiles.name_to_entity[self.species]["left"][animframe]).convert_alpha()
         elif self.upFacing:
-            enemy = pygame.image.load(os.path.join(tiles.name_to_entity[self.species]["left"][animframe])).convert_alpha()
+            enemy = get_image(tiles.name_to_entity[self.species]["left"][animframe]).convert_alpha()
 
         window.blit(enemy, (self.x - CONSTANTS.PIXELS/2, self.y - CONSTANTS.PIXELS/2))
         # Draw hitbox (for debugging purposes)
-        pygame.draw.rect(window, (255, 0, 0), (self.hitbox_x, self.hitbox_y, self.hitbox_width, self.hitbox_height), 2)
+        if CONSTANTS.DEBUG:
+            pygame.draw.rect(window, (255, 0, 0), (self.hitbox_x, self.hitbox_y, self.hitbox_width, self.hitbox_height), 2)
         self.update_hitbox_position()
 
     def collision(self):
@@ -81,10 +91,12 @@ class Enemy:
         return not (tiles.bounds[currentTile][playertileY][playertileX] and not currentTile in tiles.event_for_bound_blocks)
 
     def move(self, state):
+        if math.hypot(state.x-self.x, state.y-self.y) > (CONSTANTS.BOUND+1)*64 or self.hit:
+            return
         try:
             dx, dy = (state.x-self.x), (state.y - self.y)
             angle = math.atan2(dy,dx)
-            if math.hypot(dx, dy) > CONSTANTS.PIXELS:
+            if math.hypot(dx, dy) > CONSTANTS.PIXELS/2:
                 if self.away:
                     mx = round(self.vel * math.cos(self.awayangle))
                     my = round(self.vel * math.sin(self.awayangle))
@@ -107,7 +119,21 @@ class Enemy:
                 self.y += my
                 if not self.collision():
                     self.y -= my
-            
+
+            for enemy in state.enemies:
+                if is_enemy_collision(
+                        state.hitbox_x, state.hitbox_y, state.hitbox_width, state.hitbox_height,
+                        enemy.hitbox_x, enemy.hitbox_y, enemy.hitbox_width, enemy.hitbox_height
+                ):
+                    # Deal damage to player
+                    if state.last_hit + CONSTANTS.TICK < state.frame:
+                        state.last_hit = state.frame + CONSTANTS.TICK
+                        state.hearts -= enemy.damage
+                        print(enemy.damage, state.hearts)
+
+                    # check if player health is zero
+                        if state.hearts <= 0:
+                            print("game over")
         except ZeroDivisionError:
             pass
 
@@ -172,8 +198,16 @@ def generate_enemies(state):
 def is_collision(player_x, player_y, enemy_hitbox_x, enemy_hitbox_y, enemy_hitbox_width, enemy_hitbox_height):
     # Check for collision considering hitbox
     return (
-        player_x + CONSTANTS.ATTACK_DISTANCE > enemy_hitbox_x and
-        player_x - CONSTANTS.ATTACK_DISTANCE < enemy_hitbox_x + enemy_hitbox_width and
-        player_y + CONSTANTS.ATTACK_DISTANCE > enemy_hitbox_y and
-        player_y - CONSTANTS.ATTACK_DISTANCE < enemy_hitbox_y + enemy_hitbox_height
+        player_x + CONSTANTS.ATTACKDISTANCE > enemy_hitbox_x and
+        player_x - CONSTANTS.ATTACKDISTANCE < enemy_hitbox_x + enemy_hitbox_width and
+        player_y + CONSTANTS.ATTACKDISTANCE > enemy_hitbox_y and
+        player_y - CONSTANTS.ATTACKDISTANCE < enemy_hitbox_y + enemy_hitbox_height
+    )
+
+def is_enemy_collision(player_hitbox_x, player_hitbox_y, player_hitbox_width, player_hitbox_height, enemy_hitbox_x, enemy_hitbox_y, enemy_hitbox_width, enemy_hitbox_height):
+    return (
+        player_hitbox_x < enemy_hitbox_x + enemy_hitbox_width and
+        player_hitbox_x + player_hitbox_width > enemy_hitbox_x and
+        player_hitbox_y < enemy_hitbox_y + enemy_hitbox_height and
+        player_hitbox_y + player_hitbox_height > enemy_hitbox_y
     )

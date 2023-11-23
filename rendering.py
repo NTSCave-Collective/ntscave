@@ -8,9 +8,17 @@ import CONSTANTS
 import enemy
 import animation
 import hud
+import os
+import effects
 
 global image_cache
 image_cache = {}
+
+def get_image(key):
+    if not key in image_cache:
+        image_cache[key] = pygame.image.load(os.path.join(key)).convert_alpha()
+        # image_cache[key] = pygame.image.load(os.path.join(tiles.tiles[key]))
+    return image_cache[key]
 
 def render_frame(window, gameObjects, state):
     animation.tileAnimations(state)
@@ -27,6 +35,9 @@ def render_frame(window, gameObjects, state):
         player.drawPlayer(gameObjects, state)
     else:
         player.newLevel(gameObjects, state)
+    
+    effects.effectEvent(state)
+    draw_effects(gameObjects, state)
 
     # Move all gameObjects based on the player position 
     camera(window, gameObjects, state)
@@ -38,12 +49,6 @@ def render_frame(window, gameObjects, state):
 def clear_surface(window):
     window.fill(CONSTANTS.BACKGROUND_COLOR)
 
-def get_image(key):
-    if not key in image_cache:
-        image_cache[key] = pygame.image.load(tiles.tiles[key])
-        # image_cache[key] = pygame.image.load(os.path.join(tiles.tiles[key]))
-    return image_cache[key]
-
 def draw_grid(gameObjects, state):
     """
     leftBound = max(0, floor(((state.x - CONSTANTS.SCREEN_SIZE[0])/2 / CONSTANTS.PIXELS)))
@@ -52,17 +57,18 @@ def draw_grid(gameObjects, state):
     topBound = max(0, floor(((state.y - CONSTANTS.SCREEN_SIZE[1])/2 / CONSTANTS.PIXELS)))
     bottomBound = min(len(CONSTANTS.MAP), floor(((state.y) - CONSTANTS.SCREEN_SIZE[1]/2 / CONSTANTS.PIXELS)))
     """
+    leftBound = max(0, floor(state.x/CONSTANTS.PIXELS) - CONSTANTS.BOUND)
+    topBound = max(0, floor(state.y/CONSTANTS.PIXELS) - CONSTANTS.BOUND)
+    bottomBound = min(len(CONSTANTS.MAP), floor(state.y/CONSTANTS.PIXELS) + CONSTANTS.BOUND)
+    rightBound = min(max([len(y) for y in CONSTANTS.MAP]), floor(state.x/CONSTANTS.PIXELS) + CONSTANTS.BOUND)
 
-
-
-    for y in range(len(CONSTANTS.MAP)):
-        for x in range(len(CONSTANTS.MAP[y])):
-            actualX = CONSTANTS.PIXELS * x
-            actualY = CONSTANTS.PIXELS * y
-
-            if ((state.x - CONSTANTS.BOUND) < actualX < (state.x + CONSTANTS.BOUND)) and ((state.y - CONSTANTS.BOUND) < actualY < (state.y + CONSTANTS.BOUND)):
-                image = get_image(CONSTANTS.MAP[y][x])
+    for y in range(topBound, bottomBound):
+        for x in range(leftBound, rightBound):
+            try:
+                image = get_image(tiles.tiles[CONSTANTS.MAP[y][x]])
                 gameObjects.blit(image, (CONSTANTS.PIXELS * x , CONSTANTS.PIXELS * y))
+            except:
+                pass
 
 
 def camera(window, gameObjects, state):
@@ -78,3 +84,7 @@ def toggle_fullscreen():
 def draw_enemies(game_objects, state):
     for enemy in state.enemies:
         enemy.draw(game_objects, state)
+
+def draw_effects(game_objects, state):
+    for e in state.effects:
+        e.draw(game_objects, state)

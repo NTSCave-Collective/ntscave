@@ -12,7 +12,6 @@ def get_image(key):
         hud_cache[key] = pygame.image.load(os.path.join(key)).convert_alpha()
     return hud_cache[key]
 
-
 def draw_hud(window, state):
     for i in range(1, int(state.hearts*2+1)):
         if not (i % 2) :

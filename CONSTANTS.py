@@ -2,21 +2,17 @@ import ROOMS
 import math
 
 # Initial Screen constants
-SCREEN_WIDTH = 0
-SCREEN_HEIGHT = 0
+DEBUG = True
+
+SCREEN_WIDTH = 1024
+SCREEN_HEIGHT = 768
 SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
 BACKGROUND_COLOR = [34, 34, 34]
 TICK =  60
 
 PIXELS = 64
 
-roomHeight = 12
-roomWidth = 12
-
-BOUND = math.ceil(max(SCREEN_HEIGHT, SCREEN_WIDTH)/2 /PIXELS +2) *PIXELS
-
-SURFACE_WIDTH = PIXELS * roomWidth
-SURFACE_HEIGHT = PIXELS * roomHeight
+BOUND = math.ceil(max(SCREEN_HEIGHT, SCREEN_WIDTH)/2 /PIXELS +2)
 
 VSYNC = 0
 # Grid constants 
@@ -33,8 +29,11 @@ PLAYER_SPEED = 5
 
 PIXELS = 64
 
-ATTACK_DISTANCE = PIXELS/2
+ATTACKDISTANCE = PIXELS
 BUFFER = 20
+
+BOOSTLENGTH = 20
+CRITSCALE = 20
 
 # Background images
 BACKGROUND_IMAGES = [
@@ -58,3 +57,14 @@ MAP_SKELETONS = [
 ]
 
 MAP = BACKGROUND_IMAGES
+
+roomHeight = 12
+roomWidth = 12
+
+SURFACE_WIDTH = PIXELS * len(MAP)
+SURFACE_HEIGHT = PIXELS * max([len(y) for y in MAP])
+
+
+# Amount of enemies killed 
+WORM_COUNTER = 0
+TROJAN_COUNTER = 0

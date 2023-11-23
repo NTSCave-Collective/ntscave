@@ -5,7 +5,9 @@ from math import floor
 import CONSTANTS
 import ROOMS
 from enemy import is_collision
-
+from enemy import is_enemy_collision
+import effects
+import random
 
 global player_cache
 player_cache = {}
@@ -38,6 +40,11 @@ def drawPlayer(window, state):
             player = get_image(tiles.player["up"][animframe])
 
     window.blit(player, (state.x - CONSTANTS.PIXELS/2, state.y - CONSTANTS.PIXELS))
+    # Draw hitbox (for debugging purposes)
+    if CONSTANTS.DEBUG:
+        pygame.draw.rect(window, (255, 0, 0), (state.hitbox_x, state.hitbox_y, state.hitbox_width, state.hitbox_height), 2)
+    state.update_hitbox_position()
+        
 
 def newLevel(window, state):
     if state.frame < state.newLevel_frame + CONSTANTS.TICK*2:
@@ -66,16 +73,16 @@ def attack(window, state):
     animframe = floor((state.attackframe % CONSTANTS.TICK) / (CONSTANTS.TICK/4))
     if state.downFacing:
         slash = get_image(tiles.slash["down"][animframe])
-        y_move += CONSTANTS.PIXELS/2
+        y_move += CONSTANTS.ATTACKDISTANCE
     elif state.rightFacing:
         slash = get_image(tiles.slash["right"][animframe])
-        x_move += CONSTANTS.PIXELS/2
+        x_move += CONSTANTS.ATTACKDISTANCE
     elif state.leftFacing:
         slash = get_image(tiles.slash["left"][animframe])
-        x_move -= CONSTANTS.PIXELS/2
+        x_move -= CONSTANTS.ATTACKDISTANCE
     elif state.upFacing:
         slash = get_image(tiles.slash["up"][animframe])
-        y_move -= CONSTANTS.PIXELS/2
+        y_move -= CONSTANTS.ATTACKDISTANCE
     
     if animframe == 1:
         handle_player_attack(state)
@@ -88,13 +95,41 @@ def attack(window, state):
         state.attackframe = None
 
 def handle_player_attack(state):
+            
     if state.attacking:
         for enemy in state.enemies:
-            if is_collision(state.x, state.y, enemy.hitbox_x, enemy.hitbox_y, enemy.hitbox_width, enemy.hitbox_height):
-                state.enemies.remove(enemy)
+            if (not enemy.hit) and is_collision(state.x, state.y, enemy.hitbox_x, enemy.hitbox_y, enemy.hitbox_width, enemy.hitbox_height):
+                enemy.hit = True
+                enemy.hitframe = state.frame
+                damage = state.attack
+                damage += floor(random.random()+state.crit)*state.attack
+                enemy.health -= damage
+                print(damage)
+                if enemy.health <= 0:
+                    effects.drop_effect(enemy.x,enemy.y, state)
+                    if enemy.species == "worm":
+                        CONSTANTS.WORM_COUNTER += 1
+                    elif enemy.species == "trojan":
+                        CONSTANTS.TROJAN_COUNTER += 1
+                    
+                    print("Worms killed: ", CONSTANTS.WORM_COUNTER)
+                    print("Trojans killed: ", CONSTANTS.TROJAN_COUNTER)
+                    state.enemies.remove(enemy)
+
+
 
 def playerEvents(state):
     keys = pygame.key.get_pressed()
+
+    def is_drop_in_player_hitbox(state):
+
+        for effect in state.effects:
+            if ( state.hitbox_x < effect.x < state.hitbox_x + state.hitbox_width and
+                state.hitbox_y < effect.y < state.hitbox_y + state.hitbox_height
+            ):
+                state.effects.remove(effect)
+                effect.end_frame = state.frame + effects.framelength[effect.effect]
+                state.activeEffects.append(effect)
 
     def collision(heading):
         tilePosY = floor(((state.y) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP))
@@ -127,7 +162,7 @@ def playerEvents(state):
 
     def movement():
         state.moving = False
-
+        
         if keys[pygame.K_LEFT]:
             state.moving = True
             state.x -= state.vel
@@ -182,6 +217,7 @@ def playerEvents(state):
                 state.attackframe = 0
         
         collisionEvents(state)
+        is_drop_in_player_hitbox(state)
 
     
     movement()

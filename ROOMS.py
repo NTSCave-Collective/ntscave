@@ -57,11 +57,9 @@ def swap_map(state, map):
         CONSTANTS.MAP = map
 
     enemy.generate_enemies(state)
-
-
-
-
-
+    CONSTANTS.SURFACE_WIDTH = CONSTANTS.PIXELS * len(CONSTANTS.MAP)
+    CONSTANTS.SURFACE_HEIGHT = CONSTANTS.PIXELS * max([len(y) for y in CONSTANTS.MAP])
+    state.newLevelWidth = True
 
 def generateRoom():
 
@@ -219,6 +217,6 @@ def generateRoom():
                 elif bottomNeighbor == WALL and bottomRightNeighbor == WALL and bottomLeftNeighbor == WALL:
                     room[i][j] = "wall_bottom"
                 else:
-                    room[i][j] = random.choices(["floor", "floor2", "floor3", "spike"], weights=(60,10,30, 5), k=1)[0]
+                    room[i][j] = random.choices(["floor", "floor2", "floor3", "spike"], weights=(60,10,30,5), k=1)[0]
 
     return [room, new_map]

@@ -52,11 +52,11 @@ def create_main_surface(state, window, window_flags):
         globalEvents = pygame.event.get()
         for event in globalEvents:
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_u:
+                if event.key == pygame.K_u and CONSTANTS.DEBUG:
                     ROOMS.swap_map(state, CONSTANTS.MAP_SKELETONS)
-                if event.key == pygame.K_y:
+                if event.key == pygame.K_y and CONSTANTS.DEBUG:
                     ROOMS.swap_map(state, CONSTANTS.BACKGROUND_IMAGES)
-                if event.key == pygame.K_i:
+                if event.key == pygame.K_i and CONSTANTS.DEBUG:
                     ROOMS.swap_map(state, "random")
                 if event.key == pygame.K_f:
                     CONSTANTS.VSYNC = 0
@@ -84,7 +84,8 @@ def create_main_surface(state, window, window_flags):
         # Set fps value
         state.clock.tick(CONSTANTS.TICK)
         state.frame += 1
-        # print(state.clock.get_fps())
+        if not CONSTANTS.DEBUG:
+            print(state.clock.get_fps())
 
 class State():
     def __init__(self):
@@ -107,21 +108,41 @@ class State():
         self.level = 1
 
         self.last_hit = CONSTANTS.TICK
-        self.hearts = 7.5
-
+        self.hearts = 5
+        
+        self.attack = 1
         self.attacking = False
         self.attackframe = None
+        self.hit_grace = None
+        self.crit = 0.1
 
         self.leftFacing = False
         self.rightFacing = False
         self.upFacing = False
         self.downFacing = True  # Default facing down
+
         self.enemies = list()
         self.animations = list()
+        self.effects = list()
+        self.activeEffects = list()
 
         self.newLevel = False
         self.newLevel_frame = None
         self.newLevelWidth = False
+
+        # Define hitbox dimensions
+        self.hitbox_width = CONSTANTS.PIXELS/2
+        self.hitbox_height = CONSTANTS.PIXELS
+        self.hitbox_x = self.x - self.hitbox_width / 2
+        self.hitbox_y = self.y - self.hitbox_height
+
+        # Initialize hitbox position based on enemy position
+        self.update_hitbox_position()
+
+    def update_hitbox_position(self):
+        # Update hitbox position based on enemy position
+        self.hitbox_x = self.x - self.hitbox_width / 2
+        self.hitbox_y = self.y - self.hitbox_height
 
 def get_font(size):
     return pygame.font.Font("assets/intro/font.ttf", size)

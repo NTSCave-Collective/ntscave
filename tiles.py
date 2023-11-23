@@ -55,7 +55,7 @@ player = {
     "right_moving": ["assets/player/right_moving.png", "assets/player/right_moving2.png", "assets/player/right_moving3.png", "assets/player/right_moving4.png"],
     "up_moving": ["assets/player/up_moving.png", "assets/player/up_moving2.png", "assets/player/up_moving3.png", "assets/player/up_moving4.png"],
 
-    "spin": ["assets/player/down_moving.png", "assets/player/left_moving2.png", "assets/player/right_moving3.png", "assets/player/up_moving4.png"]
+    "spin": ["assets/player/down_moving.png", "assets/player/right_moving2.png", "assets/player/up_moving3.png", "assets/player/left_moving4.png"]
 }
 
 worm = {
@@ -63,6 +63,13 @@ worm = {
     "up": ["assets/enemy/worm_left1.png", "assets/enemy/worm_left2.png", "assets/enemy/worm_left3.png", "assets/enemy/worm_left2.png"],
     "right": ["assets/enemy/worm_right1.png", "assets/enemy/worm_right2.png", "assets/enemy/worm_right3.png", "assets/enemy/worm_right2.png"],
     "down": ["assets/enemy/worm_right1.png", "assets/enemy/worm_right2.png", "assets/enemy/worm_right3.png", "assets/enemy/worm_right2.png"]
+}
+
+trojan = {
+    "left": ["assets/enemy/trojan_left1.png", "assets/enemy/trojan_left2.png", "assets/enemy/trojan_left1.png", "assets/enemy/trojan_left2.png"],
+    "up": ["assets/enemy/trojan_left1.png", "assets/enemy/trojan_left2.png", "assets/enemy/trojan_left1.png", "assets/enemy/trojan_left2.png"],
+    "right": ["assets/enemy/trojan_right1.png", "assets/enemy/trojan_right2.png", "assets/enemy/trojan_right1.png", "assets/enemy/trojan_right2.png"],
+    "down": ["assets/enemy/trojan_right1.png", "assets/enemy/trojan_right2.png", "assets/enemy/trojan_right1.png", "assets/enemy/trojan_right2.png"]
 }
 
 slash = {
@@ -77,10 +84,10 @@ hud = {
     "heart_half": "assets/player/heart_half.png",
 }
 
-spike = ["spike1", "spike2"] + ["spike3"] * 55 + ["spike2", "spike", "spike"]
+spike = ["spike1", "spike2"] + ["spike3"] #* 55 + ["spike2", "spike", "spike"]
 
-species_list = ["worm"]
-name_to_entity = {"worm": worm, "spike": spike}
+species_list = ["worm", "trojan"]
+name_to_entity = {"worm": worm, "trojan": trojan, "spike": spike}
 
 event_for_bound_blocks = ["spike", "spike1", "spike2", "spike3", "stairs_down"]
 
@@ -126,6 +133,8 @@ def next_level(state):
     state.level += 1
     CONSTANTS.roomHeight += 2
     CONSTANTS.roomWidth += 2
+    if CONSTANTS.roomHeight > 150 or CONSTANTS.roomWidth > 150:
+        CONSTANTS.TICK = 30
     CONSTANTS.SURFACE_WIDTH = CONSTANTS.PIXELS * CONSTANTS.roomWidth
     CONSTANTS.SURFACE_HEIGHT = CONSTANTS.PIXELS * CONSTANTS.roomHeight
     state.newLevel_frame = state.frame
