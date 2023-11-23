@@ -121,7 +121,7 @@ def spawn_enemies_on_floor(state, num_random_enemies):
             rand_y = random.randint(0, len(CONSTANTS.MAP)*64) // 64
             if rand_y < 0:
                 continue
-            rand_x = random.randint(0, len(CONSTANTS.MAP[rand_y])*64) // 64
+            rand_x = random.randint(0, len(CONSTANTS.MAP[rand_y//64])*64) // 64
             if rand_x < 0:
                 continue
             attempts += 1
