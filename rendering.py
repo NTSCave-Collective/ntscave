@@ -34,7 +34,6 @@ def clear_surface(window):
 
 def get_image(key):
     if not key in image_cache:
-        print("loading: ", key)
         image_cache[key] = pygame.image.load(tiles.tiles[key])
         # image_cache[key] = pygame.image.load(os.path.join(tiles.tiles[key]))
     return image_cache[key]
