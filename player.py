@@ -90,7 +90,7 @@ def attack(window, state):
 def handle_player_attack(state):
     if state.attacking:
         for enemy in state.enemies:
-            if is_collision(state.x, state.y, enemy.x, enemy.y, state):
+            if is_collision(state.x, state.y, enemy.hitbox_x, enemy.hitbox_y, enemy.hitbox_width, enemy.hitbox_height):
                 state.enemies.remove(enemy)
 
 def playerEvents(state):

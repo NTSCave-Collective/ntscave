@@ -149,14 +149,11 @@ def generate_enemies(state):
 
 
 
-def is_collision(x1, y1, x2, y2, state):
-    if state.downFacing:
-        return abs(x1 - x2) < (CONSTANTS.PIXELS/2 + CONSTANTS.ATTACK_DISTANCE) and y2 - y1 < (CONSTANTS.PIXELS/2 + CONSTANTS.ATTACK_DISTANCE)
-    elif state.upFacing:
-        return abs(x1 - x2) < (CONSTANTS.PIXELS/2 + CONSTANTS.ATTACK_DISTANCE) and y1 - y2 < (CONSTANTS.PIXELS/2 + CONSTANTS.ATTACK_DISTANCE)
-    elif state.leftFacing:
-        return x1 - x2 < (CONSTANTS.PIXELS/2 + CONSTANTS.ATTACK_DISTANCE) and abs(y1 - y2) < (CONSTANTS.PIXELS/2 + CONSTANTS.ATTACK_DISTANCE)
-    elif state.rightFacing:
-        return x2 - x1 < (CONSTANTS.PIXELS/2 + CONSTANTS.ATTACK_DISTANCE) and abs(y1 - y2) < (CONSTANTS.PIXELS/2 + CONSTANTS.ATTACK_DISTANCE)
-    else:
-        return False  # Invalid direction, no collision
+def is_collision(player_x, player_y, enemy_hitbox_x, enemy_hitbox_y, enemy_hitbox_width, enemy_hitbox_height):
+    # Check for collision considering hitbox
+    return (
+        player_x + CONSTANTS.PIXELS/2 + CONSTANTS.ATTACK_DISTANCE > enemy_hitbox_x and
+        player_x - CONSTANTS.PIXELS/2 - CONSTANTS.ATTACK_DISTANCE < enemy_hitbox_x + enemy_hitbox_width and
+        player_y + CONSTANTS.PIXELS/2 + CONSTANTS.ATTACK_DISTANCE > enemy_hitbox_y and
+        player_y - CONSTANTS.PIXELS/2 - CONSTANTS.ATTACK_DISTANCE < enemy_hitbox_y + enemy_hitbox_height
+    )
