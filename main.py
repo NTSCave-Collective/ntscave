@@ -51,11 +51,11 @@ def create_main_surface(state, window, window_flags):
         globalEvents = pygame.event.get()
         for event in globalEvents:
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_u:
+                if event.key == pygame.K_u and CONSTANTS.DEBUG:
                     ROOMS.swap_map(state, CONSTANTS.MAP_SKELETONS)
-                if event.key == pygame.K_y:
+                if event.key == pygame.K_y and CONSTANTS.DEBUG:
                     ROOMS.swap_map(state, CONSTANTS.BACKGROUND_IMAGES)
-                if event.key == pygame.K_i:
+                if event.key == pygame.K_i and CONSTANTS.DEBUG:
                     ROOMS.swap_map(state, "random")
                 if event.key == pygame.K_f:
                     CONSTANTS.VSYNC = 0

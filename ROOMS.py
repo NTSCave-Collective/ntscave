@@ -29,8 +29,6 @@ def swap_map(state, map):
         except:
             CONSTANTS.MAP = generateRoom(state)
             attempts = 0
-
-
     
     if map == "random":
         stairs_placed = False

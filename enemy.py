@@ -13,7 +13,7 @@ pi = math.pi
 def get_image(key):
     if not key in enemy_cache:
         # print(f"loading {key}")
-        enemy_cache[key] = pygame.image.load(key).convert_alpha()
+        enemy_cache[key] = pygame.image.load(os.path.join(key)).convert_alpha()
     return enemy_cache[key]
 
 class Enemy:
@@ -49,21 +49,24 @@ class Enemy:
         self.hitbox_y = self.y - self.hitbox_height / 2
 
     def draw(self, window, state):
+        if math.hypot(state.x-self.x, state.y-self.y) > (CONSTANTS.BOUND+1)*64:
+            return
 
         animframe = floor((state.frame % CONSTANTS.TICK) / (CONSTANTS.TICK/4))
 
         if self.downFacing:
-            enemy = pygame.image.load(os.path.join(tiles.name_to_entity[self.species]["down"][animframe])).convert_alpha()
+            enemy = get_image(tiles.name_to_entity[self.species]["down"][animframe]).convert_alpha()
         elif self.rightFacing:
-            enemy = pygame.image.load(os.path.join(tiles.name_to_entity[self.species]["right"][animframe])).convert_alpha()
+            enemy = get_image(tiles.name_to_entity[self.species]["right"][animframe]).convert_alpha()
         elif self.leftFacing:
-            enemy = pygame.image.load(os.path.join(tiles.name_to_entity[self.species]["left"][animframe])).convert_alpha()
+            enemy = get_image(tiles.name_to_entity[self.species]["left"][animframe]).convert_alpha()
         elif self.upFacing:
-            enemy = pygame.image.load(os.path.join(tiles.name_to_entity[self.species]["left"][animframe])).convert_alpha()
+            enemy = get_image(tiles.name_to_entity[self.species]["left"][animframe]).convert_alpha()
 
         window.blit(enemy, (self.x - CONSTANTS.PIXELS/2, self.y - CONSTANTS.PIXELS/2))
         # Draw hitbox (for debugging purposes)
-        #pygame.draw.rect(window, (255, 0, 0), (self.hitbox_x, self.hitbox_y, self.hitbox_width, self.hitbox_height), 2)
+        if CONSTANTS.DEBUG:
+            pygame.draw.rect(window, (255, 0, 0), (self.hitbox_x, self.hitbox_y, self.hitbox_width, self.hitbox_height), 2)
         self.update_hitbox_position()
 
     def collision(self):
@@ -81,6 +84,8 @@ class Enemy:
         return not (tiles.bounds[currentTile][playertileY][playertileX] and not currentTile in tiles.event_for_bound_blocks)
 
     def move(self, state):
+        if math.hypot(state.x-self.x, state.y-self.y) > (CONSTANTS.BOUND+1)*64:
+            return
         try:
             dx, dy = (state.x-self.x), (state.y - self.y)
             angle = math.atan2(dy,dx)

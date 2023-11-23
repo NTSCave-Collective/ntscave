@@ -8,9 +8,16 @@ import CONSTANTS
 import enemy
 import animation
 import hud
+import os
 
 global image_cache
 image_cache = {}
+
+def get_image(key):
+    if not key in image_cache:
+        image_cache[key] = pygame.image.load(os.path.join(key)).convert_alpha()
+        # image_cache[key] = pygame.image.load(os.path.join(tiles.tiles[key]))
+    return image_cache[key]
 
 def render_frame(window, gameObjects, state):
     animation.tileAnimations(state)
@@ -38,12 +45,6 @@ def render_frame(window, gameObjects, state):
 def clear_surface(window):
     window.fill(CONSTANTS.BACKGROUND_COLOR)
 
-def get_image(key):
-    if not key in image_cache:
-        image_cache[key] = pygame.image.load(tiles.tiles[key])
-        # image_cache[key] = pygame.image.load(os.path.join(tiles.tiles[key]))
-    return image_cache[key]
-
 def draw_grid(gameObjects, state):
     """
     leftBound = max(0, floor(((state.x - CONSTANTS.SCREEN_SIZE[0])/2 / CONSTANTS.PIXELS)))
@@ -60,7 +61,7 @@ def draw_grid(gameObjects, state):
     for y in range(topBound, bottomBound):
         for x in range(leftBound, rightBound):
             try:
-                image = get_image(CONSTANTS.MAP[y][x])
+                image = get_image(tiles.tiles[CONSTANTS.MAP[y][x]])
                 gameObjects.blit(image, (CONSTANTS.PIXELS * x , CONSTANTS.PIXELS * y))
             except:
                 pass

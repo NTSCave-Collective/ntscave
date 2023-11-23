@@ -2,6 +2,8 @@ import ROOMS
 import math
 
 # Initial Screen constants
+DEBUG = False
+
 SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = 768
 SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
