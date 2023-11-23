@@ -54,7 +54,7 @@ def attackboost(state):
     pass
 
 def distance(state):
-    state.attack += 0.1
+    CONSTANTS.ATTACKDISTANCE += CONSTANTS.PIXELS/8
 
 def distanceboost(state):
     pass
