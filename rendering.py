@@ -15,6 +15,8 @@ def render_frame(window, gameObjects, state):
     draw_grid(gameObjects, state)
 
     # Draw enemies on the board
+    if state.newLevel == False:
+        [enemy.move(state) for enemy in state.enemies]
     draw_enemies(gameObjects, state)
 
     if state.newLevel == False:

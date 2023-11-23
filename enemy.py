@@ -6,11 +6,26 @@ from math import floor
 import random
 import math
 
+global enemy_cache
+enemy_cache = {}
+pi = math.pi
+
+def get_image(key):
+    if not key in enemy_cache:
+        # print(f"loading {key}")
+        enemy_cache[key] = pygame.image.load(key).convert_alpha()
+    return enemy_cache[key]
+
 class Enemy:
     def __init__(self, species, x, y):
         self.x = x
         self.y = y
         self.species = species
+        self.vel = {"worm": 2}[self.species]
+
+        self.away = False
+        self.awayframe = 0
+        self.awayangle = 0
         
         self.leftFacing = False
         self.rightFacing = False
@@ -24,15 +39,38 @@ class Enemy:
         if self.downFacing:
             enemy = pygame.image.load(os.path.join(tiles.name_to_entity[self.species]["down"][animframe])).convert_alpha()
         elif self.rightFacing:
-            enemy = pygame.image.load(os.path.join(tiles.playetiles.name_to_entity[self.species]["right"][animframe])).convert_alpha()
+            enemy = pygame.image.load(os.path.join(tiles.name_to_entity[self.species]["right"][animframe])).convert_alpha()
         elif self.leftFacing:
             enemy = pygame.image.load(os.path.join(tiles.name_to_entity[self.species]["left"][animframe])).convert_alpha()
         elif self.upFacing:
             enemy = pygame.image.load(os.path.join(tiles.name_to_entity[self.species]["left"][animframe])).convert_alpha()
-        enemy = pygame.transform.scale(enemy, (CONSTANTS.PIXELS, CONSTANTS.PIXELS))
-        window.blit(enemy, (self.x - 32, self.y - 64))
+        window.blit(enemy, (self.x - CONSTANTS.PIXELS/2, self.y - CONSTANTS.PIXELS/2))
 
-        #pygame.draw.rect(window, self.color, (self.x, self.y, self.size, self.size))
+    def move(self, state):
+        try:
+            dx, dy = (state.x-self.x), (state.y - self.y)
+            dist = math.hypot(dx, dy)
+            angle = math.atan2(dy,dx)
+
+            if dist > 0.3:
+                if self.away:
+                    self.x += self.vel * round(math.cos(self.awayangle))
+                    self.y += self.vel * round(math.sin(self.awayangle))
+                    if self.awayframe + CONSTANTS.TICK == state.frame:
+                        self.away = False
+                elif random.randint(0,CONSTANTS.TICK*4) == 0:
+                    self.awayangle = (random.random()-0.5)*pi
+                    self.x += self.vel * round(math.cos(self.awayangle))
+                    self.y += self.vel * round(math.sin(self.awayangle))
+                    self.away = True
+                    self.awayframe = state.frame
+                else:
+                    self.x += self.vel * round(math.cos(angle))
+                    self.y += self.vel * round(math.sin(angle))
+            
+        except ZeroDivisionError:
+            pass
+
 
 def spawn_enemies_on_floor(state, num_random_enemies):
     max_dist = 6*64
@@ -56,7 +94,7 @@ def spawn_enemies_on_floor(state, num_random_enemies):
                     species = random.choice(tiles.species_list)
 
                     # Calculate distance between potential enemy spawn point and player
-                    distance = math.sqrt((x_pos - state.x)**2 + (y_pos - state.y)**2)
+                    distance = math.hypot((x_pos - state.x), (y_pos - state.y))
                     # Only allow spawning if the distance is greater than 2 tiles
                     if distance >= 2.5 * CONSTANTS.PIXELS:
                         valid_enemy = Enemy(species, x_pos, y_pos)
@@ -86,7 +124,7 @@ def draw_grid_with_enemies(game_objects, screen_size, grid_color, grid_spacing, 
     draw_enemies(game_objects, enemies, state)
 
 def generate_enemies(state):
-    num_random_enemies = random.randint(1, 5)
+    num_random_enemies = random.randint(1, state.level+1)
     enemies = spawn_enemies_on_floor(state, num_random_enemies)
 
     state.enemies = enemies
