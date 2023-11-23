@@ -59,8 +59,8 @@ def swap_map(state, map):
                 stairs_placed = True
                 # print((i,j) + (state.x/64, state.y/64))
 
-    state.x -= 32
-    state.y -= 32
+    state.x += 32
+    state.y += 32
     enemy.generate_enemies(state)
 
 
