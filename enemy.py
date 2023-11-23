@@ -162,7 +162,7 @@ def draw_grid_with_enemies(game_objects, screen_size, grid_color, grid_spacing, 
     draw_enemies(game_objects, enemies, state)
 
 def generate_enemies(state):
-    num_random_enemies = random.randint(1, state.level+1)
+    num_random_enemies = random.randint(2, round(state.level*1.1)+2)
     enemies = spawn_enemies_on_floor(state, num_random_enemies)
 
     state.enemies = enemies

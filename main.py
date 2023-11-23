@@ -23,7 +23,6 @@ def main(window, window_flags):
     pygame.init()
     create_main_surface(state, window, window_flags)
 
-
 def create_main_surface(state, window, window_flags):
     # Tuple representing width and height in pixels
     state.clock = pygame.time.Clock()
@@ -84,7 +83,6 @@ def create_main_surface(state, window, window_flags):
         state.clock.tick(CONSTANTS.TICK)
         state.frame += 1
         print(state.clock.get_fps())
-
 
 class State():
     def __init__(self):
