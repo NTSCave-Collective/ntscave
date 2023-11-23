@@ -198,6 +198,8 @@ def generateRoom(state):
                     room[i][j] = "wallcorner_topleft"
                 elif topLeftNeighbor == FLOOR and topNeighbor == WALL and leftNeighbor == WALL and bottomNeighbor == WALL and rightNeighbor == WALL:
                     room[i][j] = "void_connection_topleft"
+                elif topNeighbor == FLOOR and leftNeighbor == WALL and rightNeighbor == WALL:
+                    room[i][j] = "frontwall_center"
                 else:
                     room[i][j] = None
 

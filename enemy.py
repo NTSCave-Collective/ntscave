@@ -114,14 +114,14 @@ class Enemy:
                         enemy.hitbox_x, enemy.hitbox_y, enemy.hitbox_width, enemy.hitbox_height
                 ):
                     # Deal damage to player
-                    if state.last_hit < state.frame:
+                    if state.last_hit + CONSTANTS.TICK < state.frame:
                         state.last_hit = state.frame + CONSTANTS.TICK
                         state.hearts -= enemy.damage
                         print(enemy.damage, state.hearts)
 
                     # check if player health is zero
-                    if state.hearts <= 0:
-                        print("game over")
+                        if state.hearts <= 0:
+                            print("game over")
         except ZeroDivisionError:
             pass
 
@@ -132,17 +132,17 @@ def spawn_enemies_on_floor(state, num_random_enemies):
         valid_tile = False
         attempts = 0
         while not valid_tile and attempts <= 5:
-            rand_y = random.randint(0, len(CONSTANTS.MAP)*64) // 64
+            rand_y = random.randint(0, len(CONSTANTS.MAP)-1)
             if rand_y < 0:
                 continue
-            rand_x = random.randint(0, len(CONSTANTS.MAP[rand_y//64])*64) // 64
+            rand_x = random.randint(0, len(CONSTANTS.MAP[rand_y])-1)
             if rand_x < 0:
                 continue
             attempts += 1
             try:
                 if "floor" in str(CONSTANTS.MAP[rand_y][rand_x]):
-                    x_pos = rand_x*CONSTANTS.PIXELS + CONSTANTS.PIXELS/2
-                    y_pos = rand_y*CONSTANTS.PIXELS + CONSTANTS.PIXELS/2
+                    x_pos = (rand_x + random.random())*CONSTANTS.PIXELS + CONSTANTS.PIXELS/2
+                    y_pos = (rand_y + random.random())*CONSTANTS.PIXELS + CONSTANTS.PIXELS/2
                     species = random.choice(tiles.species_list)
 
                     # Calculate distance between potential enemy spawn point and player
