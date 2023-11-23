@@ -52,7 +52,7 @@ def create_main_surface(state):
                 if event.key == pygame.K_f:
                     rendering.toggle_fullscreen(window)
                 if event.key == pygame.K_i:
-                    CONSTANTS.MAP = ROOMS.generateRoom()
+                    CONSTANTS.MAP = ROOMS.generateRoom(state)
                 elif event.key == pygame.K_ESCAPE:
                     running = False
             elif event.type == pygame.QUIT:
@@ -73,7 +73,7 @@ def create_main_surface(state):
         # Set fps value
         clock.tick(CONSTANTS.TICK)
         state.frame += 1
-        print(clock.get_fps())
+        # print(clock.get_fps())
 
 
 class State():

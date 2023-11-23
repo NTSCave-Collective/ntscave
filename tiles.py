@@ -106,7 +106,7 @@ bounds = {
 
 def next_level(state):
     state.level += 1
-    print(state.level)
+    # print(state.level)
 
 def do_nothing():
     pass
@@ -116,7 +116,7 @@ def activate_spike():
 
 def spike_damage(state):
     state.hp -= 33
-    print(state.hp)
+    # print(state.hp)
 
 
 def tileEvents(tile, state):

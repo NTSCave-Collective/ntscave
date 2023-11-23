@@ -62,7 +62,7 @@ def spawn_enemies_on_floor(player_position, num_random_enemies):
             except IndexError:
                 pass
 
-    print(enemies)
+    # print(enemies)
     return enemies
 
 def draw_enemies(game_objects, state):

@@ -9,7 +9,7 @@ player_cache = {}
 
 def get_image(key):
     if not key in player_cache:
-        print(f"loading {key}")
+        # print(f"loading {key}")
         player_cache[key] = pygame.image.load(os.path.join(key)).convert_alpha()
     return player_cache[key]
 
