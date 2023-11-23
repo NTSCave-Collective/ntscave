@@ -11,16 +11,16 @@ class Enemy:
         self.x = x
         self.y = y
         self.species = species
-        self.size = 20  # Adjust the size as needed
-        self.color = (255, 0, 0)  # Red color for the enemy
         
         self.leftFacing = False
         self.rightFacing = False
         self.upFacing = False
         self.downFacing = True  # Default facing down
 
-    def draw(self, window, frame):
-        animframe = floor((frame % 40) / 10)
+    def draw(self, window, state):
+
+        animframe = floor((state.frame % CONSTANTS.TICK) / (CONSTANTS.TICK/4))
+
         if self.downFacing:
             enemy = pygame.image.load(os.path.join(tiles.name_to_entity[self.species]["down"][animframe])).convert_alpha()
         elif self.rightFacing:
@@ -34,50 +34,50 @@ class Enemy:
 
         #pygame.draw.rect(window, self.color, (self.x, self.y, self.size, self.size))
 
-def spawn_enemies_on_floor(player_position, num_random_enemies):
+def spawn_enemies_on_floor(state, num_random_enemies):
+    max_dist = 6*64
     enemies = []
-    map_data = CONSTANTS.MAP
 
     for _ in range(num_random_enemies):
         valid_tile = False
-
-        while not valid_tile:
-            rand_y = random.randint(0, len(map_data) - 1)
-            rand_x = random.randint(0, len(map_data[0]) - 1)
-
+        attempts = 0
+        while not valid_tile and attempts <= 5:
+            rand_y = random.randint(state.y-max_dist, state.y+max_dist) // 64
+            if rand_y < 0:
+                continue
+            rand_x = random.randint(state.x-max_dist, state.x+max_dist) // 64
+            if rand_x < 0:
+                continue
+            attempts += 1
             try:
-                if "floor" in map_data[rand_y][rand_x]:
-                    x_pos = rand_x * CONSTANTS.PIXELS + CONSTANTS.PIXELS/2
-                    y_pos = rand_y * CONSTANTS.PIXELS + CONSTANTS.PIXELS/2
+                if "floor" in str(CONSTANTS.MAP[rand_y][rand_x]):
+                    x_pos = rand_x*CONSTANTS.PIXELS + CONSTANTS.PIXELS/2
+                    y_pos = rand_y*CONSTANTS.PIXELS + CONSTANTS.PIXELS/2
                     species = random.choice(tiles.species_list)
 
                     # Calculate distance between potential enemy spawn point and player
-                    distance = math.sqrt((x_pos - player_position[0])**2 + (y_pos - player_position[1])**2)
-
+                    distance = math.sqrt((x_pos - state.x)**2 + (y_pos - state.y)**2)
                     # Only allow spawning if the distance is greater than 2 tiles
-                    if distance > 2 * CONSTANTS.PIXELS:
+                    if distance >= 2.5 * CONSTANTS.PIXELS:
                         valid_enemy = Enemy(species, x_pos, y_pos)
                         enemies.append(valid_enemy)
                         valid_tile = True
             except IndexError:
                 pass
 
-    print(enemies)
     return enemies
 
 def draw_enemies(game_objects, state):
     for enemy in state.enemies:
-        enemy.draw(game_objects, state.frame)
+        enemy.draw(game_objects, state)
 
 def draw_grid_with_enemies(game_objects, screen_size, grid_color, grid_spacing, enemies, state):
     width, height = screen_size
-    global grid_map
-    grid_map = CONSTANTS.MAP
 
-    for y in range(len(grid_map)):
-        for x in range(len(grid_map[y])):
+    for y in range(len(CONSTANTS.MAP)):
+        for x in range(len(CONSTANTS.MAP[y])):
             try:
-                image = pygame.image.load(os.path.join(tiles.tiles[grid_map[y][x]]))
+                image = pygame.image.load(os.path.join(tiles.tiles[CONSTANTS.MAP[y][x]]))
                 image = pygame.transform.scale(image, (CONSTANTS.PIXELS, CONSTANTS.PIXELS))
                 game_objects.blit(image, (CONSTANTS.PIXELS * x, CONSTANTS.PIXELS * y))
             except:
@@ -85,4 +85,8 @@ def draw_grid_with_enemies(game_objects, screen_size, grid_color, grid_spacing, 
 
     draw_enemies(game_objects, enemies, state)
 
+def generate_enemies(state):
+    num_random_enemies = random.randint(1, 5)
+    enemies = spawn_enemies_on_floor(state, num_random_enemies)
 
+    state.enemies = enemies

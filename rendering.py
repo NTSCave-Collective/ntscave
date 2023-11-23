@@ -6,14 +6,20 @@ from math import floor, ceil
 import player
 import CONSTANTS
 import enemy
-
+import animation
 global image_cache
 image_cache = {}
 
 def render_frame(window, gameObjects, state):
+    animation.tileAnimations(state)
     draw_grid(gameObjects, state)
 
-    player.drawPlayer(gameObjects, state)
+    if state.newLevel == False:
+        if state.attacking:
+            player.attack(gameObjects, state)
+        player.drawPlayer(gameObjects, state)
+    else:
+        player.newLevel(gameObjects, state)
 
     # Draw enemies on the board
     draw_enemies(gameObjects, state)
@@ -28,7 +34,6 @@ def clear_surface(window):
 
 def get_image(key):
     if not key in image_cache:
-        print("loading {key}")
         image_cache[key] = pygame.image.load(os.path.join(tiles.tiles[key]))
     return image_cache[key]
 
@@ -66,4 +71,4 @@ def toggle_fullscreen(window):
 
 def draw_enemies(game_objects, state):
     for enemy in state.enemies:
-        enemy.draw(game_objects, state.frame)
+        enemy.draw(game_objects, state)

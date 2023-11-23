@@ -2,6 +2,7 @@ import CONSTANTS
 import BOUNDINGS
 import pygame
 import os
+import animation
 
 tiles = {
     None: "assets/tiles/none.png",
@@ -51,18 +52,28 @@ player = {
     "left_moving": ["assets/player/left_moving.png", "assets/player/left_moving2.png", "assets/player/left_moving3.png", "assets/player/left_moving4.png"],
     "right_moving": ["assets/player/right_moving.png", "assets/player/right_moving2.png", "assets/player/right_moving3.png", "assets/player/right_moving4.png"],
     "up_moving": ["assets/player/up_moving.png", "assets/player/up_moving2.png", "assets/player/up_moving3.png", "assets/player/up_moving4.png"],
-}
 
-species_list = ["worm"]
+    "spin": ["assets/player/down_moving.png", "assets/player/left_moving2.png", "assets/player/right_moving3.png", "assets/player/up_moving4.png"]
+}
 
 worm = {
     "left": ["assets/enemy/worm_left1.png", "assets/enemy/worm_left2.png", "assets/enemy/worm_left3.png", "assets/enemy/worm_left2.png"],
     "up": ["assets/enemy/worm_left1.png", "assets/enemy/worm_left2.png", "assets/enemy/worm_left3.png", "assets/enemy/worm_left2.png"],
     "right": ["assets/enemy/worm_right1.png", "assets/enemy/worm_right2.png", "assets/enemy/worm_right3.png", "assets/enemy/worm_right2.png"],
-    "down": ["assets/enemy/worm_right1.png", "assets/enemy/worm_right2.png", "assets/enemy/worm_right3.png", "assets/enemy/worm_right2.png"],
+    "down": ["assets/enemy/worm_right1.png", "assets/enemy/worm_right2.png", "assets/enemy/worm_right3.png", "assets/enemy/worm_right2.png"]
 }
 
-name_to_entity = {"worm": worm}
+slash = {
+    "left": ["assets/slash/left.png", "assets/slash/left2.png", "assets/slash/left3.png", "assets/empty.png"],
+    "right": ["assets/slash/right.png", "assets/slash/right2.png", "assets/slash/right3.png", "assets/empty.png"],
+    "up": ["assets/slash/up.png", "assets/slash/up2.png", "assets/slash/up3.png", "assets/empty.png"],
+    "down": ["assets/slash/down.png", "assets/slash/down2.png", "assets/slash/down3.png", "assets/empty.png"]
+}
+
+spike = ["spike1", "spike2", "spike3"]
+
+species_list = ["worm"]
+name_to_entity = {"worm": worm, "spike": spike}
 
 collision = {
     "left": ["wall_left", "wallcorner_bottomleft", "wallcorner_topleft", "wallcorner_left"],
@@ -106,25 +117,20 @@ bounds = {
 
 def next_level(state):
     state.level += 1
-    print(state.level)
-
-def do_nothing():
-    pass
-
-def activate_spike():
-    pass
+    state.newLevel_frame = state.frame
 
 def spike_damage(state):
-    state.hp -= 33
-    print(state.hp)
+    if state.last_hit < state.frame:
+        state.last_hit = state.frame + CONSTANTS.TICK*2
+        state.hearts -= 1
 
+def tileEvents(x, y, tile, state):
+    pre_anim = [(anim.x, anim.y) for anim in state.animations]
+    if tile == "stairs_down":
+        next_level(state)
 
-def tileEvents(tile, state):
-    return {
-        "stairs_down": next_level(state),
-
-        "spike": activate_spike(),
-        "spike1": do_nothing(),
-        "spike2": spike_damage(state),
-        "spike3": do_nothing()
-    }[tile]
+    elif tile == "spike":
+        state.animations.append(animation.Animation(x, y, state.frame, tile))
+        
+    elif tile == "spike2":
+        spike_damage(state)

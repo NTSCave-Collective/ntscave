@@ -1,6 +1,7 @@
 import random
 import numpy as np
 import CONSTANTS
+import enemy
 
 def generateRoom():
 
@@ -169,9 +170,7 @@ def generateRoom():
                 #process tile (i,j)
 
             else:
-                room[i][j] = random.choices(["floor", "floor2", "floor3"], weights=(10,10,10), k=1)[0]
-
-
+                room[i][j] = random.choices(["floor", "floor2", "floor3"], weights=(60,10,30), k=1)[0]
 
     return room
 
@@ -268,3 +267,46 @@ def generateRoom():
 
 
 # generateRoom()
+
+
+def swap_map(state, map):
+    if map == "random":
+        CONSTANTS.MAP = generateRoom()
+
+    CONSTANTS.MAP = map
+
+    validTile = False
+    attempts = 0
+    while not validTile:
+        randY = random.randint(0, len(CONSTANTS.MAP)-1)
+        randX = random.randint(0, len(CONSTANTS.MAP[randY])-1)
+        try:
+            if "floor" in str(CONSTANTS.MAP[randY][randX]):
+                state.x = randX * CONSTANTS.PIXELS + CONSTANTS.PIXELS/2
+                state.y = randY * CONSTANTS.PIXELS + CONSTANTS.PIXELS/2
+                validTile = True
+            else:
+                raise Exception
+            stairs_placed = False
+            attempts2 = 0
+            while not stairs_placed:
+                attempts2 += 1
+                i = random.randint(0, len(CONSTANTS.MAP)-1)
+                j = random.randint(0, len(CONSTANTS.MAP[i])-1)
+                k = random.randint(0,10)
+                if "floor" in str(CONSTANTS.MAP[i][j]) and k == 5:
+                    CONSTANTS.MAP[i][j] = "stairs_down"
+                    stairs_placed = True
+                    print("while in2")
+                if attempts2 > 50:
+                    raise Exception
+        except:
+            attempts += 1
+        if attempts > 15:
+            if map == "random":
+                CONSTANTS.MAP = generateRoom()
+            else:
+                CONSTANTS.MAP = generateRoom()
+            attempts = 0
+
+    enemy.generate_enemies(state)
