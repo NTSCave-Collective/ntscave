@@ -34,6 +34,7 @@ def swap_map(state, map):
     
     if map == "random":
         stairs_placed = False
+        attempts = 0
         while not stairs_placed:
             i = random.randint(0, len(CONSTANTS.MAP)-1)
             j = random.randint(0, len(CONSTANTS.MAP[i])-1)
@@ -52,13 +53,15 @@ def swap_map(state, map):
                 finder = AStarFinder()
                 path, runs = finder.find_path(start, end, grid)
                 # print(path, runs)
-                if len(path) == 0:
-                    print("TEST")
+                if (len(path) == 0) or (attempts > 15 and stairs_placed != True):
+                    attempts = 0
                     swap_map(state, map)
                 # print(astar(CONSTANTS.originMap, (state.x // 64, state.y // 64), (i, j)))
                 stairs_placed = True
                 # print((i,j) + (state.x/64, state.y/64))
 
+    print(len(CONSTANTS.MAP))
+    print(set([len(y) for y in CONSTANTS.MAP]))
     state.x += 32
     state.y += 32
     enemy.generate_enemies(state)

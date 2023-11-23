@@ -10,8 +10,8 @@ TICK =  60
 
 PIXELS = 64
 
-roomHeight = 10
-roomWidth = 10
+roomHeight = 12
+roomWidth = 12
 
 BOUND = math.ceil(max(SCREEN_HEIGHT, SCREEN_WIDTH)/2 /PIXELS +2) *PIXELS
 

@@ -65,6 +65,13 @@ worm = {
     "down": ["assets/enemy/worm_right1.png", "assets/enemy/worm_right2.png", "assets/enemy/worm_right3.png", "assets/enemy/worm_right2.png"]
 }
 
+trojan = {
+    "left": ["assets/enemy/trojan_left1.png", "assets/enemy/trojan_left2.png", "assets/enemy/trojan_left1.png", "assets/enemy/trojan_left2.png"],
+    "up": ["assets/enemy/trojan_left1.png", "assets/enemy/trojan_left2.png", "assets/enemy/trojan_left1.png", "assets/enemy/trojan_left2.png"],
+    "right": ["assets/enemy/trojan_right1.png", "assets/enemy/trojan_right2.png", "assets/enemy/trojan_right1.png", "assets/enemy/trojan_right2.png"],
+    "down": ["assets/enemy/trojan_right1.png", "assets/enemy/trojan_right2.png", "assets/enemy/trojan_right1.png", "assets/enemy/trojan_right2.png"]
+}
+
 slash = {
     "left": ["assets/slash/left.png", "assets/slash/left2.png", "assets/slash/left3.png", "assets/empty.png"],
     "right": ["assets/slash/right.png", "assets/slash/right2.png", "assets/slash/right3.png", "assets/empty.png"],
@@ -74,8 +81,8 @@ slash = {
 
 spike = ["spike1", "spike2", "spike3"]
 
-species_list = ["worm"]
-name_to_entity = {"worm": worm, "spike": spike}
+species_list = ["worm", "trojan"]
+name_to_entity = {"worm": worm, "trojan": trojan, "spike": spike}
 
 event_for_bound_blocks = ["spike", "spike1", "spike2", "spike3", "stairs_down"]
 
@@ -119,8 +126,8 @@ bounds = {
 
 def next_level(state):
     state.level += 1
-    CONSTANTS.roomHeight += 5
-    CONSTANTS.roomWidth += 5
+    CONSTANTS.roomHeight += 2
+    CONSTANTS.roomWidth += 2
     CONSTANTS.SURFACE_WIDTH = CONSTANTS.PIXELS * CONSTANTS.roomWidth
     CONSTANTS.SURFACE_HEIGHT = CONSTANTS.PIXELS * CONSTANTS.roomHeight
     state.newLevel_frame = state.frame
