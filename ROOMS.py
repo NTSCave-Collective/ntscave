@@ -273,12 +273,14 @@ def generateRoom():
 def swap_map(state, map):
     if map == "random":
         CONSTANTS.MAP = generateRoom()
-
-    CONSTANTS.MAP = map
+    else:
+        CONSTANTS.MAP = map
 
     validTile = False
+    attempts = 0
     while not validTile:
         try:
+            attempts += 1
             randY = random.randint(0, len(CONSTANTS.MAP)-1)
             randX = random.randint(0, len(CONSTANTS.MAP[randY])-1)
             if "floor" in str(CONSTANTS.MAP[randY][randX]):
@@ -288,9 +290,10 @@ def swap_map(state, map):
             else:
                 raise Exception
         except:
-            if map == "random":
+            if map == "random" and attempts > 15:
                 CONSTANTS.MAP = generateRoom()
-
+                attempts = 0
+    
     if map == "random":
         stairs_placed = False
         while not stairs_placed:
