@@ -18,7 +18,7 @@ effect_weights = (6, 3, 2, 1, 1)
 
 effects = {
     "health": "assets/effect/heart.png",
-    "health2": "assets/effect/heart2.png",
+    "healthboost": "assets/effect/heart2.png",
     "speed": "assets/effect/speed.png",
     "speedboost": "assets/effect/speed_perm.png",
     "crit": "assets/effect/crit.png",
@@ -32,7 +32,7 @@ effects = {
 def health(state):
     state.hearts += 1
 
-def health2(state):
+def healthboost(state):
     state.hearts += 2
 
 def speed(state):
@@ -61,7 +61,7 @@ def distanceboost(state):
 
 framelength = {
     "health": 1,
-    "health2": 1,
+    "healthboost": 1,
     "speed": 1,
     "speedboost": CONSTANTS.TICK*CONSTANTS.BOOSTLENGTH,
     "crit": 1,
@@ -78,8 +78,8 @@ def effectEvent(state):
             continue
         if e.effect == "health":
             health(state)
-        elif e.effect == "health2":
-            health2(state)
+        elif e.effect == "healthboost":
+            healthboost(state)
         elif e.effect == "speed":
             speed(state)
         elif e.effect == "speedboost":
@@ -125,8 +125,7 @@ class Effect():
 def drop_effect(x,y, state):
     if random.randint(0,4) == 0:
         e = random.choices(effect_list, weights=effect_weights, k=1)[0]
-        if e in ["speed", "crit", "attack"]:
-            e = random.choices([e, e+"boost"], weights=(2,1), k=1)[0]
+        e = random.choices([e, e+"boost"], weights=(2,1), k=1)[0]
         effect = Effect(x,y, state.frame, e)
         state.effects.append(effect)
         print(effect)
