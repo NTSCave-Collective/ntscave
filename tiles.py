@@ -84,7 +84,7 @@ hud = {
     "heart_half": "assets/player/heart_half.png",
 }
 
-spike = ["spike1", "spike2"] + ["spike3"] * 55 + ["spike2", "spike", "spike"]
+spike = ["spike1", "spike2"] + ["spike3"] #* 55 + ["spike2", "spike", "spike"]
 
 species_list = ["worm", "trojan"]
 name_to_entity = {"worm": worm, "trojan": trojan, "spike": spike}

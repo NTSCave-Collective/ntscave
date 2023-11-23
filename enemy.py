@@ -91,7 +91,7 @@ class Enemy:
         return not (tiles.bounds[currentTile][playertileY][playertileX] and not currentTile in tiles.event_for_bound_blocks)
 
     def move(self, state):
-        if math.hypot(state.x-self.x, state.y-self.y) > (CONSTANTS.BOUND+1)*64:
+        if math.hypot(state.x-self.x, state.y-self.y) > (CONSTANTS.BOUND+1)*64 or self.hit:
             return
         try:
             dx, dy = (state.x-self.x), (state.y - self.y)

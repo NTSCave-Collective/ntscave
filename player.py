@@ -106,9 +106,9 @@ def handle_player_attack(state):
                 enemy.health -= damage
                 print(damage)
                 if enemy.health <= 0:
-                    if enemy.species is "worm":
+                    if enemy.species == "worm":
                         CONSTANTS.WORM_COUNTER += 1
-                    elif enemy.species is "trojan":
+                    elif enemy.species == "trojan":
                         CONSTANTS.TROJAN_COUNTER += 1
                     
                     print("Worms killed: ", CONSTANTS.WORM_COUNTER)
@@ -126,7 +126,7 @@ def playerEvents(state):
             if ( state.player_hitbox_x < effect.x < state.player_hitbox_x + state.player_hitbox_width and
                 state.player_hitbox_y < effect.y < state.player_hitbox_y + state.player_hitbox_height
             ):
-                state.effectEvent(effect, state)
+                effects.effectEvent(effect, state)
                 state.effects.remove(effect)
 
 

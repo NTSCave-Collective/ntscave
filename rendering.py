@@ -34,6 +34,8 @@ def render_frame(window, gameObjects, state):
         player.drawPlayer(gameObjects, state)
     else:
         player.newLevel(gameObjects, state)
+    
+    draw_effects(gameObjects, state)
 
     # Move all gameObjects based on the player position 
     camera(window, gameObjects, state)
@@ -80,3 +82,7 @@ def toggle_fullscreen():
 def draw_enemies(game_objects, state):
     for enemy in state.enemies:
         enemy.draw(game_objects, state)
+
+def draw_effects(game_objects, state):
+    for e in state.effects:
+        e.draw(game_objects, state)

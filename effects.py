@@ -12,8 +12,8 @@ def get_image(key):
         effect_cache[key] = pygame.image.load(os.path.join(key)).convert_alpha()
     return effect_cache[key]
 
-effect_list = ["health", "speed", "crit", "attack"]
-effect_weights = (4,3,2,1)
+effect_list = ["health", "speed", "crit", "attack","distance"]
+effect_weights = (6,3,2,1,1)
 effects = {
     "health": "assets/effect/heart.png",
     "health2": "assets/effect/heart2.png",
@@ -22,7 +22,9 @@ effects = {
     "crit": "assets/effect/crit.png",
     "critboost": "assets/effect/critboost.png",
     "attack": "assets/effect/attack.png",
-    "attackboost": "assets/effect/attackboost.png"
+    "attackboost": "assets/effect/attackboost.png",
+    "distance": "assets/effect/distance.png",
+    "distanceboost": "assets/effect/distanceboost.png"
 }
 
 def health(state):
@@ -47,6 +49,12 @@ def attack(state):
     state.attack += 0.1
 
 def attackboost(state):
+    pass
+
+def distance(state):
+    state.attack += 0.1
+
+def distanceboost(state):
     pass
 
 effect_list = ["health", "speed", "crit", "attack"]
@@ -112,6 +120,9 @@ class Effect():
         self.effect = effect
         #self.start_frame = frame
         #self.end_frame = framelength[effect]
+    
+    def draw(window, state):
+        pass
 
 def drop_effect(x,y, state):
     if random.randint(0,4) == 0:
