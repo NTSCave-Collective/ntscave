@@ -20,8 +20,8 @@ def swap_map(state, map):
             attempts += 1
             if "floor" in str(CONSTANTS.MAP[randY][randX]):
                 print("floor")
-                state.x = randX * CONSTANTS.PIXELS + 32
-                state.y = randY * CONSTANTS.PIXELS + 32
+                state.x = randX * CONSTANTS.PIXELS
+                state.y = randY * CONSTANTS.PIXELS
                 validTile = True
             if attempts > 15:
                 raise Exception
@@ -39,7 +39,10 @@ def swap_map(state, map):
             if "floor" in str(CONSTANTS.MAP[i][j]) and random.randint(0,10) == 5 and (i, j) != (floor(((state.x) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP[i])), floor(((state.y) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP))):
                 CONSTANTS.MAP[i][j] = "stairs_down"
                 stairs_placed = True
+                print((i,j) + (state.x/64, state.y/64))
 
+    state.x += 32
+    state.y += 32
     enemy.generate_enemies(state)
 
 
@@ -183,6 +186,6 @@ def generateRoom(state):
                 elif bottomNeighbor == WALL and bottomRightNeighbor == WALL and bottomLeftNeighbor == WALL:
                     room[i][j] = "wall_bottom"
                 else:
-                    room[i][j] = random.choices(["floor", "floor2", "floor3"], weights=(50,10,10), k=1)[0]
+                    room[i][j] = random.choices(["floor", "floor2", "floor3"], weights=(60,10,30), k=1)[0]
 
     return room

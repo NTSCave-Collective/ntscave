@@ -14,15 +14,15 @@ def render_frame(window, gameObjects, state):
     animation.tileAnimations(state)
     draw_grid(gameObjects, state)
 
+    # Draw enemies on the board
+    draw_enemies(gameObjects, state)
+
     if state.newLevel == False:
         if state.attacking:
             player.attack(gameObjects, state)
         player.drawPlayer(gameObjects, state)
     else:
         player.newLevel(gameObjects, state)
-
-    # Draw enemies on the board
-    draw_enemies(gameObjects, state)
 
     # Move all gameObjects based on the player position 
     camera(window, gameObjects, state)

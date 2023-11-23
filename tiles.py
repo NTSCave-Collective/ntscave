@@ -77,14 +77,6 @@ spike = ["spike1", "spike2", "spike3"]
 species_list = ["worm"]
 name_to_entity = {"worm": worm, "spike": spike}
 
-collision = {
-    "left": ["wall_left", "wallcorner_bottomleft", "wallcorner_topleft", "wallcorner_left", "singlewall_top_connected"],
-    "right": ["wall_right", "wallcorner_topright", "wallcorner_bottomright", "wallcorner_right", "singlewall_top_connected"],
-    "up": ["frontwall_left","frontwall_center", "frontwall_right", "wallcorner_topleft", "wallcorner_topright", "singlewall_top_connected"],
-    "down": ["wall_bottom", "wallcorner_bottomleft", "wallcorner_bottomright"],
-    "center": ["spike", "spike1", "spike2", "spike3", "stairs_down", "spike_blocked"]
-}
-
 event_for_bound_blocks = ["spike", "spike1", "spike2", "spike3", "stairs_down"]
 
 bounds = {
@@ -113,6 +105,7 @@ bounds = {
     "singlewall_right_connected": BOUNDINGS.full_bounding,
     "singlewall_left_connected": BOUNDINGS.full_bounding,
     "singlewall_top_connected": BOUNDINGS.full_bounding,
+    "wall_single": BOUNDINGS.full_bounding,
     
     "stairs_down": BOUNDINGS.center,
 
