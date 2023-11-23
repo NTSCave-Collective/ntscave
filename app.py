@@ -35,6 +35,13 @@ def create_main_surface(state):
     
     
     while running:
+        if state.newLevelWidth == True:
+            gameObjects = pygame.Surface(
+                (CONSTANTS.SURFACE_WIDTH, CONSTANTS.SURFACE_HEIGHT), pygame.SRCALPHA, 32)
+            gameObjects = gameObjects.convert_alpha()
+            state.newLevelWidth = False
+        
+
         rendering.clear_surface(window)
 
         pygame.event.pump()
@@ -109,6 +116,7 @@ class State():
 
         self.newLevel = False
         self.newLevel_frame = None
+        self.newLevelWidth = False
 
 if __name__ == "__main__":
     main()

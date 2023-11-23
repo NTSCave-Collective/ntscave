@@ -117,8 +117,13 @@ bounds = {
 
 def next_level(state):
     state.level += 1
+    CONSTANTS.roomHeight += 5
+    CONSTANTS.roomWidth += 5
+    CONSTANTS.SURFACE_WIDTH = CONSTANTS.PIXELS * CONSTANTS.roomWidth
+    CONSTANTS.SURFACE_HEIGHT = CONSTANTS.PIXELS * CONSTANTS.roomHeight
     state.newLevel_frame = state.frame
     state.newLevel = True
+    state.newLevelWidth = True
 
 def spike_damage(state):
     if state.last_hit < state.frame:
