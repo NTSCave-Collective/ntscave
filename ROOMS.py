@@ -109,12 +109,24 @@ def generateRoom(state):
                 
             
             if new_map[i][j] == WALL:
-                if (topNeighbor == WALL and bottomNeighbor == FLOOR) or (topNeighbor == FLOOR and bottomNeighbor == FLOOR):
+                if leftNeighbor == FLOOR and topLeftNeighbor == FLOOR and topNeighbor == FLOOR and topRightNeighbor == FLOOR and rightNeighbor == FLOOR and bottomRightNeighbor == FLOOR and bottomNeighbor == FLOOR and bottomLeftNeighbor == FLOOR:
+                    room[i][j] = "wall_single"
+                elif topNeighbor == FLOOR and leftNeighbor == FLOOR and rightNeighbor == FLOOR and bottomNeighbor == WALL:
+                    room[i][j] = "singlewall_top_connected"
+                elif topNeighbor == FLOOR and rightNeighbor == FLOOR and bottomNeighbor == FLOOR and leftNeighbor == WALL:
+                    room[i][j] = "singlewall_right_connected"
+                elif topNeighbor == WALL and rightNeighbor == FLOOR and bottomNeighbor == FLOOR and leftNeighbor == FLOOR:
+                    room[i][j] = "singlewall_bottom_connected"
+                elif topNeighbor == FLOOR and rightNeighbor == WALL and bottomNeighbor == FLOOR and leftNeighbor == FLOOR:
+                    room[i][j] = "singlewall_left_connected"
+                elif (topNeighbor == WALL and bottomNeighbor == FLOOR) or (topNeighbor == FLOOR and bottomNeighbor == FLOOR):
                     room[i][j] = random.choices(["frontwall_center", "frontwall_left", "frontwall_right"], weights=(80,10,10), k=1)[0]
                 elif topNeighbor == FLOOR and rightNeighbor == FLOOR and bottomNeighbor == WALL:
                     room[i][j] = "wallcorner_topright"
                 elif topNeighbor == FLOOR and leftNeighbor == FLOOR and bottomNeighbor == WALL:
                     room[i][j] = "wallcorner_topleft"
+                elif topLeftNeighbor == FLOOR and topNeighbor == WALL and leftNeighbor == WALL and bottomNeighbor == WALL and rightNeighbor == WALL:
+                    room[i][j] = "void_connection_topleft"
                 else:
                     room[i][j] = None
 
@@ -123,10 +135,10 @@ def generateRoom(state):
                     room[i][j] = "wallcorner_bottomright"
                 elif leftNeighbor == WALL and topLeftNeighbor == WALL and bottomLeftNeighbor == WALL and topNeighbor == FLOOR and bottomNeighbor == WALL and bottomRightNeighbor == WALL and topRightNeighbor == FLOOR:
                     room[i][j] = "wallcorner_bottomleft"
-                elif rightNeighbor == WALL and topRightNeighbor == WALL and bottomRightNeighbor == WALL:
-                    room[i][j] = "wall_right"
                 elif leftNeighbor == WALL and topLeftNeighbor == WALL and bottomLeftNeighbor == WALL:
                     room[i][j] = "wall_left"
+                elif rightNeighbor == WALL and topRightNeighbor == WALL and bottomRightNeighbor == WALL:
+                    room[i][j] = "wall_right"
                 elif bottomNeighbor == WALL and bottomRightNeighbor == WALL and bottomLeftNeighbor == WALL:
                     room[i][j] = "wall_bottom"
                 else:

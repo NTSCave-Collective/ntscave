@@ -29,6 +29,8 @@ tiles = {
     "singlewall_left_connected": "assets/tiles/singlewall_left_connected.png",
     "singlewall_top_connected": "assets/tiles/singlewall_top_connected.png",
 
+    "void_connection_topleft": "assets/tiles/void_connection_topleft.png",
+
     "wall_single": "assets/tiles/wall_single.png",
     
     "stairs_down": "assets/tiles/stairs_down.png",
@@ -65,9 +67,9 @@ worm = {
 name_to_entity = {"worm": worm}
 
 collision = {
-    "left": ["wall_left", "wallcorner_bottomleft", "wallcorner_topleft", "wallcorner_left"],
-    "right": ["wall_right", "wallcorner_topright", "wallcorner_bottomright", "wallcorner_right"],
-    "up": ["frontwall_left","frontwall_center", "frontwall_right", "wallcorner_topleft", "wallcorner_topright"],
+    "left": ["wall_left", "wallcorner_bottomleft", "wallcorner_topleft", "wallcorner_left", "singlewall_top_connected"],
+    "right": ["wall_right", "wallcorner_topright", "wallcorner_bottomright", "wallcorner_right", "singlewall_top_connected"],
+    "up": ["frontwall_left","frontwall_center", "frontwall_right", "wallcorner_topleft", "wallcorner_topright", "singlewall_top_connected"],
     "down": ["wall_bottom", "wallcorner_bottomleft", "wallcorner_bottomright"],
     "center": ["spike", "spike1", "spike2", "spike3", "stairs_down", "spike_blocked"]
 }
@@ -81,9 +83,9 @@ bounds = {
     "floor2": BOUNDINGS.no_bounding,
     "floor3": BOUNDINGS.no_bounding,
 
-    "frontwall_center": BOUNDINGS.top,
-    "frontwall_left": BOUNDINGS.top,
-    "frontwall_right": BOUNDINGS.top,
+    "frontwall_center": BOUNDINGS.full_bounding,
+    "frontwall_left": BOUNDINGS.full_bounding,
+    "frontwall_right": BOUNDINGS.full_bounding,
 
     "wall_left": BOUNDINGS.left,
     "wall_right": BOUNDINGS.right,
@@ -95,6 +97,11 @@ bounds = {
     "wallcorner_topright": BOUNDINGS.topright_fill,
     "wallcorner_bottomleft": BOUNDINGS.bottomleft_fill,
     "wallcorner_bottomright": BOUNDINGS.bottomright_fill,
+
+    "singlewall_bottom_connected": BOUNDINGS.full_bounding,
+    "singlewall_right_connected": BOUNDINGS.full_bounding,
+    "singlewall_left_connected": BOUNDINGS.full_bounding,
+    "singlewall_top_connected": BOUNDINGS.full_bounding,
     
     "stairs_down": BOUNDINGS.center,
 
