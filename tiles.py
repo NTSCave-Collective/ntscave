@@ -106,6 +106,8 @@ bounds = {
     "singlewall_left_connected": BOUNDINGS.full_bounding,
     "singlewall_top_connected": BOUNDINGS.full_bounding,
     "wall_single": BOUNDINGS.full_bounding,
+
+    "void_connection_topleft": BOUNDINGS.bottomright_cut,
     
     "stairs_down": BOUNDINGS.center,
 

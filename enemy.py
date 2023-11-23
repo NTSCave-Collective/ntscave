@@ -83,11 +83,11 @@ class Enemy:
                 
                 self.x += mx
                 if not self.collision():
-                    self.x += mx
+                    self.x -= mx
 
                 self.y += my
                 if not self.collision():
-                    self.y += my
+                    self.y -= my
             
         except ZeroDivisionError:
             pass
