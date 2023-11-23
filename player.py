@@ -4,6 +4,8 @@ import os
 from math import floor
 import CONSTANTS
 import ROOMS
+from enemy import is_collision
+
 
 global player_cache
 player_cache = {}
@@ -75,12 +77,22 @@ def attack(window, state):
     elif state.upFacing:
         slash = get_image(tiles.slash["up"][animframe])
         y_move -= CONSTANTS.PIXELS/2
+    
+    if state.attackframe < CONSTANTS.ATTACK_DURATION:
+        handle_player_attack(state)
 
+        
     window.blit(slash, (state.x - CONSTANTS.PIXELS/2 + x_move, state.y - CONSTANTS.PIXELS + y_move))
 
     if state.attackframe == CONSTANTS.TICK -1:
         state.attacking = False
         state.attackframe = None
+
+def handle_player_attack(state):
+    if state.attacking:
+        for enemy in state.enemies:
+            if is_collision(state.x, state.y, enemy.x, enemy.y, state):
+                state.enemies.remove(enemy)
 
 def playerEvents(state):
     keys = pygame.key.get_pressed()

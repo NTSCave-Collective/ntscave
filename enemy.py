@@ -27,10 +27,26 @@ class Enemy:
         self.awayframe = 0
         self.awayangle = 0
         
+        # Define hitbox dimensions
+        self.hitbox_width = CONSTANTS.PIXELS
+        self.hitbox_height = CONSTANTS.PIXELS
+
+        # Adjust hitbox position relative to enemy position
+        self.hitbox_x = self.x - self.hitbox_width / 2
+        self.hitbox_y = self.y - self.hitbox_height / 2
+
         self.leftFacing = False
         self.rightFacing = False
         self.upFacing = False
         self.downFacing = True  # Default facing down
+
+        # Initialize hitbox position based on enemy position
+        self.update_hitbox_position()
+
+    def update_hitbox_position(self):
+        # Update hitbox position based on enemy position
+        self.hitbox_x = self.x - self.hitbox_width / 2
+        self.hitbox_y = self.y - self.hitbox_height / 2
 
     def draw(self, window, state):
 
@@ -45,6 +61,9 @@ class Enemy:
         elif self.upFacing:
             enemy = pygame.image.load(os.path.join(tiles.name_to_entity[self.species]["left"][animframe])).convert_alpha()
         window.blit(enemy, (self.x - CONSTANTS.PIXELS/2, self.y - CONSTANTS.PIXELS/2))
+        # Draw hitbox (for debugging purposes)
+        pygame.draw.rect(window, (255, 0, 0), (self.hitbox_x, self.hitbox_y, self.hitbox_width, self.hitbox_height), 2)
+        self.update_hitbox_position()
 
     def move(self, state):
         try:
@@ -70,7 +89,6 @@ class Enemy:
             
         except ZeroDivisionError:
             pass
-
 
 def spawn_enemies_on_floor(state, num_random_enemies):
     max_dist = 6*64
@@ -128,3 +146,17 @@ def generate_enemies(state):
     enemies = spawn_enemies_on_floor(state, num_random_enemies)
 
     state.enemies = enemies
+
+
+
+def is_collision(x1, y1, x2, y2, state):
+    if state.downFacing:
+        return abs(x1 - x2) < (CONSTANTS.PIXELS/2 + CONSTANTS.ATTACK_DISTANCE) and y2 - y1 < (CONSTANTS.PIXELS/2 + CONSTANTS.ATTACK_DISTANCE)
+    elif state.upFacing:
+        return abs(x1 - x2) < (CONSTANTS.PIXELS/2 + CONSTANTS.ATTACK_DISTANCE) and y1 - y2 < (CONSTANTS.PIXELS/2 + CONSTANTS.ATTACK_DISTANCE)
+    elif state.leftFacing:
+        return x1 - x2 < (CONSTANTS.PIXELS/2 + CONSTANTS.ATTACK_DISTANCE) and abs(y1 - y2) < (CONSTANTS.PIXELS/2 + CONSTANTS.ATTACK_DISTANCE)
+    elif state.rightFacing:
+        return x2 - x1 < (CONSTANTS.PIXELS/2 + CONSTANTS.ATTACK_DISTANCE) and abs(y1 - y2) < (CONSTANTS.PIXELS/2 + CONSTANTS.ATTACK_DISTANCE)
+    else:
+        return False  # Invalid direction, no collision
