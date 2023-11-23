@@ -2,7 +2,7 @@ import ROOMS
 import math
 
 # Initial Screen constants
-DEBUG = False
+DEBUG = True
 
 SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = 768
@@ -60,3 +60,8 @@ roomWidth = 12
 
 SURFACE_WIDTH = PIXELS * len(MAP)
 SURFACE_HEIGHT = PIXELS * max([len(y) for y in MAP])
+
+
+# Amount of enemies killed 
+WORM_COUNTER = 0
+TROJAN_COUNTER = 0

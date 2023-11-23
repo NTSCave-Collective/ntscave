@@ -97,12 +97,29 @@ def handle_player_attack(state):
     if state.attacking:
         for enemy in state.enemies:
             if is_collision(state.x, state.y, enemy.hitbox_x, enemy.hitbox_y, enemy.hitbox_width, enemy.hitbox_height):
+                if enemy.species is "worm":
+                    CONSTANTS.WORM_COUNTER += 1
+                elif enemy.species is "trojan":
+                    CONSTANTS.TROJAN_COUNTER += 1
+                
+                print("Worms killed: ", CONSTANTS.WORM_COUNTER)
+                print("trojan killed: ", CONSTANTS.TROJAN_COUNTER)
                 state.enemies.remove(enemy)
 
 
 
 def playerEvents(state):
     keys = pygame.key.get_pressed()
+
+    def is_drop_in_player_hitbox(state):
+
+        for effect in state.effects:
+            if ( state.player_hitbox_x < effect.x < state.player_hitbox_x + state.player_hitbox_width and
+                state.player_hitbox_y < effect.y < state.player_hitbox_y + state.player_hitbox_height
+            ):
+                state.effectEvent(effect, state)
+                state.effects.remove(effect)
+
 
     def collision(heading):
         tilePosY = floor(((state.y) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP))
@@ -135,7 +152,7 @@ def playerEvents(state):
 
     def movement():
         state.moving = False
-
+        
         if keys[pygame.K_LEFT]:
             state.moving = True
             state.x -= state.vel
@@ -190,6 +207,7 @@ def playerEvents(state):
                 state.attackframe = 0
         
         collisionEvents(state)
+        is_drop_in_player_hitbox(state)
 
     
     movement()

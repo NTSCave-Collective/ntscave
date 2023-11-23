@@ -204,4 +204,3 @@ def is_enemy_collision(player_hitbox_x, player_hitbox_y, player_hitbox_width, pl
         player_hitbox_y < enemy_hitbox_y + enemy_hitbox_height and
         player_hitbox_y + player_hitbox_height > enemy_hitbox_y
     )
-

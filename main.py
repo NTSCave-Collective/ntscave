@@ -83,7 +83,7 @@ def create_main_surface(state, window, window_flags):
         # Set fps value
         state.clock.tick(CONSTANTS.TICK)
         state.frame += 1
-        print(state.clock.get_fps())
+#        print(state.clock.get_fps())
 
 class State():
     def __init__(self):
