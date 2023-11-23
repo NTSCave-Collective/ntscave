@@ -12,7 +12,7 @@ from time import sleep
 
 pygame.init()
 
-window_flags = pygame.RESIZABLE | pygame.DOUBLEBUF
+window_flags = pygame.RESIZABLE | pygame.FULLSCREEN
 SCREEN = pygame.display.set_mode(CONSTANTS.SCREEN_SIZE, window_flags, vsync=CONSTANTS.VSYNC)
 pygame.display.set_caption("Menu")
 
