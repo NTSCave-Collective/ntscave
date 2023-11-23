@@ -106,6 +106,7 @@ def handle_player_attack(state):
                 enemy.health -= damage
                 print(damage)
                 if enemy.health <= 0:
+                    effects.drop_effect(enemy.x,enemy.y, state)
                     if enemy.species == "worm":
                         CONSTANTS.WORM_COUNTER += 1
                     elif enemy.species == "trojan":
@@ -123,12 +124,12 @@ def playerEvents(state):
     def is_drop_in_player_hitbox(state):
 
         for effect in state.effects:
-            if ( state.player_hitbox_x < effect.x < state.player_hitbox_x + state.player_hitbox_width and
-                state.player_hitbox_y < effect.y < state.player_hitbox_y + state.player_hitbox_height
+            if ( state.hitbox_x < effect.x < state.hitbox_x + state.hitbox_width and
+                state.hitbox_y < effect.y < state.hitbox_y + state.hitbox_height
             ):
-                effects.effectEvent(effect, state)
                 state.effects.remove(effect)
-
+                effect.end_frame = state.frame + effects.framelength[effect.effect]
+                state.activeEffects.append(effect)
 
     def collision(heading):
         tilePosY = floor(((state.y) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP))

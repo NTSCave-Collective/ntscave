@@ -9,6 +9,7 @@ import enemy
 import animation
 import hud
 import os
+import effects
 
 global image_cache
 image_cache = {}
@@ -35,6 +36,7 @@ def render_frame(window, gameObjects, state):
     else:
         player.newLevel(gameObjects, state)
     
+    effects.effectEvent(state)
     draw_effects(gameObjects, state)
 
     # Move all gameObjects based on the player position 

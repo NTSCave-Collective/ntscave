@@ -123,6 +123,7 @@ class State():
         self.enemies = list()
         self.animations = list()
         self.effects = list()
+        self.activeEffects = list()
 
         self.newLevel = False
         self.newLevel_frame = None
