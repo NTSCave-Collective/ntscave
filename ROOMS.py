@@ -9,66 +9,52 @@ from pathfinding.core.diagonal_movement import DiagonalMovement
 
 def swap_map(state, map):
     if map == "random":
-        CONSTANTS.MAP = generateRoom(state)
+        valid_map = False
+        global stairTile
+        while not valid_map:
+            generatedMap, originMap = generateRoom()
+            print(generatedMap, originMap)
+            floorList = list(zip(*np.where(originMap==1.0)))
+
+
+            # GENERATE ROOMS
+            if len(floorList) >= 12:
+                isValidTile = False
+                while not isValidTile:
+                    stairTile = random.choice(floorList)
+                    if not generatedMap[stairTile[0]][stairTile[1]] in ["wall_right", "wall_left"]:
+                        generatedMap[stairTile[0]][stairTile[1]] = "stairs_down"
+                        isValidTile = True
+                    else:
+                        continue
+            else:
+                continue
+            
+
+            
+            
+            # SELECT PLAYER SPAWN POSITION
+            playerStartTile = random.choice(floorList)
+
+            matrix = np.array(originMap)
+            grid = Grid(matrix=matrix)
+            start = grid.node(playerStartTile[1], playerStartTile[0])
+            end = grid.node(stairTile[1], stairTile[0])
+
+            finder = AStarFinder(diagonal_movement=DiagonalMovement.never)
+            path, runs = finder.find_path(start, end, grid)
+
+            if len(path) <= 4:
+                continue
+            else:
+                state.x = playerStartTile[1] * 64 + 32
+                state.y = playerStartTile[0] * 64 + 32
+                CONSTANTS.MAP = generatedMap
+                CONSTANTS.originMap = originMap
+                valid_map = True
+
     else:
         CONSTANTS.MAP = map
-
-    attempts = 0
-    
-    validTile = False
-    while not validTile:
-        randY = random.randint(0, len(CONSTANTS.MAP) - 1)
-        randX = random.randint(0, len(CONSTANTS.MAP[randY]) - 1)
-        try:
-            attempts += 1
-            if str(CONSTANTS.MAP[randY][randX]) in ["floor", "floor2", "floor3"]:
-                state.x = randX * CONSTANTS.PIXELS + 32
-                state.y = randY * CONSTANTS.PIXELS + 32
-                validTile = True
-            if attempts > 15:
-                raise Exception
-        except:
-            CONSTANTS.MAP = generateRoom(state)
-            attempts = 0
-
-    if map == "random":
-        stairCoords = []
-        stairs_placed = False
-        while not stairs_placed:
-            floorList = list(zip(*np.where(CONSTANTS.originMap==1.0)))
-            if not floorList:
-                swap_map(state, map)
-                continue
-
-            randFloor = random.randrange(len(floorList))
-            randFloorX = floorList[randFloor][0]
-            randFloorY = floorList[randFloor][1]
-            if str(CONSTANTS.MAP[randFloorX][randFloorY]) in ["floor", "floor2", "floor3", "spike"]:
-                # print("PLAYER: ", (state.x // 64, state.y // 64))
-                # print("END: ", (i, j))
-                stairCoords = [randFloorX, randFloorY]
-
-                matrix = np.array(CONSTANTS.originMap)
-                grid = Grid(matrix=matrix)
-
-                start = grid.node(state.x // 64, state.y // 64)
-                end = grid.node(randFloorY, randFloorX)
-
-                finder = AStarFinder(diagonal_movement=DiagonalMovement.never)
-                path, runs = finder.find_path(start, end, grid)
-
-                print(len(path))
-                
-                if len(path) <= 2:
-                    print("TEST")
-                    return swap_map(state, map)
-                else:
-                    stairs_placed = True
-            
-        CONSTANTS.MAP[stairCoords[0]][stairCoords[1]] = "stairs_down"
-
-
-
 
     enemy.generate_enemies(state)
 
@@ -77,7 +63,7 @@ def swap_map(state, map):
 
 
 
-def generateRoom(state):
+def generateRoom():
 
     room = [[0 for _ in range(CONSTANTS.roomWidth)] for _ in range(CONSTANTS.roomHeight)]
 
@@ -100,6 +86,18 @@ def generateRoom(state):
             choice = random.uniform(0, 1)
             # replace 0.5 with fill_prob
             new_map[i, j] = WALL if choice < fill_prob else FLOOR
+
+
+    for i in range(len(new_map)):
+        for j in range(len(new_map[i])):
+            if j == 0:
+                new_map[i][0] = WALL
+            elif j == CONSTANTS.roomWidth - 1:
+                new_map[i][CONSTANTS.roomWidth - 1] = WALL
+            elif i == 0:
+                new_map[0][j] = WALL
+            elif i == CONSTANTS.roomHeight - 1:
+                new_map[CONSTANTS.roomHeight - 1][j] = WALL
 
     generations = 6
     for generation in range(generations):
@@ -223,4 +221,4 @@ def generateRoom(state):
                 else:
                     room[i][j] = random.choices(["floor", "floor2", "floor3", "spike"], weights=(60,10,30, 5), k=1)[0]
 
-    return room
+    return [room, new_map]

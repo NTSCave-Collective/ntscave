@@ -124,8 +124,8 @@ bounds = {
 
 def next_level(state):
     state.level += 1
-    CONSTANTS.roomHeight += 5
-    CONSTANTS.roomWidth += 5
+    CONSTANTS.roomHeight += 2
+    CONSTANTS.roomWidth += 2
     CONSTANTS.SURFACE_WIDTH = CONSTANTS.PIXELS * CONSTANTS.roomWidth
     CONSTANTS.SURFACE_HEIGHT = CONSTANTS.PIXELS * CONSTANTS.roomHeight
     state.newLevel_frame = state.frame
