@@ -3,6 +3,8 @@ import numpy as np
 import CONSTANTS
 import enemy
 from math import floor
+from pathfinding.finder.a_star import AStarFinder
+from pathfinding.core.grid import Grid
 
 def swap_map(state, map):
     if map == "random":
@@ -19,7 +21,6 @@ def swap_map(state, map):
         try:
             attempts += 1
             if "floor" in str(CONSTANTS.MAP[randY][randX]):
-                print("floor")
                 state.x = randX * CONSTANTS.PIXELS
                 state.y = randY * CONSTANTS.PIXELS
                 validTile = True
@@ -38,12 +39,33 @@ def swap_map(state, map):
             j = random.randint(0, len(CONSTANTS.MAP[i])-1)
             if "floor" in str(CONSTANTS.MAP[i][j]) and random.randint(0,10) == 5 and (i, j) != (floor(((state.x) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP[i])), floor(((state.y) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP))):
                 CONSTANTS.MAP[i][j] = "stairs_down"
+
+                # print("PLAYER: ", (state.x // 64, state.y // 64))
+                # print("END: ", (i, j))
+
+                matrix = np.array(CONSTANTS.originMap)
+                grid = Grid(matrix=matrix)
+
+                start = grid.node(state.x // 64, state.y // 64)
+                end = grid.node(i, j)
+
+                finder = AStarFinder()
+                path, runs = finder.find_path(start, end, grid)
+                # print(path, runs)
+                if len(path) == 0:
+                    print("TEST")
+                    swap_map(state, map)
+                # print(astar(CONSTANTS.originMap, (state.x // 64, state.y // 64), (i, j)))
                 stairs_placed = True
-                print((i,j) + (state.x/64, state.y/64))
+                # print((i,j) + (state.x/64, state.y/64))
 
     state.x += 32
     state.y += 32
     enemy.generate_enemies(state)
+
+
+
+
 
 
 def generateRoom(state):
@@ -115,6 +137,8 @@ def generateRoom(state):
                 new_map[0][j] = WALL
             elif i == CONSTANTS.roomHeight - 1:
                 new_map[CONSTANTS.roomHeight - 1][j] = WALL
+
+    CONSTANTS.originMap = new_map
 
     for i in range(len(new_map)):
         for j in range(len(new_map[i])):
