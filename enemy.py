@@ -22,7 +22,7 @@ class Enemy:
         self.y = y
         self.species = species
         self.vel = {"worm": 2, "trojan": 3.6}[self.species]
-        self.damage = {"worm": 0.5, "trojan": 1}[self.species]
+        self.damage = {"worm": 0.5, "trojan": 0.5}[self.species]
         self.health = {"worm": 1, "trojan": 3}[self.species]
         self.away = False
         self.awayframe = 0
@@ -69,6 +69,13 @@ class Enemy:
             enemy = get_image(tiles.name_to_entity[self.species]["left"][animframe]).convert_alpha()
         elif self.upFacing:
             enemy = get_image(tiles.name_to_entity[self.species]["left"][animframe]).convert_alpha()
+
+        if self.hit:
+            # zero out RGB values
+            enemy.fill((0, 0, 0, 255), None, pygame.BLEND_RGBA_MULT)
+            # add in new RGB values
+            enemy.fill((255, 0, 0, 255)[0:3] + (0,), None, pygame.BLEND_RGBA_ADD)
+
 
         window.blit(enemy, (self.x - CONSTANTS.PIXELS/2, self.y - CONSTANTS.PIXELS/2))
         # Draw hitbox (for debugging purposes)

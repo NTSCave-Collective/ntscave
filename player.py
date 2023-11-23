@@ -104,7 +104,8 @@ def handle_player_attack(state):
                 damage = state.attack
                 damage += floor(random.random()+state.crit)*state.attack
                 enemy.health -= damage
-                print(damage)
+                if CONSTANTS.DEBUG:
+                    print(damage)
                 if enemy.health <= 0:
                     effects.drop_effect(enemy.x,enemy.y, state)
                     if enemy.species == "worm":
@@ -112,8 +113,9 @@ def handle_player_attack(state):
                     elif enemy.species == "trojan":
                         CONSTANTS.TROJAN_COUNTER += 1
                     
-                    print("Worms killed: ", CONSTANTS.WORM_COUNTER)
-                    print("Trojans killed: ", CONSTANTS.TROJAN_COUNTER)
+                    if CONSTANTS.DEBUG:
+                        print("Worms killed: ", CONSTANTS.WORM_COUNTER)
+                        print("Trojans killed: ", CONSTANTS.TROJAN_COUNTER)
                     state.enemies.remove(enemy)
 
 

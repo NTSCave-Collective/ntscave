@@ -123,9 +123,8 @@ class Effect():
             pygame.draw.rect(window, (255, 0, 0), (self.hitbox_x, self.hitbox_y, self.hitbox_width, self.hitbox_height), 2)
 
 def drop_effect(x,y, state):
-    if random.randint(0,4) == 0:
+    if random.randint(0,2) == 0:
         e = random.choices(effect_list, weights=effect_weights, k=1)[0]
         e = random.choices([e, e+"boost"], weights=(2,1), k=1)[0]
         effect = Effect(x,y, state.frame, e)
         state.effects.append(effect)
-        print(effect)

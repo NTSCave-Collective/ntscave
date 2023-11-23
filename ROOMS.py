@@ -13,7 +13,8 @@ def swap_map(state, map):
         global stairTile
         while not valid_map:
             generatedMap, originMap = generateRoom()
-            print(generatedMap, originMap)
+            if CONSTANTS.DEBUG:
+                print(generatedMap, originMap)
             floorList = list(zip(*np.where(originMap==1.0)))
 
 

@@ -14,7 +14,7 @@ pygame.init()
 
 window_flags = pygame.RESIZABLE | pygame.FULLSCREEN
 SCREEN = pygame.display.set_mode(CONSTANTS.SCREEN_SIZE, window_flags, vsync=CONSTANTS.VSYNC)
-pygame.display.set_caption("Menu")
+pygame.display.set_caption("NTSCave")
 
 BG = pygame.image.load("assets/intro/BG.jpeg")
 pygame.transform.scale(BG, (1689, 990))
@@ -178,8 +178,6 @@ def play():
 
 def options():
 
-    pygame.display.set_caption("Options")
-
     while True:
 
         OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
@@ -224,8 +222,6 @@ def options():
 
 def audio_settings():
 
-    pygame.display.set_caption("Audio Settings")
-
     while True:
     
         AUD_SET_MOUSE_POS = pygame.mouse.get_pos()
@@ -253,8 +249,6 @@ def audio_settings():
         pygame.display.update()
 
 def controls():
-
-    pygame.display.set_caption("Controls")
 
     while True:
 
@@ -303,8 +297,6 @@ def controls():
         pygame.display.update()
 
 def resolution():
-
-    pygame.display.set_caption("Resolution")
 
     while True:
 
@@ -380,8 +372,6 @@ def resolution():
 
 def video_settings():
 
-    pygame.display.set_caption("Video Settings")
-
     while True:
     
         VID_SET_MOUSE_POS = pygame.mouse.get_pos()
@@ -427,8 +417,6 @@ def video_settings():
             pygame.display.update()
 
 def main_menu():
-    
-    pygame.display.set_caption("Menu")
 
     while True:
         SCREEN.blit(BG, (0, 0))
@@ -472,7 +460,6 @@ def main_menu():
 state = State()
 
 def loading_screen():
-    pygame.display.set_caption("Loading Screen")
 
     # Loading BG
     LOADING_BG = pygame.image.load("assets/intro/Loading Bar Background.png")
@@ -522,8 +509,6 @@ def loading_screen():
         
 
 def intro():
-
-    pygame.display.set_caption("Intro")
 
     while True:
 
