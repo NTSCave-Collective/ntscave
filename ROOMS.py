@@ -5,6 +5,7 @@ import enemy
 from math import floor
 from pathfinding.finder.a_star import AStarFinder
 from pathfinding.core.grid import Grid
+from pathfinding.core.diagonal_movement import DiagonalMovement
 
 def swap_map(state, map):
     if map == "random":
@@ -16,13 +17,13 @@ def swap_map(state, map):
     
     validTile = False
     while not validTile:
-        randY = random.randint(0, len(CONSTANTS.MAP)-1)
-        randX = random.randint(0, len(CONSTANTS.MAP[randY])-1)
+        randY = random.randint(0, len(CONSTANTS.MAP) - 1)
+        randX = random.randint(0, len(CONSTANTS.MAP[randY]) - 1)
         try:
             attempts += 1
-            if "floor" in str(CONSTANTS.MAP[randY][randX]):
-                state.x = randX * CONSTANTS.PIXELS
-                state.y = randY * CONSTANTS.PIXELS
+            if str(CONSTANTS.MAP[randY][randX]) in ["floor", "floor2", "floor3"]:
+                state.x = randX * CONSTANTS.PIXELS + 32
+                state.y = randY * CONSTANTS.PIXELS + 32
                 validTile = True
             if attempts > 15:
                 raise Exception
@@ -30,37 +31,45 @@ def swap_map(state, map):
             CONSTANTS.MAP = generateRoom(state)
             attempts = 0
 
-
-    
     if map == "random":
+        stairCoords = []
         stairs_placed = False
         while not stairs_placed:
-            i = random.randint(0, len(CONSTANTS.MAP)-1)
-            j = random.randint(0, len(CONSTANTS.MAP[i])-1)
-            if "floor" in str(CONSTANTS.MAP[i][j]) and random.randint(0,10) == 5 and (i, j) != (floor(((state.x) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP[i])), floor(((state.y) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP))):
-                CONSTANTS.MAP[i][j] = "stairs_down"
+            floorList = list(zip(*np.where(CONSTANTS.originMap==1.0)))
+            if not floorList:
+                swap_map(state, map)
+                continue
 
+            randFloor = random.randrange(len(floorList))
+            randFloorX = floorList[randFloor][0]
+            randFloorY = floorList[randFloor][1]
+            if str(CONSTANTS.MAP[randFloorX][randFloorY]) in ["floor", "floor2", "floor3", "spike"]:
                 # print("PLAYER: ", (state.x // 64, state.y // 64))
                 # print("END: ", (i, j))
+                stairCoords = [randFloorX, randFloorY]
 
                 matrix = np.array(CONSTANTS.originMap)
                 grid = Grid(matrix=matrix)
 
                 start = grid.node(state.x // 64, state.y // 64)
-                end = grid.node(i, j)
+                end = grid.node(randFloorY, randFloorX)
 
-                finder = AStarFinder()
+                finder = AStarFinder(diagonal_movement=DiagonalMovement.never)
                 path, runs = finder.find_path(start, end, grid)
-                # print(path, runs)
-                if len(path) == 0:
-                    print("TEST")
-                    swap_map(state, map)
-                # print(astar(CONSTANTS.originMap, (state.x // 64, state.y // 64), (i, j)))
-                stairs_placed = True
-                # print((i,j) + (state.x/64, state.y/64))
 
-    state.x += 32
-    state.y += 32
+                print(len(path))
+                
+                if len(path) <= 2:
+                    print("TEST")
+                    return swap_map(state, map)
+                else:
+                    stairs_placed = True
+            
+        CONSTANTS.MAP[stairCoords[0]][stairCoords[1]] = "stairs_down"
+
+
+
+
     enemy.generate_enemies(state)
 
 
