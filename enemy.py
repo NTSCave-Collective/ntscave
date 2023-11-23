@@ -22,7 +22,7 @@ class Enemy:
         self.y = y
         self.species = species
         self.vel = {"worm": 2}[self.species]
-
+        self.damage = {"worm": 0.5}[self.species]
         self.away = False
         self.awayframe = 0
         self.awayangle = 0
@@ -107,7 +107,18 @@ class Enemy:
                 self.y += my
                 if not self.collision():
                     self.y -= my
-            
+
+                for enemy in state.enemies:
+                    if is_enemy_collision(state.hitbox_x, state.hitbox_y, state.hitbox_width, state.hitbox_height, enemy.hitbox_x, enemy.hitbox_y, enemy.hitbox_width, enemy.hitbox_height):
+                        # Deal damage to player
+                        if state.last_hit < state.frame:
+                            state.last_hit = state.frame + CONSTANTS.TICK
+                            state.hearts -= enemy.damage
+                            print(enemy.damage, state.hearts)
+
+                        # check if player health is zero
+                        if state.hearts <= 0:
+                            print("game over")
         except ZeroDivisionError:
             pass
 
@@ -172,8 +183,18 @@ def generate_enemies(state):
 def is_collision(player_x, player_y, enemy_hitbox_x, enemy_hitbox_y, enemy_hitbox_width, enemy_hitbox_height):
     # Check for collision considering hitbox
     return (
-        player_x + CONSTANTS.ATTACK_DISTANCE > enemy_hitbox_x and
-        player_x - CONSTANTS.ATTACK_DISTANCE < enemy_hitbox_x + enemy_hitbox_width and
-        player_y + CONSTANTS.ATTACK_DISTANCE > enemy_hitbox_y and
-        player_y - CONSTANTS.ATTACK_DISTANCE < enemy_hitbox_y + enemy_hitbox_height
+        player_x + CONSTANTS.ATTACKDISTANCE > enemy_hitbox_x and
+        player_x - CONSTANTS.ATTACKDISTANCE < enemy_hitbox_x + enemy_hitbox_width and
+        player_y + CONSTANTS.ATTACKDISTANCE > enemy_hitbox_y and
+        player_y - CONSTANTS.ATTACKDISTANCE < enemy_hitbox_y + enemy_hitbox_height
     )
+
+def is_enemy_collision(player_hitbox_x, player_hitbox_y, player_hitbox_width, player_hitbox_height, enemy_hitbox_x, enemy_hitbox_y, enemy_hitbox_width, enemy_hitbox_height):
+    return (
+        player_hitbox_x < enemy_hitbox_x + enemy_hitbox_width and
+        player_hitbox_x + player_hitbox_width > enemy_hitbox_x and
+        player_hitbox_y < enemy_hitbox_y + enemy_hitbox_height and
+        player_hitbox_y + player_hitbox_height > enemy_hitbox_y
+    )
+
+

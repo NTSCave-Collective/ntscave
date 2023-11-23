@@ -83,7 +83,7 @@ def create_main_surface(state, window, window_flags):
         # Set fps value
         state.clock.tick(CONSTANTS.TICK)
         state.frame += 1
-        print(state.clock.get_fps())
+        #print(state.clock.get_fps())
 
 
 class State():
@@ -122,6 +122,20 @@ class State():
         self.newLevel = False
         self.newLevel_frame = None
         self.newLevelWidth = False
+
+        # Define hitbox dimensions
+        self.hitbox_width = CONSTANTS.PIXELS/2
+        self.hitbox_height = CONSTANTS.PIXELS
+        self.hitbox_x = self.x - self.hitbox_width / 2
+        self.hitbox_y = self.y - self.hitbox_height
+
+        # Initialize hitbox position based on enemy position
+        self.update_hitbox_position()
+
+    def update_hitbox_position(self):
+        # Update hitbox position based on enemy position
+        self.hitbox_x = self.x - self.hitbox_width / 2
+        self.hitbox_y = self.y - self.hitbox_height
 
 def get_font(size):
     return pygame.font.Font("assets/font.ttf", size)
