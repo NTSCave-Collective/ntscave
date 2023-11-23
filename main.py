@@ -1,5 +1,4 @@
-import pygame
-import sys
+import pygame, sys, threading
 from button import Button
 import player
 import CONSTANTS
@@ -9,6 +8,7 @@ import rendering
 global running
 import ROOMS
 import math
+from time import sleep
 
 pygame.init()
 
@@ -16,7 +16,8 @@ window_flags = pygame.RESIZABLE | pygame.DOUBLEBUF
 SCREEN = pygame.display.set_mode(CONSTANTS.SCREEN_SIZE, window_flags, vsync=CONSTANTS.VSYNC)
 pygame.display.set_caption("Menu")
 
-BG = pygame.image.load("assets/Background.png")
+BG = pygame.image.load("assets/intro/BG.jpeg")
+pygame.transform.scale(BG, (1689, 990))
 
 def main(window, window_flags):
     # Initialize Pygame
@@ -123,7 +124,7 @@ class State():
         self.newLevelWidth = False
 
 def get_font(size):
-    return pygame.font.Font("assets/font.ttf", size)
+    return pygame.font.Font("assets/intro/font.ttf", size)
 
 def play():
     while True:
@@ -131,15 +132,18 @@ def play():
 
         SCREEN.fill("Black")
 
-        PLAY_TEXT = get_font(45).render("This is the PLAY screen.", True, "White")
-        PLAY_RECT = PLAY_TEXT.get_rect(center=(840, 260))
+        PLAY_TEXT = get_font(20).render("This is the PLAY screen.", True, "White")
+        PLAY_RECT = PLAY_TEXT.get_rect(center=((SCREEN.get_width() / 2), 100))
         SCREEN.blit(PLAY_TEXT, PLAY_RECT)
 
-        PLAY_BACK = Button(image=None, pos=(840, 460), 
+        PLAY_BACK = Button(image=None, pos=((SCREEN.get_width() / 2), 460), 
                             text_input="BACK", font=get_font(75), base_color="White", hovering_color="Green")
+        
+        CREATE_BUTTON = Button(image=None, pos=((SCREEN.get_width() / 10), (SCREEN.get_height() / 10 + 150)))
 
-        PLAY_BACK.changeColor(PLAY_MOUSE_POS)
-        PLAY_BACK.update(SCREEN)
+        for button in (PLAY_BACK, CREATE_BUTTON):
+            button.changeColor(PLAY_MOUSE_POS)
+            button.update(SCREEN)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -162,7 +166,7 @@ def options():
         SCREEN.fill("Black")
 
         OPTIONS_TEXT = get_font(45).render("This is the OPTIONS screen.", True, "White")
-        OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(840, 100))
+        OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=((SCREEN.get_width() / 2), 100))
         SCREEN.blit(OPTIONS_TEXT, OPTIONS_RECT)
 
         OPTIONS_BACK = Button(image=None, pos=(300, 550), 
@@ -208,7 +212,7 @@ def audio_settings():
         SCREEN.fill("Black")
         
         AUD_SET_TEXT = get_font(20).render("AUDIO SETTINGS", True, "White")
-        AUD_SET_RECT = AUD_SET_TEXT.get_rect(center=(840, 100))
+        AUD_SET_RECT = AUD_SET_TEXT.get_rect(center=((SCREEN.get_width() / 2), 100))
         SCREEN.blit(AUD_SET_TEXT, AUD_SET_RECT)
 
         AUD_SET_BACK = Button(image=None, pos=(300, 800),
@@ -238,8 +242,28 @@ def controls():
         SCREEN.fill("Black")
 
         CONTROLS_TEXT = get_font(20).render("CONTROLS", True, "White")
-        CONTROLS_RECT = CONTROLS_TEXT.get_rect(center=(840, 100))
+        CONTROLS_RECT = CONTROLS_TEXT.get_rect(center=((SCREEN.get_width() / 2), 100))
         SCREEN.blit(CONTROLS_TEXT, CONTROLS_RECT)
+
+        MOVE_UP_TEXT = get_font(15).render("MOVE UP", True, "White")
+        MOVE_UP_RECT = MOVE_UP_TEXT.get_rect(center=((SCREEN.get_width() / 10) + 90,(SCREEN.get_height() / 10 + 100))) 
+        SCREEN.blit(MOVE_UP_TEXT, MOVE_UP_RECT)
+
+        MOVE_DOWN_TEXT = get_font(15).render("MOVE DOWN", True, "White")
+        MOVE_DOWN_RECT = MOVE_DOWN_TEXT.get_rect(center=((SCREEN.get_width() / 10) + 105,(SCREEN.get_height() / 10 + 150)))
+        SCREEN.blit(MOVE_DOWN_TEXT, MOVE_DOWN_RECT)
+
+        MOVE_LEFT_TEXT = get_font(15).render("MOVE LEFT", True, "White")
+        MOVE_LEFT_RECT = MOVE_LEFT_TEXT.get_rect(center=((SCREEN.get_width() / 10) + 105,(SCREEN.get_height() / 10 + 200)))
+        SCREEN.blit(MOVE_LEFT_TEXT, MOVE_LEFT_RECT)
+
+        MOVE_RIGHT_TEXT = get_font(15).render("MOVE RIGHT", True, "White")
+        MOVE_RIGHT_RECT = MOVE_RIGHT_TEXT.get_rect(center=((SCREEN.get_width() / 10) + 113,(SCREEN.get_height() / 10 + 250)))
+        SCREEN.blit(MOVE_RIGHT_TEXT, MOVE_RIGHT_RECT)
+
+        HIT_TEXT = get_font(15).render("HIT", True, "White")
+        HIT_RECT = HIT_TEXT.get_rect(center=((SCREEN.get_width() / 10) + 60, (SCREEN.get_height() / 10 + 300)))
+        SCREEN.blit(HIT_TEXT, HIT_RECT)
 
         CONTROLS_BACK = Button(image=None, pos=(300, 800),
                                text_input="BACK", font=get_font(20), base_color="White", hovering_color="Green")
@@ -257,6 +281,82 @@ def controls():
 
         pygame.display.update()
 
+def resolution():
+
+    pygame.display.set_caption("Resolution")
+
+    while True:
+
+        SCREEN.fill("Black")
+
+        RESOLUTION_MOUSE_POS = pygame.mouse.get_pos()
+
+        RESOLUTION_TEXT = get_font(20).render("RESOLUTION", True, "White")
+        RESOLUTION_RECT = RESOLUTION_TEXT.get_rect(center=((SCREEN.get_width() / 2), 100))
+        SCREEN.blit(RESOLUTION_TEXT, RESOLUTION_RECT)
+
+        FULLSCREEN_BUTTON = Button(image=None, pos=(((SCREEN.get_width() / 10) + 5), (SCREEN.get_height() / 10) + 100),
+                              text_input="FULLSCREEN", font=get_font(15), base_color="White", hovering_color="Green")
+        
+        FIRST_BUTTON = Button(image=None, pos=((SCREEN.get_width() / 10) + 13, (SCREEN.get_height() / 10) + 150),
+                              text_input="7680 X 4320", font=get_font(15), base_color="White", hovering_color="Green")
+        
+        SECOND_BUTTON = Button(image=None, pos=(((SCREEN.get_width() / 10) + 10), (SCREEN.get_height() / 10) + 200),
+                              text_input="3840 X 2160", font=get_font(15), base_color="White", hovering_color="Green")
+        
+        THIRD_BUTTON = Button(image=None, pos=(((SCREEN.get_width() / 10) + 10), (SCREEN.get_height() / 10) + 250),
+                              text_input="2704 X 1520", font=get_font(15), base_color="White", hovering_color="Green")
+        
+        FOURTH_BUTTON = Button(image=None, pos=(((SCREEN.get_width() / 10) + 10), (SCREEN.get_height() / 10) + 300),
+                              text_input="2560 X 1440", font=get_font(15), base_color="White", hovering_color="Green")
+        
+        FIFTH_BUTTON = Button(image=None, pos=(((SCREEN.get_width() / 10) + 8), (SCREEN.get_height() / 10) + 350),
+                              text_input="1920 X 1080", font=get_font(15), base_color="White", hovering_color="Green")
+        
+        SIXTH_BUTTON = Button(image=None, pos=(((SCREEN.get_width() / 10)), (SCREEN.get_height() / 10) + 400),
+                              text_input="1280 X 720", font=get_font(15), base_color="White", hovering_color="Green")
+        
+        SEVENTH_BUTTON = Button(image=None, pos=(((SCREEN.get_width() / 10) - 5), (SCREEN.get_height() / 10) + 450),
+                              text_input="854 X 480", font=get_font(15), base_color="White", hovering_color="Green")
+        
+        EIGHT_BUTTON = Button(image=None, pos=(((SCREEN.get_width() / 10) - 5), (SCREEN.get_height() / 10) + 500),
+                              text_input="640 X 320", font=get_font(15), base_color="White", hovering_color="Green")
+        
+        RESOLUTION_BACK = Button(image=None, pos=((SCREEN.get_width() / 10 - 13), (SCREEN.get_height() - 100)),
+                              text_input="BACK", font=get_font(15), base_color="White", hovering_color="Green")
+        
+        for button in (FULLSCREEN_BUTTON, FIRST_BUTTON, SECOND_BUTTON, THIRD_BUTTON, FOURTH_BUTTON, FIFTH_BUTTON, SIXTH_BUTTON, SEVENTH_BUTTON, EIGHT_BUTTON, RESOLUTION_BACK):
+            button.changeColor(RESOLUTION_MOUSE_POS)
+            button.update(SCREEN)
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if FULLSCREEN_BUTTON.checkForInput(RESOLUTION_MOUSE_POS):
+                    pygame.display.set_mode(((SCREEN.get_width() / 2), (SCREEN.get_height() /2)), pygame.FULLSCREEN)
+                if FIRST_BUTTON.checkForInput(RESOLUTION_MOUSE_POS):
+                    pygame.display.set_mode((7680, 4320), pygame.RESIZABLE)
+                if SECOND_BUTTON.checkForInput(RESOLUTION_MOUSE_POS):
+                    pygame.display.set_mode((3840, 2160), pygame.RESIZABLE)
+                if THIRD_BUTTON.checkForInput(RESOLUTION_MOUSE_POS):
+                    pygame.display.set_mode((2704, 1520), pygame.RESIZABLE)
+                if FOURTH_BUTTON.checkForInput(RESOLUTION_MOUSE_POS):
+                    pygame.display.set_mode((2560, 1440), pygame.RESIZABLE)
+                if FIFTH_BUTTON.checkForInput(RESOLUTION_MOUSE_POS):
+                    pygame.display.set_mode((1920, 1080), pygame.RESIZABLE)
+                if SIXTH_BUTTON.checkForInput(RESOLUTION_MOUSE_POS):
+                    pygame.display.set_mode((1280, 720), pygame.RESIZABLE)
+                if SEVENTH_BUTTON.checkForInput(RESOLUTION_MOUSE_POS):
+                    pygame.display.set_mode((854, 480), pygame.RESIZABLE)
+                if EIGHT_BUTTON.checkForInput(RESOLUTION_MOUSE_POS):
+                    pygame.display.set_mode((640, 320), pygame.RESIZABLE)
+                if RESOLUTION_BACK.checkForInput(RESOLUTION_MOUSE_POS):
+                    video_settings()
+                
+            pygame.display.update()
+
 def video_settings():
 
     pygame.display.set_caption("Video Settings")
@@ -268,17 +368,24 @@ def video_settings():
         SCREEN.fill("Black")
         
         VID_SET_TEXT = get_font(20).render("VIDEO SETTINGS", True, "White")
-        VID_SET_RECT = VID_SET_TEXT.get_rect(center=(840, 100))
+        VID_SET_RECT = VID_SET_TEXT.get_rect(center=((SCREEN.get_width() / 2), 100))
         SCREEN.blit(VID_SET_TEXT, VID_SET_RECT)
 
         VID_SET_BACK = Button(image=None, pos=(300, 800),
                               text_input="BACK", font=get_font(20), base_color="White", hovering_color="Green")
         
-        VID_SET_BACK.changeColor(VID_SET_MOUSE_POS)
-        VID_SET_BACK.update(SCREEN)
+        RES_BUTTON = Button(image=None, pos=(360, 250),
+                              text_input="RESOLUTION", font=get_font(20), base_color="White", hovering_color="Green")
+        
+        VSYNC_BUTTON = Button(image=None, pos=((SCREEN.get_width() - 400), 300),
+                              text_input="0", font=get_font(30), base_color="White", hovering_color="Green")
+
+        for button in (VID_SET_BACK, RES_BUTTON, VSYNC_BUTTON):
+            button.changeColor(VID_SET_MOUSE_POS)
+            button.update(SCREEN)
 
         VSYNC_TEXT = get_font(20).render("VSYNC", True, "White")
-        VSYNC_RECT = VSYNC_TEXT.get_rect(center=(310, 250))
+        VSYNC_RECT = VSYNC_TEXT.get_rect(center=(310, 300))
         SCREEN.blit(VSYNC_TEXT, VSYNC_RECT)
 
         for event in pygame.event.get():
@@ -288,8 +395,15 @@ def video_settings():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if VID_SET_BACK.checkForInput(VID_SET_MOUSE_POS):
                     options()
+                if RES_BUTTON.checkForInput(VID_SET_MOUSE_POS):
+                    resolution()
+                if VSYNC_BUTTON.checkForInput(VID_SET_MOUSE_POS):
+                    VSYNC_ON = get_font(30).render("Vsync on!", True, "White")
+                    VSYNC_ON_RECT = VSYNC_ON.get_rect(center=((SCREEN.get_width() / 2), (SCREEN.get_height() - 200)))
+                    SCREEN.blit(VSYNC_ON, VSYNC_ON_RECT)
+                    sleep(1)
 
-        pygame.display.update()
+            pygame.display.update()
 
 def main_menu():
     
@@ -301,15 +415,15 @@ def main_menu():
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
         MENU_TEXT = get_font(100).render("MAIN MENU", True, "#b68f40")
-        MENU_RECT = MENU_TEXT.get_rect(center=(840, 100))
+        MENU_RECT = MENU_TEXT.get_rect(center=((SCREEN.get_width() / 2), 100))
 
-        PLAY_BUTTON = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(840, 250),
+        PLAY_BUTTON = Button(image=pygame.image.load("assets/intro/Play Rect.png"), pos=((SCREEN.get_width() / 2), 250),
                              text_input="PLAY", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
         
-        OPTIONS_BUTTON = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(840, 400),
+        OPTIONS_BUTTON = Button(image=pygame.image.load("assets/intro/Options Rect.png"), pos=((SCREEN.get_width() / 2), 400),
                              text_input="OPTIONS", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
         
-        QUIT_BUTTON = Button(image=pygame.image.load("assets/Quit Rect.png"), pos=(840, 550),
+        QUIT_BUTTON = Button(image=pygame.image.load("assets/intro/Quit Rect.png"), pos=((SCREEN.get_width() / 2), 550),
                              text_input="QUIT", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
         
         SCREEN.blit(MENU_TEXT, MENU_RECT)
@@ -335,5 +449,82 @@ def main_menu():
         pygame.display.update()
 
 state = State()
-enemy.generate_enemies(state)
-main_menu()
+
+def loading_screen():
+    pygame.display.set_caption("Loading Screen")
+
+    # Loading BG
+    LOADING_BG = pygame.image.load("assets/intro/Loading Bar Background.png")
+    LOADING_BG_RECT = LOADING_BG.get_rect(center=((SCREEN.get_width() / 2), 800))
+
+    loading_finished = False
+
+    WIDTH = 10
+
+    # Game loop
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+    
+        SCREEN.fill("#483C32")
+
+        TEXT = get_font(10).render("MADE BY", True, "White")
+        TEXT_RECT = TEXT.get_rect(center=(300, 250))
+        SCREEN.blit(TEXT, TEXT_RECT)
+
+        BRAND_LOGO = pygame.image.load("assets/intro/okapjfinish.png")
+        SCREEN.blit(BRAND_LOGO, (350, 200))
+
+        LOADING_TEXT = get_font(30).render("LOADING...", True, "White")
+        LOADING_TEXT_RECT = LOADING_TEXT.get_rect(center=((300, 800)))
+        SCREEN.blit(LOADING_TEXT, LOADING_TEXT_RECT)
+        SCREEN.blit(LOADING_BG, LOADING_BG_RECT)
+
+        pygame.draw.rect(SCREEN, "#e84464", ((SCREEN.get_width() / 2 - 365), 735, WIDTH, 130))
+            
+        while WIDTH < 730:
+            WIDTH += 1
+            pygame.draw.rect(SCREEN, "#e84464", ((SCREEN.get_width() / 2 - 365), 735, WIDTH, 130))
+            sleep(0.0005)
+            pygame.display.update()
+        
+        if WIDTH == 730:
+            loading_finished = True
+        
+        if loading_finished:
+            main_menu()
+
+        pygame.display.update()
+
+        
+
+def intro():
+
+    pygame.display.set_caption("Intro")
+
+    while True:
+
+        SCREEN.blit(BG, (0, 0))
+
+        INTRO_MOUSE_POS = pygame.mouse.get_pos()
+        
+        NEXT_BUTTON = Button(image=None, pos=((SCREEN.get_width() / 2), (SCREEN.get_height() /  2)),
+                             text_input="Press HERE to proceed", font=get_font(20), base_color="White", hovering_color="Green")
+
+        NEXT_BUTTON.changeColor(INTRO_MOUSE_POS)
+        NEXT_BUTTON.update(SCREEN)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if NEXT_BUTTON.checkForInput(INTRO_MOUSE_POS):
+                    loading_screen()
+        
+        pygame.display.update()
+
+
+intro()
