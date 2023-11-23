@@ -210,6 +210,6 @@ def generateRoom(state):
                 elif bottomNeighbor == WALL and bottomRightNeighbor == WALL and bottomLeftNeighbor == WALL:
                     room[i][j] = "wall_bottom"
                 else:
-                    room[i][j] = random.choices(["floor", "floor2", "floor3"], weights=(60,10,30), k=1)[0]
+                    room[i][j] = random.choices(["floor", "floor2", "floor3", "spike"], weights=(60,10,30,5), k=1)[0]
 
     return room
