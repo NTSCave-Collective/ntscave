@@ -84,7 +84,7 @@ class Enemy:
         try:
             dx, dy = (state.x-self.x), (state.y - self.y)
             angle = math.atan2(dy,dx)
-            if math.hypot(dx, dy) > CONSTANTS.PIXELS:
+            if math.hypot(dx, dy) > CONSTANTS.PIXELS/2:
                 if self.away:
                     mx = round(self.vel * math.cos(self.awayangle))
                     my = round(self.vel * math.sin(self.awayangle))
@@ -108,17 +108,20 @@ class Enemy:
                 if not self.collision():
                     self.y -= my
 
-                for enemy in state.enemies:
-                    if is_enemy_collision(state.hitbox_x, state.hitbox_y, state.hitbox_width, state.hitbox_height, enemy.hitbox_x, enemy.hitbox_y, enemy.hitbox_width, enemy.hitbox_height):
-                        # Deal damage to player
-                        if state.last_hit < state.frame:
-                            state.last_hit = state.frame + CONSTANTS.TICK
-                            state.hearts -= enemy.damage
-                            print(enemy.damage, state.hearts)
+            for enemy in state.enemies:
+                if is_enemy_collision(
+                        state.hitbox_x, state.hitbox_y, state.hitbox_width, state.hitbox_height,
+                        enemy.hitbox_x, enemy.hitbox_y, enemy.hitbox_width, enemy.hitbox_height
+                ):
+                    # Deal damage to player
+                    if state.last_hit < state.frame:
+                        state.last_hit = state.frame + CONSTANTS.TICK
+                        state.hearts -= enemy.damage
+                        print(enemy.damage, state.hearts)
 
-                        # check if player health is zero
-                        if state.hearts <= 0:
-                            print("game over")
+                    # check if player health is zero
+                    if state.hearts <= 0:
+                        print("game over")
         except ZeroDivisionError:
             pass
 
@@ -196,5 +199,4 @@ def is_enemy_collision(player_hitbox_x, player_hitbox_y, player_hitbox_width, pl
         player_hitbox_y < enemy_hitbox_y + enemy_hitbox_height and
         player_hitbox_y + player_hitbox_height > enemy_hitbox_y
     )
-
 
