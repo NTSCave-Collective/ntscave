@@ -19,15 +19,18 @@ def play():
 
         SCREEN.fill("Black")
 
-        PLAY_TEXT = get_font(45).render("This is the PLAY screen.", True, "White")
-        PLAY_RECT = PLAY_TEXT.get_rect(center=((SCREEN.get_width() / 2), ))
+        PLAY_TEXT = get_font(20).render("This is the PLAY screen.", True, "White")
+        PLAY_RECT = PLAY_TEXT.get_rect(center=((SCREEN.get_width() / 2), 100))
         SCREEN.blit(PLAY_TEXT, PLAY_RECT)
 
         PLAY_BACK = Button(image=None, pos=((SCREEN.get_width() / 2), 460), 
                             text_input="BACK", font=get_font(75), base_color="White", hovering_color="Green")
+        
+        CREATE_BUTTON = Button(image=None, pos=((SCREEN.get_width() / 10), (SCREEN.get_height() / 10 + 150)))
 
-        PLAY_BACK.changeColor(PLAY_MOUSE_POS)
-        PLAY_BACK.update(SCREEN)
+        for button in (PLAY_BACK, CREATE_BUTTON):
+            button.changeColor(PLAY_MOUSE_POS)
+            button.update(SCREEN)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -128,6 +131,26 @@ def controls():
         CONTROLS_TEXT = get_font(20).render("CONTROLS", True, "White")
         CONTROLS_RECT = CONTROLS_TEXT.get_rect(center=((SCREEN.get_width() / 2), 100))
         SCREEN.blit(CONTROLS_TEXT, CONTROLS_RECT)
+
+        MOVE_UP_TEXT = get_font(15).render("MOVE UP", True, "White")
+        MOVE_UP_RECT = MOVE_UP_TEXT.get_rect(center=((SCREEN.get_width() / 10) + 90,(SCREEN.get_height() / 10 + 100))) 
+        SCREEN.blit(MOVE_UP_TEXT, MOVE_UP_RECT)
+
+        MOVE_DOWN_TEXT = get_font(15).render("MOVE DOWN", True, "White")
+        MOVE_DOWN_RECT = MOVE_DOWN_TEXT.get_rect(center=((SCREEN.get_width() / 10) + 105,(SCREEN.get_height() / 10 + 150)))
+        SCREEN.blit(MOVE_DOWN_TEXT, MOVE_DOWN_RECT)
+
+        MOVE_LEFT_TEXT = get_font(15).render("MOVE LEFT", True, "White")
+        MOVE_LEFT_RECT = MOVE_LEFT_TEXT.get_rect(center=((SCREEN.get_width() / 10) + 105,(SCREEN.get_height() / 10 + 200)))
+        SCREEN.blit(MOVE_LEFT_TEXT, MOVE_LEFT_RECT)
+
+        MOVE_RIGHT_TEXT = get_font(15).render("MOVE RIGHT", True, "White")
+        MOVE_RIGHT_RECT = MOVE_RIGHT_TEXT.get_rect(center=((SCREEN.get_width() / 10) + 113,(SCREEN.get_height() / 10 + 250)))
+        SCREEN.blit(MOVE_RIGHT_TEXT, MOVE_RIGHT_RECT)
+
+        HIT_TEXT = get_font(15).render("HIT", True, "White")
+        HIT_RECT = HIT_TEXT.get_rect(center=((SCREEN.get_width() / 10) + 60, (SCREEN.get_height() / 10 + 300)))
+        SCREEN.blit(HIT_TEXT, HIT_RECT)
 
         CONTROLS_BACK = Button(image=None, pos=(300, 800),
                                text_input="BACK", font=get_font(20), base_color="White", hovering_color="Green")
