@@ -44,46 +44,66 @@ class Enemy:
             enemy = pygame.image.load(os.path.join(tiles.name_to_entity[self.species]["left"][animframe])).convert_alpha()
         elif self.upFacing:
             enemy = pygame.image.load(os.path.join(tiles.name_to_entity[self.species]["left"][animframe])).convert_alpha()
-        window.blit(enemy, (self.x - CONSTANTS.PIXELS/2, self.y - CONSTANTS.PIXELS/2))
+
+        window.blit(enemy, (self.x - CONSTANTS.PIXELS/2, self.y - CONSTANTS.PIXELS))
+
+    def collision(self):
+        tilePosY = floor(((self.y) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP))
+        tilePosX = floor(((self.x) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP[tilePosY]))
+
+        try:
+            currentTile = CONSTANTS.MAP[tilePosY][tilePosX]
+        except:
+            return True
+        
+        playertileX = floor((self.x % CONSTANTS.PIXELS) // (CONSTANTS.PIXELS/4))
+        playertileY = floor((self.y % CONSTANTS.PIXELS) // (CONSTANTS.PIXELS/4))
+
+        return not (tiles.bounds[currentTile][playertileY][playertileX] and not currentTile in tiles.event_for_bound_blocks)
 
     def move(self, state):
         try:
             dx, dy = (state.x-self.x), (state.y - self.y)
-            dist = math.hypot(dx, dy)
             angle = math.atan2(dy,dx)
-
-            if dist > 0.3:
+            if math.hypot(dx, dy) > CONSTANTS.PIXELS:
                 if self.away:
-                    self.x += self.vel * round(math.cos(self.awayangle))
-                    self.y += self.vel * round(math.sin(self.awayangle))
+                    mx = round(self.vel * math.cos(self.awayangle))
+                    my = round(self.vel * math.sin(self.awayangle))
                     if self.awayframe + CONSTANTS.TICK == state.frame:
                         self.away = False
-                elif random.randint(0,CONSTANTS.TICK*4) == 0:
+                elif random.randint(0, CONSTANTS.TICK*10) == 0:
                     self.awayangle = (random.random()-0.5)*pi
-                    self.x += self.vel * round(math.cos(self.awayangle))
-                    self.y += self.vel * round(math.sin(self.awayangle))
+                    mx = round(self.vel * math.cos(self.awayangle))
+                    my = round(self.vel * math.sin(self.awayangle))
                     self.away = True
                     self.awayframe = state.frame
                 else:
-                    self.x += self.vel * round(math.cos(angle))
-                    self.y += self.vel * round(math.sin(angle))
+                    mx = round(self.vel * math.cos(angle))
+                    my = round(self.vel * math.sin(angle))
+                
+                self.x += mx
+                if not self.collision():
+                    self.x += mx
+
+                self.y += my
+                if not self.collision():
+                    self.y += my
             
         except ZeroDivisionError:
             pass
 
 
 def spawn_enemies_on_floor(state, num_random_enemies):
-    max_dist = 6*64
     enemies = []
 
     for _ in range(num_random_enemies):
         valid_tile = False
         attempts = 0
         while not valid_tile and attempts <= 5:
-            rand_y = random.randint(state.y-max_dist, state.y+max_dist) // 64
+            rand_y = random.randint(0, len(CONSTANTS.MAP)*64) // 64
             if rand_y < 0:
                 continue
-            rand_x = random.randint(state.x-max_dist, state.x+max_dist) // 64
+            rand_x = random.randint(0, len(CONSTANTS.MAP[rand_y])*64) // 64
             if rand_x < 0:
                 continue
             attempts += 1
