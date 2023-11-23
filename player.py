@@ -38,20 +38,21 @@ def drawPlayer(window, state):
     window.blit(player, (state.x - CONSTANTS.PIXELS/2, state.y - CONSTANTS.PIXELS))
 
 def newLevel(window, state):
-    if state.frame + CONSTANTS.TICK*3 < state.newLevel_frame:
+    if state.frame < state.newLevel_frame + CONSTANTS.TICK*3:
         animframe = floor((state.frame % CONSTANTS.TICK) / (CONSTANTS.TICK/4))
-    elif state.frame + CONSTANTS.TICK*5 < state.newLevel_frame + CONSTANTS.TICK*3:
-        animframe = floor((state.frame % (CONSTANTS.TICK/2)) / (CONSTANTS.TICK/4))
-    elif state.frame + CONSTANTS.TICK*6 < state.newLevel_frame + CONSTANTS.TICK*5:
-        animframe = floor((state.frame % (CONSTANTS.TICK/4)) / (CONSTANTS.TICK/4))
+    elif state.frame + CONSTANTS.TICK*3 < state.newLevel_frame + CONSTANTS.TICK*5:
+        animframe = floor((state.frame % (CONSTANTS.TICK)) / (CONSTANTS.TICK/8))
+    elif state.frame + CONSTANTS.TICK*5 < state.newLevel_frame + CONSTANTS.TICK*6:
+        print("last")
+        animframe = floor((state.frame % (CONSTANTS.TICK)) / (CONSTANTS.TICK/16))
     else:
-        animframe = 4
-
+        animframe = 0
+    print(animframe)
     player = get_image(tiles.player["spin"][animframe])
 
     window.blit(player, (state.x - CONSTANTS.PIXELS/2, state.y - CONSTANTS.PIXELS))
 
-    if state.frame + CONSTANTS.TICK*6:
+    if state.frame + CONSTANTS.TICK*6 == state.newLevel_frame + CONSTANTS.TICK*6:
         state.newLevel = False
         state.newLevel_frame = None
         CONSTANTS.MAP = ROOMS.swap_map(state, "random")

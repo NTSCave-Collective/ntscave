@@ -118,6 +118,7 @@ bounds = {
 def next_level(state):
     state.level += 1
     state.newLevel_frame = state.frame
+    state.newLevel = True
 
 def spike_damage(state):
     if state.last_hit < state.frame:
