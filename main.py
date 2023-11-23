@@ -258,13 +258,13 @@ def video_settings():
         VID_SET_RECT = VID_SET_TEXT.get_rect(center=((SCREEN.get_width() / 2), 100))
         SCREEN.blit(VID_SET_TEXT, VID_SET_RECT)
 
-        VID_SET_BACK = Button(image=None, pos=(300, 800),
+        VID_SET_BACK = Button(image=None, pos=((SCREEN.get_width() / 10) + 85, (SCREEN.get_height() - 100)),
                               text_input="BACK", font=get_font(20), base_color="White", hovering_color="Green")
         
-        RES_BUTTON = Button(image=None, pos=(360, 250),
+        RES_BUTTON = Button(image=None, pos=(SCREEN.get_width() / 10 + 150, SCREEN.get_height() / 10 + 200),
                               text_input="RESOLUTION", font=get_font(20), base_color="White", hovering_color="Green")
         
-        VSYNC_BUTTON = Button(image=None, pos=((SCREEN.get_width() - 400), 300),
+        VSYNC_BUTTON = Button(image=None, pos=((SCREEN.get_width() - 300), SCREEN.get_height() / 10 + 250),
                               text_input="0", font=get_font(30), base_color="White", hovering_color="Green")
 
         for button in (VID_SET_BACK, RES_BUTTON, VSYNC_BUTTON):
@@ -272,7 +272,7 @@ def video_settings():
             button.update(SCREEN)
 
         VSYNC_TEXT = get_font(20).render("VSYNC", True, "White")
-        VSYNC_RECT = VSYNC_TEXT.get_rect(center=(310, 300))
+        VSYNC_RECT = VSYNC_TEXT.get_rect(center=(SCREEN.get_width() / 10 + 100, SCREEN.get_width() / 10 + 170))
         SCREEN.blit(VSYNC_TEXT, VSYNC_RECT)
 
         for event in pygame.event.get():
