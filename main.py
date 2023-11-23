@@ -12,7 +12,7 @@ import math
 
 pygame.init()
 
-window_flags = pygame.RESIZABLE | pygame.DOUBLEBUF | pygame.SCALED
+window_flags = pygame.RESIZABLE | pygame.DOUBLEBUF
 SCREEN = pygame.display.set_mode(CONSTANTS.SCREEN_SIZE, window_flags, vsync=CONSTANTS.VSYNC)
 pygame.display.set_caption("Menu")
 
@@ -34,9 +34,7 @@ def create_main_surface(state, window, window_flags):
     # window = pygame.display.set_mode(CONSTANTS.SCREEN_SIZE, window_flags, vsync=CONSTANTS.VSYNC)
 
     # All gameObjects except the bg is added to this surface to be able to move the camera with the player
-    gameObjects = pygame.Surface(
-        (CONSTANTS.SURFACE_WIDTH, CONSTANTS.SURFACE_HEIGHT), pygame.SRCALPHA, 32)
-    gameObjects = gameObjects.convert_alpha()
+    gameObjects = pygame.Surface((CONSTANTS.SURFACE_WIDTH, CONSTANTS.SURFACE_HEIGHT), pygame.SRCALPHA, 32).convert_alpha()    
     
     while running:
         if state.newLevelWidth == True:
@@ -60,7 +58,8 @@ def create_main_surface(state, window, window_flags):
                 if event.key == pygame.K_i:
                     ROOMS.swap_map(state, "random")
                 if event.key == pygame.K_f:
-                    rendering.toggle_fullscreen(window)
+                    CONSTANTS.VSYNC = 0
+                    rendering.toggle_fullscreen()
                 elif event.key == pygame.K_ESCAPE:
                     running = False
             elif event.type == pygame.QUIT:
@@ -69,6 +68,8 @@ def create_main_surface(state, window, window_flags):
                 CONSTANTS.SCREEN_SIZE = event.size
                 CONSTANTS.SCREEN_WIDTH = CONSTANTS.SCREEN_SIZE[0]
                 CONSTANTS.SCREEN_HEIGHT = CONSTANTS.SCREEN_SIZE[1]
+                CONSTANTS.SURFACE_WIDTH = CONSTANTS.SCREEN_SIZE[0]
+                CONSTANTS.SURFACE_HEIGHT = CONSTANTS.SCREEN_SIZE[1]
                 CONSTANTS.BOUND = math.ceil(max(CONSTANTS.SCREEN_HEIGHT, CONSTANTS.SCREEN_WIDTH)/2 /CONSTANTS.PIXELS +2) *CONSTANTS.PIXELS
                 window = pygame.display.set_mode(CONSTANTS.SCREEN_SIZE, window_flags, vsync=CONSTANTS.VSYNC)
 
@@ -105,7 +106,7 @@ class State():
         self.level = 1
 
         self.last_hit = CONSTANTS.TICK
-        self.hearts = 3
+        self.hearts = 7.5
 
         self.attacking = False
         self.attackframe = None

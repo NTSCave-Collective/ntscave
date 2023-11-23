@@ -7,6 +7,8 @@ import player
 import CONSTANTS
 import enemy
 import animation
+import hud
+
 global image_cache
 image_cache = {}
 
@@ -28,6 +30,8 @@ def render_frame(window, gameObjects, state):
 
     # Move all gameObjects based on the player position 
     camera(window, gameObjects, state)
+
+    hud.draw_hud(window, state)
     
     pygame.display.update()
 
@@ -68,9 +72,8 @@ def camera(window, gameObjects, state):
     clear_surface(gameObjects)
 
 
-def toggle_fullscreen(window):
+def toggle_fullscreen():
     pygame.display.toggle_fullscreen()
-    return pygame.display.get_surface()
 
 def draw_enemies(game_objects, state):
     for enemy in state.enemies:

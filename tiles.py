@@ -72,7 +72,12 @@ slash = {
     "down": ["assets/slash/down.png", "assets/slash/down2.png", "assets/slash/down3.png", "assets/empty.png"]
 }
 
-spike = ["spike1", "spike2", "spike3"]
+hud = {
+    "heart_full": "assets/player/heart_full.png",
+    "heart_half": "assets/player/heart_half.png",
+}
+
+spike = ["spike1", "spike2"] + ["spike3"] * 55 + ["spike2", "spike", "spike"]
 
 species_list = ["worm"]
 name_to_entity = {"worm": worm, "spike": spike}
