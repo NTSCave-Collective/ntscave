@@ -83,7 +83,8 @@ def create_main_surface(state, window, window_flags):
         # Set fps value
         state.clock.tick(CONSTANTS.TICK)
         state.frame += 1
-#        print(state.clock.get_fps())
+        if not CONSTANTS.DEBUG:
+            print(state.clock.get_fps())
 
 class State():
     def __init__(self):
@@ -108,16 +109,20 @@ class State():
         self.last_hit = CONSTANTS.TICK
         self.hearts = 5
         
+        self.attack = 1
         self.attacking = False
         self.attackframe = None
         self.hit_grace = None
+        self.crit = 0.1
 
         self.leftFacing = False
         self.rightFacing = False
         self.upFacing = False
         self.downFacing = True  # Default facing down
+
         self.enemies = list()
         self.animations = list()
+        self.effects = list()
 
         self.newLevel = False
         self.newLevel_frame = None

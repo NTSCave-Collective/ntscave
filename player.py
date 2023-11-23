@@ -6,6 +6,8 @@ import CONSTANTS
 import ROOMS
 from enemy import is_collision
 from enemy import is_enemy_collision
+import effects
+import random
 
 global player_cache
 player_cache = {}
@@ -96,15 +98,22 @@ def handle_player_attack(state):
             
     if state.attacking:
         for enemy in state.enemies:
-            if is_collision(state.x, state.y, enemy.hitbox_x, enemy.hitbox_y, enemy.hitbox_width, enemy.hitbox_height):
-                if enemy.species is "worm":
-                    CONSTANTS.WORM_COUNTER += 1
-                elif enemy.species is "trojan":
-                    CONSTANTS.TROJAN_COUNTER += 1
-                
-                print("Worms killed: ", CONSTANTS.WORM_COUNTER)
-                print("trojan killed: ", CONSTANTS.TROJAN_COUNTER)
-                state.enemies.remove(enemy)
+            if (not enemy.hit) and is_collision(state.x, state.y, enemy.hitbox_x, enemy.hitbox_y, enemy.hitbox_width, enemy.hitbox_height):
+                enemy.hit = True
+                enemy.hitframe = state.frame
+                damage = state.attack
+                damage += floor(random.random()+state.crit)*state.attack
+                enemy.health -= damage
+                print(damage)
+                if enemy.health <= 0:
+                    if enemy.species is "worm":
+                        CONSTANTS.WORM_COUNTER += 1
+                    elif enemy.species is "trojan":
+                        CONSTANTS.TROJAN_COUNTER += 1
+                    
+                    print("Worms killed: ", CONSTANTS.WORM_COUNTER)
+                    print("Trojans killed: ", CONSTANTS.TROJAN_COUNTER)
+                    state.enemies.remove(enemy)
 
 
 

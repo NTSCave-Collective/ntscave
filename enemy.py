@@ -23,9 +23,13 @@ class Enemy:
         self.species = species
         self.vel = {"worm": 2, "trojan": 3.6}[self.species]
         self.damage = {"worm": 0.5, "trojan": 1}[self.species]
+        self.health = {"worm": 1, "trojan": 3}[self.species]
         self.away = False
         self.awayframe = 0
         self.awayangle = 0
+
+        self.hit = False
+        self.hitframe = -CONSTANTS.TICK
         
         # Define hitbox dimensions
         self.hitbox_width = CONSTANTS.PIXELS
@@ -52,6 +56,9 @@ class Enemy:
         if math.hypot(state.x-self.x, state.y-self.y) > (CONSTANTS.BOUND+1)*64:
             return
 
+        if self.hit and (self.hitframe + CONSTANTS.TICK) < state.frame:
+            self.hit = False
+            
         animframe = floor((state.frame % CONSTANTS.TICK) / (CONSTANTS.TICK/4))
 
         if self.downFacing:

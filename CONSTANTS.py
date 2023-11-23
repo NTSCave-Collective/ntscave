@@ -32,6 +32,9 @@ PIXELS = 64
 ATTACKDISTANCE = PIXELS
 BUFFER = 20
 
+BOOSTLENGTH = 20
+CRITSCALE = 20
+
 # Background images
 BACKGROUND_IMAGES = [
         ["wallcorner_topleft","frontwall_center","frontwall_center","frontwall_center","frontwall_center","frontwall_center","frontwall_center","wallcorner_topright"],
