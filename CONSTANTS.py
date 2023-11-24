@@ -20,6 +20,8 @@ VSYNC = 0
 GRID_SPACING = 1000
 GRID_COLOR = [0, 0, 0]
 
+TEXT_COLOR = "#7289da"
+
 # Camera constants 
 EXPANSION_THRESHOLD = 50
 

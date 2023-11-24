@@ -21,10 +21,21 @@ def get_font(size):
     return font_cache[size]
 
 def draw_hud(window, state):
-    FPS = get_font(round(CONSTANTS.PIXELS/2)).render(f"FPS: {state.clock.get_fps():.2f}", True, "#b68f40")
-    window.blit(FPS, (0, window.get_height()-CONSTANTS.PIXELS/2))
-    level = get_font(round(CONSTANTS.PIXELS/2)).render(f"LVL: {state.level}", True, "#b68f40")
-    window.blit(level, (0, window.get_height()-(CONSTANTS.PIXELS/2)*2))
+    textsize = round(CONSTANTS.PIXELS/3)
+
+    hudtext = [
+        get_font(textsize).render(f"FPS: {state.clock.get_fps():.2f}", True, CONSTANTS.TEXT_COLOR),
+        get_font(textsize).render(f"LVL: {state.level}", True, CONSTANTS.TEXT_COLOR),
+        
+        get_font(textsize).render(f"RAN: {CONSTANTS.ATTACKDISTANCE/64:.1f}", True, CONSTANTS.TEXT_COLOR),
+        get_font(textsize).render(f"CRI: {state.crit*100:.1f}%", True, CONSTANTS.TEXT_COLOR),
+        get_font(textsize).render(f"ATT: {state.attack:.1f}", True, CONSTANTS.TEXT_COLOR),
+        get_font(textsize).render(f"VEL: {state.vel:.1f}", True, CONSTANTS.TEXT_COLOR),
+    ]
+    
+    for i in range(0, len(hudtext)):
+        window.blit(hudtext[i], (0, window.get_height()-textsize*(i+1)))
+
     
     for i in range(1, int(state.hearts*2+1)):
         if not (i % 2) :
