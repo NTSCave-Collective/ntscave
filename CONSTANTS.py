@@ -35,7 +35,7 @@ BUFFER = 20
 
 
 def BOOSTLENGTH():
-    return random.randint(1,10)
+    return random.randint(1,5)
 CRITSCALE = 20
 
 # Background images

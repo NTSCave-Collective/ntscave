@@ -1,7 +1,7 @@
 import pygame
 import tiles
 import os
-from math import floor
+import math
 import CONSTANTS
 import ROOMS
 from enemy import is_collision
@@ -18,7 +18,7 @@ def get_image(key):
     return player_cache[key]
 
 def drawPlayer(window, state):
-    animframe = floor((state.frame % CONSTANTS.TICK) / (CONSTANTS.TICK/4))
+    animframe = math.floor((state.frame % CONSTANTS.TICK) / (CONSTANTS.TICK/4))
 
     if state.moving:
         if state.downFacing:
@@ -48,11 +48,11 @@ def drawPlayer(window, state):
 
 def newLevel(window, state):
     if state.frame < state.newLevel_frame + CONSTANTS.TICK*2:
-        animframe = floor((state.frame % CONSTANTS.TICK) / (CONSTANTS.TICK/4))
+        animframe = math.floor((state.frame % CONSTANTS.TICK) / (CONSTANTS.TICK/4))
     elif state.frame < state.newLevel_frame + CONSTANTS.TICK*4:
-        animframe = floor(((state.frame*2) % (CONSTANTS.TICK)) / (CONSTANTS.TICK/4))
+        animframe = math.floor(((state.frame*2) % (CONSTANTS.TICK)) / (CONSTANTS.TICK/4))
     elif state.frame < state.newLevel_frame + CONSTANTS.TICK*6:
-        animframe = floor(((state.frame*4) % (CONSTANTS.TICK)) / (CONSTANTS.TICK/4))
+        animframe = math.floor(((state.frame*4) % (CONSTANTS.TICK)) / (CONSTANTS.TICK/4))
     else:
         animframe = 3
         
@@ -70,7 +70,7 @@ def attack(window, state):
 
     x_move = 0
     y_move = 0
-    animframe = floor((state.attackframe % CONSTANTS.TICK) / (CONSTANTS.TICK/4))
+    animframe = math.floor((state.attackframe % CONSTANTS.TICK) / (CONSTANTS.TICK/4))
     if state.downFacing:
         slash = get_image(tiles.slash["down"][animframe])
         y_move += CONSTANTS.ATTACKDISTANCE
@@ -101,8 +101,9 @@ def handle_player_attack(state):
             if (not enemy.hit) and is_collision(state.x, state.y, enemy.hitbox_x, enemy.hitbox_y, enemy.hitbox_width, enemy.hitbox_height):
                 enemy.hit = True
                 enemy.hitframe = state.frame
+                enemy.hitangle = math.atan2((state.y - enemy.y), (state.x-enemy.x))
                 damage = state.attack
-                damage += floor(random.random()+state.crit)*state.attack
+                damage += math.floor(random.random()+state.crit)*state.attack
                 enemy.health -= damage
                 if CONSTANTS.DEBUG:
                     print(damage)
@@ -134,30 +135,30 @@ def playerEvents(state):
                 state.activeEffects.append(effect)
 
     def collision(heading):
-        tilePosY = floor(((state.y) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP))
-        tilePosX = floor(((state.x) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP[tilePosY]))
+        tilePosY = math.floor(((state.y) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP))
+        tilePosX = math.floor(((state.x) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP[tilePosY]))
 
         try:
             currentTile = CONSTANTS.MAP[tilePosY][tilePosX]
         except:
             return True
         
-        playertileX = floor((state.x % CONSTANTS.PIXELS) // (CONSTANTS.PIXELS/4))
-        playertileY = floor((state.y % CONSTANTS.PIXELS) // (CONSTANTS.PIXELS/4))
+        playertileX = math.floor((state.x % CONSTANTS.PIXELS) // (CONSTANTS.PIXELS/4))
+        playertileY = math.floor((state.y % CONSTANTS.PIXELS) // (CONSTANTS.PIXELS/4))
 
         return not (tiles.bounds[currentTile][playertileY][playertileX] and not currentTile in tiles.event_for_bound_blocks)
 
     def collisionEvents(state):
-        tilePosX = floor(((state.x) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP[0]))
-        tilePosY = floor(((state.y) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP))
+        tilePosX = math.floor(((state.x) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP[0]))
+        tilePosY = math.floor(((state.y) / CONSTANTS.PIXELS) % len(CONSTANTS.MAP))
 
         try:
             currentTile = CONSTANTS.MAP[tilePosY][tilePosX]
         except:
             return True
         
-        playertileX = floor((state.x % CONSTANTS.PIXELS) // (CONSTANTS.PIXELS/4))
-        playertileY = floor((state.y % CONSTANTS.PIXELS) // (CONSTANTS.PIXELS/4))
+        playertileX = math.floor((state.x % CONSTANTS.PIXELS) // (CONSTANTS.PIXELS/4))
+        playertileY = math.floor((state.y % CONSTANTS.PIXELS) // (CONSTANTS.PIXELS/4))
 
         if tiles.bounds[currentTile][playertileY][playertileX] and currentTile in tiles.event_for_bound_blocks:
             tiles.tileEvents(tilePosX, tilePosY, currentTile, state)

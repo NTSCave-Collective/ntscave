@@ -85,9 +85,7 @@ framelength = {
 }
 
 def effectEvent(state):
-    for e in state.activeEffects:   
-        if e.used:
-            continue
+    for e in state.activeEffects:
         if e.effect == "health":
             health(state, e)
         elif e.effect == "healthboost":
@@ -109,7 +107,7 @@ def effectEvent(state):
         elif e.effect == "distanceboost":
             distanceboost(state, e)
         e.used = True
-    state.activeEffects = list(filter(lambda e: state.frame == e.end_frame, state.activeEffects))
+    state.activeEffects = list(filter(lambda e: state.frame != e.end_frame, state.activeEffects))
 
 class Effect():
     def __init__(self, x, y, frame, effect):
@@ -135,8 +133,8 @@ class Effect():
             pygame.draw.rect(window, (255, 0, 0), (self.hitbox_x, self.hitbox_y, self.hitbox_width, self.hitbox_height), 2)
 
 def drop_effect(x,y, state):
-    if random.randint(0,4) == 0 or True:
+    if random.randint(0,4) == 0:
         e = random.choices(effect_list, weights=effect_weights, k=1)[0]
-        e = random.choices([e, e+"boost"], weights=(1,10), k=1)[0]
+        e = random.choices([e, e+"boost"], weights=(2,1), k=1)[0]
         effect = Effect(x,y, state.frame, e)
         state.effects.append(effect)

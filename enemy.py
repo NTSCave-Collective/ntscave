@@ -55,11 +55,12 @@ class Enemy:
     def draw(self, window, state):
         if math.hypot(state.x-self.x, state.y-self.y) > (CONSTANTS.BOUND+1)*64:
             return
+            
+        animframe = floor((state.frame % CONSTANTS.TICK) / (CONSTANTS.TICK/4))
 
         if self.hit and (self.hitframe + CONSTANTS.TICK) < state.frame:
             self.hit = False
-            
-        animframe = floor((state.frame % CONSTANTS.TICK) / (CONSTANTS.TICK/4))
+            animframe = floor((self.hitframe % CONSTANTS.TICK) / (CONSTANTS.TICK/4))
 
         if self.downFacing:
             enemy = get_image(tiles.name_to_entity[self.species]["down"][animframe]).convert_alpha()
@@ -98,13 +99,17 @@ class Enemy:
         return not (tiles.bounds[currentTile][playertileY][playertileX] and not currentTile in tiles.event_for_bound_blocks)
 
     def move(self, state):
-        if math.hypot(state.x-self.x, state.y-self.y) > (CONSTANTS.BOUND+1)*64 or self.hit:
+        if math.hypot(state.x-self.x, state.y-self.y) > (CONSTANTS.BOUND+1)*64:
             return
         try:
             dx, dy = (state.x-self.x), (state.y - self.y)
             angle = math.atan2(dy,dx)
             if math.hypot(dx, dy) > CONSTANTS.PIXELS/2:
-                if self.away:
+
+                if self.hit:
+                    mx = -round(self.vel * math.cos(self.hitangle))/2
+                    my = -round(self.vel * math.sin(self.hitangle))/2
+                elif self.away:
                     mx = round(self.vel * math.cos(self.awayangle))
                     my = round(self.vel * math.sin(self.awayangle))
                     if self.awayframe + CONSTANTS.TICK == state.frame:
@@ -126,7 +131,7 @@ class Enemy:
                 self.y += my
                 if not self.collision():
                     self.y -= my
-
+                
             for enemy in state.enemies:
                 if is_enemy_collision(
                         state.hitbox_x, state.hitbox_y, state.hitbox_width, state.hitbox_height,
