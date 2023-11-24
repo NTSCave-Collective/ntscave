@@ -169,7 +169,7 @@ def playerEvents(state):
     def movement():
         state.moving = False
         
-        if keys[pygame.K_LEFT]:
+        if keys[pygame.K_LEFT] or keys[pygame.K_q] or keys[pygame.K_a]:
             state.moving = True
             state.x -= state.vel
             if not collision("left"):
@@ -181,7 +181,7 @@ def playerEvents(state):
             if not keys[pygame.K_DOWN]:
                 state.downFacing = False
 
-        if keys[pygame.K_RIGHT]:
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             state.moving = True
             state.x += state.vel
             if not collision("right"):
@@ -193,7 +193,7 @@ def playerEvents(state):
             if not keys[pygame.K_DOWN]:
                 state.downFacing = False
 
-        if keys[pygame.K_UP]:
+        if keys[pygame.K_UP] or keys[pygame.K_w] or keys[pygame.K_z]:
             state.moving = True
             state.y -= state.vel
             if not collision("up"):
@@ -205,7 +205,7 @@ def playerEvents(state):
             if not keys[pygame.K_RIGHT]:
                 state.rightFacing = False
 
-        if keys[pygame.K_DOWN]:
+        if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             state.moving = True
             state.y += state.vel
             if not collision("down"):

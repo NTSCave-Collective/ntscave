@@ -115,8 +115,8 @@ class Effect():
         self.y = y
         self.hitbox_width = CONSTANTS.PIXELS/2
         self.hitbox_height = CONSTANTS.PIXELS/2
-        self.hitbox_x = self.x - self.hitbox_width / 2
-        self.hitbox_y = self.y - self.hitbox_height / 2
+        self.hitbox_x = self.x - self.hitbox_width * 3/4
+        self.hitbox_y = self.y - self.hitbox_height * 3/4
         self.used = False
         self.effect = effect
     

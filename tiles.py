@@ -96,7 +96,7 @@ spike = ["spike1", "spike2"] + ["spike3"] #* 55 + ["spike2", "spike", "spike"]
 species_list = ["worm", "trojan", "virus"]
 name_to_entity = {"worm": worm, "trojan": trojan, "spike": spike, "virus": virus}
 
-event_for_bound_blocks = ["spike", "spike1", "spike2", "stairs_down"]
+event_for_bound_blocks = ["spike", "spike1", "spike2", "spike3", "stairs_down"]
 
 bounds = {
     None: BOUNDINGS.no_bounding,
@@ -138,8 +138,8 @@ bounds = {
 
 def next_level(state):
     state.level += 1
-    CONSTANTS.roomHeight += 2
-    CONSTANTS.roomWidth += 2
+    CONSTANTS.roomHeight = 12 + 2*state.level
+    CONSTANTS.roomWidth = 12 + 2*state.level
     if CONSTANTS.roomHeight > 150 or CONSTANTS.roomWidth > 150:
         CONSTANTS.TICK = 30
     CONSTANTS.SURFACE_WIDTH = CONSTANTS.PIXELS * CONSTANTS.roomWidth
