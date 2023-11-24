@@ -32,8 +32,8 @@ class Enemy:
         self.hitframe = -CONSTANTS.TICK
         
         # Define hitbox dimensions
-        self.hitbox_width = CONSTANTS.PIXELS
-        self.hitbox_height = CONSTANTS.PIXELS
+        self.hitbox_width = CONSTANTS.PIXELS*3/4
+        self.hitbox_height = CONSTANTS.PIXELS*3/4
 
         # Adjust hitbox position relative to enemy position
         self.hitbox_x = self.x - self.hitbox_width / 2

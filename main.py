@@ -134,7 +134,7 @@ class State():
 
         # Define hitbox dimensions
         self.hitbox_width = CONSTANTS.PIXELS/2
-        self.hitbox_height = CONSTANTS.PIXELS
+        self.hitbox_height = CONSTANTS.PIXELS *3/4
         self.hitbox_x = self.x - self.hitbox_width / 2
         self.hitbox_y = self.y - self.hitbox_height
 
