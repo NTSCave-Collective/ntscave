@@ -227,7 +227,6 @@ def options():
 
 def main_menu_sound():
 
-    pygame.display.set_caption("Main Menu Sound")
     pygame.mixer.init()
 
     while True:
