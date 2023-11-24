@@ -3,6 +3,7 @@ import os
 import tiles
 import CONSTANTS
 from math import floor
+import effects
 
 global hud_cache
 hud_cache = {}
@@ -20,3 +21,7 @@ def draw_hud(window, state):
         elif i == int(state.hearts*2):
             hud = get_image(tiles.hud["heart_half"])
             window.blit(hud, ((i/2-0.5)*CONSTANTS.PIXELS, 0))
+
+    for e in range(0, len(state.activeEffects)):
+            hud = get_image(effects.effects[state.activeEffects[e].effect])
+            window.blit(hud, ( window.get_width() - CONSTANTS.PIXELS , CONSTANTS.PIXELS*e))

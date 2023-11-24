@@ -3,7 +3,7 @@ import math
 import random
 
 # Initial Screen constants
-DEBUG = False
+DEBUG = True
 
 SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = 768
@@ -35,7 +35,7 @@ BUFFER = 20
 
 
 def BOOSTLENGTH():
-    return random.randint(1,5)
+    return random.randint(5,150)
 CRITSCALE = 20
 
 # Background images
