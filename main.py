@@ -548,7 +548,7 @@ def video_settings():
                     SCREEN.blit(VSYNC_ON, VSYNC_ON_RECT)
                     sleep(1)
 
-            pygame.display.update()
+        pygame.display.update()
 
 def main_menu():
     
