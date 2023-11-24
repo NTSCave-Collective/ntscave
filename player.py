@@ -113,10 +113,13 @@ def handle_player_attack(state):
                         CONSTANTS.WORM_COUNTER += 1
                     elif enemy.species == "trojan":
                         CONSTANTS.TROJAN_COUNTER += 1
+                    elif enemy.species == "virus":
+                        CONSTANTS.VIRUS_COUNTER += 1
                     
                     if CONSTANTS.DEBUG:
                         print("Worms killed: ", CONSTANTS.WORM_COUNTER)
                         print("Trojans killed: ", CONSTANTS.TROJAN_COUNTER)
+                        print("Viruses killed: ", CONSTANTS.VIRUS_COUNTER)
                     state.enemies.remove(enemy)
 
 
