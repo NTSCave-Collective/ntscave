@@ -131,9 +131,6 @@ class Enemy:
                         state.hearts -= enemy.damage
                         print(enemy.damage, state.hearts)
 
-                    # check if player health is zero
-                        if state.hearts <= 0:
-                            print("game over")
         except ZeroDivisionError:
             pass
 
@@ -152,9 +149,9 @@ def spawn_enemies_on_floor(state, num_random_enemies):
                 continue
             attempts += 1
             try:
-                if "floor" in str(CONSTANTS.MAP[rand_y][rand_x]):
-                    x_pos = (rand_x + random.random())*CONSTANTS.PIXELS + CONSTANTS.PIXELS/2
-                    y_pos = (rand_y + random.random())*CONSTANTS.PIXELS + CONSTANTS.PIXELS/2
+                if str(CONSTANTS.MAP[rand_y][rand_x]) in ["floor", "floor2", "floor3", "spike"]:
+                    x_pos = (rand_x + random.random())*CONSTANTS.PIXELS
+                    y_pos = (rand_y + random.random())*CONSTANTS.PIXELS
                     species = random.choice(tiles.species_list)
 
                     # Calculate distance between potential enemy spawn point and player

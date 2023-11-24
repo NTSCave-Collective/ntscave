@@ -5,7 +5,6 @@ import CONSTANTS
 import random
 import enemy
 import rendering
-global running
 import ROOMS
 import math
 from time import sleep
@@ -28,7 +27,7 @@ def create_main_surface(state, window, window_flags):
     # Tuple representing width and height in pixels
     state.clock = pygame.time.Clock()
 
-    running = True
+    state.running = True
 
     # Create window with given size
     # window_flags = pygame.RESIZABLE | pygame.DOUBLEBUF | pygame.SCALED
@@ -36,8 +35,9 @@ def create_main_surface(state, window, window_flags):
 
     # All gameObjects except the bg is added to this surface to be able to move the camera with the player
     gameObjects = pygame.Surface((CONSTANTS.SURFACE_WIDTH, CONSTANTS.SURFACE_HEIGHT), pygame.SRCALPHA, 32).convert_alpha()    
+    gameOver = pygame.Surface(((window.get_width() // 2, window.get_height() // 2)), pygame.SRCALPHA, 32).convert_alpha()    
     
-    while running:
+    while state.running and not state.gameOver:
         if state.newLevelWidth == True:
             gameObjects = pygame.Surface(
                 (CONSTANTS.SURFACE_WIDTH, CONSTANTS.SURFACE_HEIGHT), pygame.SRCALPHA, 32)
@@ -62,9 +62,9 @@ def create_main_surface(state, window, window_flags):
                     CONSTANTS.VSYNC = 0
                     rendering.toggle_fullscreen()
                 elif event.key == pygame.K_ESCAPE:
-                    running = False
+                    state.running = False
             elif event.type == pygame.QUIT:
-                running = False
+                state.running = False
             elif event.type == pygame.VIDEORESIZE:
                 CONSTANTS.SCREEN_SIZE = event.size
                 CONSTANTS.SCREEN_WIDTH = CONSTANTS.SCREEN_SIZE[0]
@@ -79,7 +79,7 @@ def create_main_surface(state, window, window_flags):
             player.playerEvents(state)
 
         # All gameObjects get rendered in here
-        rendering.render_frame(window, gameObjects, state)
+        rendering.render_frame(window, gameObjects, gameOver, state)
 
         # Set fps value
         state.clock.tick(CONSTANTS.TICK)
@@ -90,7 +90,8 @@ def create_main_surface(state, window, window_flags):
 class State():
     def __init__(self):
         map = CONSTANTS.MAP
-        # print(map)
+        self.running = True
+        self.gameOver = False
         validTile = False
         while not validTile:
             randY = random.randint(0, len(map))
@@ -108,7 +109,7 @@ class State():
         self.level = 1
 
         self.last_hit = CONSTANTS.TICK
-        self.hearts = 5
+        self.hearts = 1
         
         self.attack = 1
         self.attacking = False

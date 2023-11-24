@@ -10,6 +10,7 @@ import animation
 import hud
 import os
 import effects
+import button
 
 global image_cache
 image_cache = {}
@@ -20,7 +21,30 @@ def get_image(key):
         # image_cache[key] = pygame.image.load(os.path.join(tiles.tiles[key]))
     return image_cache[key]
 
-def render_frame(window, gameObjects, state):
+def render_frame(window, gameObjects, gameOver, state):
+    
+    # check if player health is zero
+    if state.hearts <= 0:
+        state.gameOver = True
+        print("game over")
+        while state.gameOver:
+            GAMEOVER_MOUSE_POS = pygame.mouse.get_pos()
+            font = pygame.font.Font("assets/intro/font.ttf", 64)
+            gameOverText = font.render('Game Over :(', False, (100, 0, 0))
+            gameOverRect = gameOverText.get_rect(center=(window.get_width() // 2, window.get_height() // 2))
+            window.blit(gameOverText, gameOverRect)
+            gameOverButton = button.Button(base_color=(255,255,255), font=font,hovering_color=(200,200,200), image=None, pos=(window.get_width() // 2, window.get_height() // 2 * 1.4), text_input="Restart")
+            gameOverButton.changeColor(GAMEOVER_MOUSE_POS)
+            gameOverButton.update(window)
+
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if gameOverButton.checkForInput(GAMEOVER_MOUSE_POS):
+                        state.gameOver = False
+                        state.running = False
+
+            pygame.display.update()
+
     animation.tileAnimations(state)
     draw_grid(gameObjects, state)
 
