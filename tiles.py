@@ -72,6 +72,13 @@ trojan = {
     "down": ["assets/enemy/trojan_right1.png", "assets/enemy/trojan_right2.png", "assets/enemy/trojan_right1.png", "assets/enemy/trojan_right2.png"]
 }
 
+virus = {
+    "left": ["assets/enemy/virus1.png", "assets/enemy/virus2.png", "assets/enemy/virus1.png", "assets/enemy/virus2.png"],
+    "right": ["assets/enemy/virus1.png", "assets/enemy/virus2.png", "assets/enemy/virus1.png", "assets/enemy/virus2.png"],
+    "down": ["assets/enemy/virus1.png", "assets/enemy/virus2.png", "assets/enemy/virus1.png", "assets/enemy/virus2.png"],
+    "up": ["assets/enemy/virus1.png", "assets/enemy/virus2.png", "assets/enemy/virus1.png", "assets/enemy/virus2.png"]
+}
+
 slash = {
     "left": ["assets/slash/left.png", "assets/slash/left2.png", "assets/slash/left3.png", "assets/empty.png"],
     "right": ["assets/slash/right.png", "assets/slash/right2.png", "assets/slash/right3.png", "assets/empty.png"],
@@ -86,8 +93,8 @@ hud = {
 
 spike = ["spike1", "spike2"] + ["spike3"] #* 55 + ["spike2", "spike", "spike"]
 
-species_list = ["worm", "trojan"]
-name_to_entity = {"worm": worm, "trojan": trojan, "spike": spike}
+species_list = ["worm", "trojan", "virus"]
+name_to_entity = {"worm": worm, "trojan": trojan, "spike": spike, "virus": virus}
 
 event_for_bound_blocks = ["spike", "spike1", "spike2", "spike3", "stairs_down"]
 

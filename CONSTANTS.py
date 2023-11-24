@@ -1,5 +1,6 @@
 import ROOMS
 import math
+import random
 
 # Initial Screen constants
 DEBUG = False
@@ -32,7 +33,9 @@ PIXELS = 64
 ATTACKDISTANCE = PIXELS
 BUFFER = 20
 
-BOOSTLENGTH = 20
+
+def BOOSTLENGTH():
+    return random.randint(1,10)
 CRITSCALE = 20
 
 # Background images

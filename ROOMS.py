@@ -61,6 +61,7 @@ def swap_map(state, map):
     CONSTANTS.SURFACE_WIDTH = CONSTANTS.PIXELS * len(CONSTANTS.MAP)
     CONSTANTS.SURFACE_HEIGHT = CONSTANTS.PIXELS * max([len(y) for y in CONSTANTS.MAP])
     state.newLevelWidth = True
+    state.effects = list()
 
 def generateRoom():
 

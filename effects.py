@@ -29,47 +29,59 @@ effects = {
     "distanceboost": "assets/effect/distance_perm.png"
 }
 
-def health(state):
+def health(state, e):
     state.hearts += 1
 
-def healthboost(state):
+def healthboost(state, e):
     state.hearts += 2
 
-def speed(state):
+def speed(state, e):
     state.vel += 0.1
 
-def speedboost(state):
-    pass
+def speedboost(state, e):
+    if not e.used:
+        state.vel += 1
+    if state.frame == e.end_frame:
+        state.vel -= 1
 
-def crit(state):
+def crit(state, e):
     state.crit += state.crit/CONSTANTS.CRITSCALE
 
-def critboost(state):
-    pass
+def critboost(state, e):
+    if not e.used:
+        state.crit += state.crit/(CONSTANTS.CRITSCALE/2)
+    if state.frame == e.end_frame:
+        state.crit -= state.crit/(CONSTANTS.CRITSCALE/2)
 
-def attack(state):
+def attack(state, e):
     state.attack += 0.1
 
-def attackboost(state):
-    pass
+def attackboost(state, e):
+    if not e.used:
+        state.attack += 1
+    if state.frame == e.end_frame:
+        state.attack -= 1
 
-def distance(state):
+def distance(state, e):
     CONSTANTS.ATTACKDISTANCE += CONSTANTS.PIXELS/8
 
-def distanceboost(state):
-    pass
+def distanceboost(state, e):
+    if not e.used:
+        CONSTANTS.ATTACKDISTANCE += CONSTANTS.PIXELS
+    if state.frame == e.end_frame:
+        CONSTANTS.ATTACKDISTANCE -= CONSTANTS.PIXELS
 
 framelength = {
     "health": 1,
     "healthboost": 1,
     "speed": 1,
-    "speedboost": CONSTANTS.TICK*CONSTANTS.BOOSTLENGTH,
+    "speedboost": CONSTANTS.TICK*CONSTANTS.BOOSTLENGTH(),
     "crit": 1,
-    "critboost": CONSTANTS.TICK*CONSTANTS.BOOSTLENGTH,
+    "critboost": CONSTANTS.TICK*CONSTANTS.BOOSTLENGTH(),
     "attack": 1,
-    "attackboost": CONSTANTS.TICK*CONSTANTS.BOOSTLENGTH,
+    "attackboost": CONSTANTS.TICK*CONSTANTS.BOOSTLENGTH(),
     "distance": 1,
-    "distanceboost": CONSTANTS.TICK*CONSTANTS.BOOSTLENGTH,
+    "distanceboost": CONSTANTS.TICK*CONSTANTS.BOOSTLENGTH(),
 }
 
 def effectEvent(state):
@@ -77,25 +89,25 @@ def effectEvent(state):
         if e.used:
             continue
         if e.effect == "health":
-            health(state)
+            health(state, e)
         elif e.effect == "healthboost":
-            healthboost(state)
+            healthboost(state, e)
         elif e.effect == "speed":
-            speed(state)
+            speed(state, e)
         elif e.effect == "speedboost":
-            speedboost(state)
+            speedboost(state, e)
         elif e.effect == "crit":
-            crit(state)
+            crit(state, e)
         elif e.effect == "critboost":
-            critboost(state)
+            critboost(state, e)
         elif e.effect == "attack":
-            attack(state)
+            attack(state, e)
         elif e.effect == "attackboost":
-            attackboost(state)
+            attackboost(state, e)
         elif e.effect == "distance":
-            distance(state)
+            distance(state, e)
         elif e.effect == "distanceboost":
-            distanceboost(state)
+            distanceboost(state, e)
         e.used = True
     state.activeEffects = list(filter(lambda e: state.frame == e.end_frame, state.activeEffects))
 
@@ -123,8 +135,8 @@ class Effect():
             pygame.draw.rect(window, (255, 0, 0), (self.hitbox_x, self.hitbox_y, self.hitbox_width, self.hitbox_height), 2)
 
 def drop_effect(x,y, state):
-    if random.randint(0,2) == 0:
+    if random.randint(0,4) == 0 or True:
         e = random.choices(effect_list, weights=effect_weights, k=1)[0]
-        e = random.choices([e, e+"boost"], weights=(2,1), k=1)[0]
+        e = random.choices([e, e+"boost"], weights=(1,10), k=1)[0]
         effect = Effect(x,y, state.frame, e)
         state.effects.append(effect)

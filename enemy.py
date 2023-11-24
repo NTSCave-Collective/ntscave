@@ -21,9 +21,9 @@ class Enemy:
         self.x = x
         self.y = y
         self.species = species
-        self.vel = {"worm": 2, "trojan": 3.6}[self.species]
-        self.damage = {"worm": 0.5, "trojan": 0.5}[self.species]
-        self.health = {"worm": 1, "trojan": 3}[self.species]
+        self.vel = {"worm": 2, "trojan": 3.6, "virus": 1}[self.species]
+        self.damage = {"worm": 0.5, "trojan": 0.5, "virus": 1}[self.species]
+        self.health = {"worm": 1, "trojan": 3, "virus": 2}[self.species]
         self.away = False
         self.awayframe = 0
         self.awayangle = 0
