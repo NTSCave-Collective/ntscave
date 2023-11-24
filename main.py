@@ -17,7 +17,7 @@ SCREEN = pygame.display.set_mode(CONSTANTS.SCREEN_SIZE, window_flags, vsync=CONS
 pygame.display.set_caption("Menu")
 
 BG = pygame.image.load("assets/intro/BG.jpeg")
-pygame.transform.scale(BG, (1689, 990))
+pygame.transform.scale(SCREEN, (CONSTANTS.SCREEN_WIDTH, CONSTANTS.SCREEN_HEIGHT))
 
 def main(window, window_flags):
     # Initialize Pygame
@@ -356,7 +356,7 @@ def resolution():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if FULLSCREEN_BUTTON.checkForInput(RESOLUTION_MOUSE_POS):
-                    pygame.display.set_mode(((SCREEN.get_width() / 2), (SCREEN.get_height() /2)), pygame.FULLSCREEN)
+                    pygame.display.set_mode((SCREEN.get_width(), SCREEN.get_height()), pygame.FULLSCREEN)
                 if FIRST_BUTTON.checkForInput(RESOLUTION_MOUSE_POS):
                     pygame.display.set_mode((7680, 4320), pygame.RESIZABLE)
                 if SECOND_BUTTON.checkForInput(RESOLUTION_MOUSE_POS):
@@ -381,7 +381,7 @@ def resolution():
 def video_settings():
 
     pygame.display.set_caption("Video Settings")
-
+    vsync_status = CONSTANTS.VSYNC 
     while True:
     
         VID_SET_MOUSE_POS = pygame.mouse.get_pos()
@@ -399,15 +399,18 @@ def video_settings():
                               text_input="RESOLUTION", font=get_font(20), base_color="White", hovering_color="Green")
         
         VSYNC_BUTTON = Button(image=None, pos=((SCREEN.get_width() - 400), 300),
-                              text_input="0", font=get_font(30), base_color="White", hovering_color="Green")
+                              text_input=str(vsync_status), font=get_font(30), base_color="White", hovering_color="Green")
 
         for button in (VID_SET_BACK, RES_BUTTON, VSYNC_BUTTON):
             button.changeColor(VID_SET_MOUSE_POS)
             button.update(SCREEN)
 
-        VSYNC_TEXT = get_font(20).render("VSYNC", True, "White")
+        # Update the VSYNC_TEXT based on the current state of VSYNC
+        vsync_status = "ON" if CONSTANTS.VSYNC else "OFF"
+        VSYNC_TEXT = get_font(20).render(f"VSYNC", True, "White")
         VSYNC_RECT = VSYNC_TEXT.get_rect(center=(310, 300))
         SCREEN.blit(VSYNC_TEXT, VSYNC_RECT)
+
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -419,12 +422,10 @@ def video_settings():
                 if RES_BUTTON.checkForInput(VID_SET_MOUSE_POS):
                     resolution()
                 if VSYNC_BUTTON.checkForInput(VID_SET_MOUSE_POS):
-                    VSYNC_ON = get_font(30).render("Vsync on!", True, "White")
-                    VSYNC_ON_RECT = VSYNC_ON.get_rect(center=((SCREEN.get_width() / 2), (SCREEN.get_height() - 200)))
-                    SCREEN.blit(VSYNC_ON, VSYNC_ON_RECT)
-                    sleep(1)
+                    CONSTANTS.VSYNC = not CONSTANTS.VSYNC  # Toggle between True and False
+                    print(f"VSYNC")
 
-            pygame.display.update()
+        pygame.display.update()
 
 def main_menu():
     
