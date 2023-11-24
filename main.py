@@ -276,7 +276,6 @@ def main_menu_sound():
         MAIN_MENU_SOUND_BACK = Button(image=None, pos=(SCREEN.get_width() / 10 + 100, SCREEN.get_height() / 10 + 700),
                                       text_input="BACK", font=get_font(15), base_color="White", hovering_color="Green")
         
-
         for button in (LOUDEST_BUTTON, FIRST_BUTTON, SECOND_BUTTON, THIRD_BUTTON, FOURTH_BUTTON, FIFTH_BUTTON, SIXTH_BUTTON, SEVENTH_BUTTON, EIGHTH_BUTTON, NINTH_BUTTON, NO_SOUND, MAIN_MENU_SOUND_BACK):
             button.changeColor(MAIN_MENU_SOUND_MOUSE_POS)
             button.update(SCREEN)
@@ -293,8 +292,6 @@ def main_menu_sound():
                     audio_settings()
     
         pygame.display.update()
-
-
 
 def audio_settings():
 
