@@ -3,7 +3,7 @@ import math
 import random
 
 # Initial Screen constants
-DEBUG = False
+DEBUG = True
 
 SCREEN_WIDTH = 1080
 SCREEN_HEIGHT = 720
@@ -25,14 +25,14 @@ TEXT_COLOR = "#7289da"
 # Camera constants 
 EXPANSION_THRESHOLD = 50
 
+PIXELS = 64
+
 # Player constants
 PLAYER_START_X_POSITION =  SCREEN_WIDTH // 2
 PLAYER_START_Y_POSITION = SCREEN_HEIGHT // 2
 PLAYER_SPEED = 5
 
-PIXELS = 64
-
-ATTACKDISTANCE = PIXELS*1.5
+ATTACKDISTANCE = PIXELS
 BUFFER = 20
 
 

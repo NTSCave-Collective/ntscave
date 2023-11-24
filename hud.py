@@ -31,6 +31,9 @@ def draw_hud(window, state):
         get_font(textsize).render(f"CRI: {state.crit*100:.1f}%", True, CONSTANTS.TEXT_COLOR),
         get_font(textsize).render(f"ATT: {state.attack:.1f}", True, CONSTANTS.TEXT_COLOR),
         get_font(textsize).render(f"VEL: {state.vel:.1f}", True, CONSTANTS.TEXT_COLOR),
+
+        get_font(textsize).render(f"X: {state.x//CONSTANTS.PIXELS}", True, CONSTANTS.TEXT_COLOR),
+        get_font(textsize).render(f"Y: {state.y//CONSTANTS.PIXELS}", True, CONSTANTS.TEXT_COLOR),
     ]
     
     for i in range(0, len(hudtext)):
