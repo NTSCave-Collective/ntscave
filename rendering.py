@@ -40,8 +40,7 @@ def render_frame(window, gameObjects, gameOver, state):
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if gameOverButton.checkForInput(GAMEOVER_MOUSE_POS):
-                        state.gameOver = False
-                        state.running = False
+                        state.resetVars()
 
             pygame.display.update()
 
