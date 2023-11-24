@@ -75,7 +75,7 @@ class Enemy:
             # zero out RGB values
             enemy.fill((0, 0, 0, 255), None, pygame.BLEND_RGBA_MULT)
             # add in new RGB values
-            enemy.fill((255, 0, 0, 255)[0:3] + (0,), None, pygame.BLEND_RGBA_ADD)
+            enemy.fill((255, 0, 0)[0:3] + (0,), None, pygame.BLEND_RGBA_ADD)
 
 
         window.blit(enemy, (self.x - CONSTANTS.PIXELS/2, self.y - CONSTANTS.PIXELS/2))
@@ -155,7 +155,7 @@ def spawn_enemies_on_floor(state, num_random_enemies):
     for _ in range(num_random_enemies):
         valid_tile = False
         attempts = 0
-        while not valid_tile and attempts <= 5:
+        while not valid_tile and attempts <= 10:
             rand_y = random.randint(0, len(CONSTANTS.MAP)-1)
             if rand_y < 0:
                 continue
@@ -165,8 +165,8 @@ def spawn_enemies_on_floor(state, num_random_enemies):
             attempts += 1
             try:
                 if "floor" in str(CONSTANTS.MAP[rand_y][rand_x]):
-                    x_pos = (rand_x + random.random())*CONSTANTS.PIXELS + CONSTANTS.PIXELS/2
-                    y_pos = (rand_y + random.random())*CONSTANTS.PIXELS + CONSTANTS.PIXELS/2
+                    x_pos = (rand_x + random.random())*CONSTANTS.PIXELS
+                    y_pos = (rand_y + random.random())*CONSTANTS.PIXELS
                     species = random.choice(tiles.species_list)
 
                     # Calculate distance between potential enemy spawn point and player

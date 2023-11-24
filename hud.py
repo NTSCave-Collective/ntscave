@@ -13,7 +13,19 @@ def get_image(key):
         hud_cache[key] = pygame.image.load(os.path.join(key)).convert_alpha()
     return hud_cache[key]
 
+global font_cache
+font_cache = {}
+def get_font(size):
+    if not size in font_cache:
+        font_cache[size] = pygame.font.Font("assets/intro/font.ttf", size)
+    return font_cache[size]
+
 def draw_hud(window, state):
+    FPS = get_font(round(CONSTANTS.PIXELS/2)).render(f"FPS: {state.clock.get_fps():.2f}", True, "#b68f40")
+    window.blit(FPS, (0, window.get_height()-CONSTANTS.PIXELS/2))
+    level = get_font(round(CONSTANTS.PIXELS/2)).render(f"LVL: {state.level}", True, "#b68f40")
+    window.blit(level, (0, window.get_height()-(CONSTANTS.PIXELS/2)*2))
+    
     for i in range(1, int(state.hearts*2+1)):
         if not (i % 2) :
             hud = get_image(tiles.hud["heart_full"])

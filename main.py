@@ -146,8 +146,12 @@ class State():
         self.hitbox_x = self.x - self.hitbox_width / 2
         self.hitbox_y = self.y - self.hitbox_height
 
+global font_cache
+font_cache = {}
 def get_font(size):
-    return pygame.font.Font("assets/intro/font.ttf", size)
+    if not size in font_cache:
+        font_cache[size] = pygame.font.Font("assets/intro/font.ttf", size)
+    return font_cache[size]
 
 def play():
     while True:
@@ -523,7 +527,7 @@ def main_menu():
 
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
-        MENU_TEXT = get_font(100).render("MAIN MENU", True, "#b68f40")
+        MENU_TEXT = get_font(100).render("NTSCave", True, "#b68f40")
         MENU_RECT = MENU_TEXT.get_rect(center=((SCREEN.get_width() / 2), 100))
 
         PLAY_BUTTON = Button(image=pygame.image.load("assets/intro/Play Rect.png"), pos=((SCREEN.get_width() / 2), 250),

@@ -57,11 +57,12 @@ def swap_map(state, map):
     else:
         CONSTANTS.MAP = map
 
-    enemy.generate_enemies(state)
     CONSTANTS.SURFACE_WIDTH = CONSTANTS.PIXELS * len(CONSTANTS.MAP)
     CONSTANTS.SURFACE_HEIGHT = CONSTANTS.PIXELS * max([len(y) for y in CONSTANTS.MAP])
     state.newLevelWidth = True
+    enemy.generate_enemies(state)
     state.effects = list()
+    state.animations = list()
 
 def generateRoom():
 

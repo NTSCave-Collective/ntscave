@@ -96,7 +96,7 @@ spike = ["spike1", "spike2"] + ["spike3"] #* 55 + ["spike2", "spike", "spike"]
 species_list = ["worm", "trojan", "virus"]
 name_to_entity = {"worm": worm, "trojan": trojan, "spike": spike, "virus": virus}
 
-event_for_bound_blocks = ["spike", "spike1", "spike2", "spike3", "stairs_down"]
+event_for_bound_blocks = ["spike", "spike1", "spike2", "stairs_down"]
 
 bounds = {
     None: BOUNDINGS.no_bounding,

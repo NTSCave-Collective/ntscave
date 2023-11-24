@@ -38,7 +38,7 @@ def drawPlayer(window, state):
             player = get_image(tiles.player["left"][animframe])
         elif state.upFacing:
             player = get_image(tiles.player["up"][animframe])
-
+    
     window.blit(player, (state.x - CONSTANTS.PIXELS/2, state.y - CONSTANTS.PIXELS))
     # Draw hitbox (for debugging purposes)
     if CONSTANTS.DEBUG:
@@ -47,11 +47,11 @@ def drawPlayer(window, state):
         
 
 def newLevel(window, state):
-    if state.frame < state.newLevel_frame + CONSTANTS.TICK*2:
+    if state.frame < state.newLevel_frame + CONSTANTS.TICK*1:
         animframe = math.floor((state.frame % CONSTANTS.TICK) / (CONSTANTS.TICK/4))
-    elif state.frame < state.newLevel_frame + CONSTANTS.TICK*4:
+    elif state.frame < state.newLevel_frame + CONSTANTS.TICK*2:
         animframe = math.floor(((state.frame*2) % (CONSTANTS.TICK)) / (CONSTANTS.TICK/4))
-    elif state.frame < state.newLevel_frame + CONSTANTS.TICK*6:
+    elif state.frame < state.newLevel_frame + CONSTANTS.TICK*3:
         animframe = math.floor(((state.frame*4) % (CONSTANTS.TICK)) / (CONSTANTS.TICK/4))
     else:
         animframe = 3
@@ -60,7 +60,7 @@ def newLevel(window, state):
 
     window.blit(player, (state.x - CONSTANTS.PIXELS/2, state.y - CONSTANTS.PIXELS))
     
-    if state.frame == state.newLevel_frame + CONSTANTS.TICK*6:
+    if state.frame == state.newLevel_frame + CONSTANTS.TICK*3.5:
         state.newLevel = False
         state.newLevel_frame = None
         ROOMS.swap_map(state, "random")
