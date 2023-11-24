@@ -104,7 +104,7 @@ class Enemy:
         try:
             dx, dy = (state.x-self.x), (state.y - self.y)
             angle = math.atan2(dy,dx)
-            if math.hypot(dx, dy) > CONSTANTS.PIXELS/2:
+            if math.hypot(dx, dy) > CONSTANTS.PIXELS/2 or self.hit:
 
                 if self.hit:
                     mx = -round(self.vel * math.cos(self.hitangle))/2

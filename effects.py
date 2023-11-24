@@ -135,6 +135,6 @@ class Effect():
 def drop_effect(x,y, state):
     if random.randint(0,4) == 0:
         e = random.choices(effect_list, weights=effect_weights, k=1)[0]
-        e = random.choices([e, e+"boost"], weights=(2,1), k=1)[0]
+        e = random.choices([e, e+"boost"], weights=(3,1), k=1)[0]
         effect = Effect(x,y, state.frame, e)
         state.effects.append(effect)
