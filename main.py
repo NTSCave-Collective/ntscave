@@ -17,7 +17,7 @@ SCREEN = pygame.display.set_mode(CONSTANTS.SCREEN_SIZE, window_flags, vsync=CONS
 pygame.display.set_caption("NTSCave")
 
 BG = pygame.image.load("assets/intro/BG.jpeg")
-pygame.transform.scale(SCREEN, (1689, 990))
+pygame.transform.scale(SCREEN, (SCREEN.get_width(), SCREEN.get_height()))
 
 def main(window, window_flags):
     # Initialize Pygame
@@ -153,35 +153,6 @@ def get_font(size):
         font_cache[size] = pygame.font.Font("assets/intro/font.ttf", size)
     return font_cache[size]
 
-def play():
-    while True:
-        PLAY_MOUSE_POS = pygame.mouse.get_pos()
-
-        SCREEN.blit(BG, (0, 0))
-
-        PLAY_TEXT = get_font(20).render("This is the PLAY screen.", True, "White")
-        PLAY_RECT = PLAY_TEXT.get_rect(center=((SCREEN.get_width() / 2), SCREEN.get_height() / 10))
-        SCREEN.blit(PLAY_TEXT, PLAY_RECT)
-
-        PLAY_BACK = Button(image=None, pos=((SCREEN.get_width() / 2), 460), 
-                            text_input="BACK", font=get_font(75), base_color="White", hovering_color="Green")
-        
-        CREATE_BUTTON = Button(image=None, pos=((SCREEN.get_width() / 10), (SCREEN.get_height() / 10 + 150)))
-
-        for button in (PLAY_BACK, CREATE_BUTTON):
-            button.changeColor(PLAY_MOUSE_POS)
-            button.update(SCREEN)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if PLAY_BACK.checkForInput(PLAY_MOUSE_POS):
-                    main_menu()
-
-        pygame.display.update()
-
 def options():
 
     while True:
@@ -208,6 +179,7 @@ def options():
         
         main_menu_sfx = pygame.mixer.Sound("assets/intro/sounds/main menu.wav")
         main_menu_sfx.play()
+        main_menu_sfx.set_volume(0.5)
         
         for button in (VIDEOSETTINGS_BUTTON, OPTIONS_BACK, CONTROLS_BUTTON, AUDIOSETTINGS_BUTTON):
             button.changeColor(OPTIONS_MOUSE_POS)
@@ -219,12 +191,16 @@ def options():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
                     main_menu()
                 if VIDEOSETTINGS_BUTTON.checkForInput(OPTIONS_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
                     video_settings()
                 if CONTROLS_BUTTON.checkForInput(OPTIONS_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
                     controls()
                 if AUDIOSETTINGS_BUTTON.checkForInput(OPTIONS_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
                     audio_settings()
 
         pygame.display.update()
@@ -276,15 +252,16 @@ def main_menu_sound():
         NO_SOUND = Button(image=None, pos=((SCREEN.get_width() / 2), SCREEN.get_height() / 10 + 600),
                                 text_input="0.0", font=get_font(15), base_color="White", hovering_color="Green")
         
-        MAIN_MENU_SOUND_BACK = Button(image=None, pos=(SCREEN.get_width() / 10 + 100, SCREEN.get_height() / 10 + 700),
+        MAIN_MENU_SOUND_BACK = Button(image=None, pos=(SCREEN.get_width() / 10 + 100, SCREEN.get_height() / - 100),
                                       text_input="BACK", font=get_font(15), base_color="White", hovering_color="Green")
         
-        for button in (LOUDEST_BUTTON, FIRST_BUTTON, SECOND_BUTTON, THIRD_BUTTON, FOURTH_BUTTON, FIFTH_BUTTON, SIXTH_BUTTON, SEVENTH_BUTTON, EIGHTH_BUTTON, NINTH_BUTTON, NO_SOUND, MAIN_MENU_SOUND_BACK):
+        for button in (LOUDEST_BUTTON, FIRST_BUTTON, SECOND_BUTTON, THIRD_BUTTON, FOURTH_BUTTON, FIFTH_BUTTON, SIXTH_BUTTON, SEVENTH_BUTTON, EIGHTH_BUTTON, NINTH_BUTTON, NO_SOUND):
             button.changeColor(MAIN_MENU_SOUND_MOUSE_POS)
             button.update(SCREEN)
 
         main_menu_sfx = pygame.mixer.Sound("assets/intro/sounds/main menu.wav")
         main_menu_sfx.play()
+        main_menu_sfx.set_volume(0.5)
 
         for event in pygame.event.get():
             if event == pygame.QUIT:
@@ -292,7 +269,41 @@ def main_menu_sound():
                 sys.exit()
             if event == pygame.MOUSEBUTTONDOWN:
                 if MAIN_MENU_SOUND_BACK.checkForInput(MAIN_MENU_SOUND_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
                     audio_settings()
+                if LOUDEST_BUTTON.checkForInput(MAIN_MENU_SOUND_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
+                    pygame.mixer.Channel(0).set_volume(1.0)
+                if FIRST_BUTTON.checkForInput(MAIN_MENU_SOUND_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
+                    pygame.mixer.Channel(0).set_volume(0.9)
+                if SECOND_BUTTON.checkForInput(MAIN_MENU_SOUND_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
+                    pygame.mixer.Channel(0).set_volume(0.8)
+                if THIRD_BUTTON.checkForInput(MAIN_MENU_SOUND_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
+                    pygame.mixer.Channel(0).set_volume(0.7)
+                if FOURTH_BUTTON.checkForInput(MAIN_MENU_SOUND_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
+                    pygame.mixer.Channel(0).set_volume(0.6)
+                if FIFTH_BUTTON.checkForInput(MAIN_MENU_SOUND_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
+                    pygame.mixer.Channel(0).set_volume(0.5)
+                if SIXTH_BUTTON.checkForInput(MAIN_MENU_SOUND_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
+                    pygame.mixer.Channel(0).set_volume(0.4)
+                if SEVENTH_BUTTON.checkForInput(MAIN_MENU_SOUND_RECT):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
+                    pygame.mixer.Channel(0).set_volume(0.3)
+                if EIGHTH_BUTTON.checkForInput(MAIN_MENU_SOUND_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
+                    pygame.mixer.Channel(0).set_volume(0.2)
+                if NINTH_BUTTON.checkForInput(MAIN_MENU_SOUND_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
+                    pygame.mixer.Channel(0).set_volume(0.1)
+                if NO_SOUND.checkForInput(MAIN_MENU_SOUND_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
+                    pygame.mixer.Channel(0).set_volume(0.0)
     
         pygame.display.update()
 
@@ -322,6 +333,7 @@ def audio_settings():
 
         main_menu_sfx = pygame.mixer.Sound("assets/intro/sounds/main menu.wav")
         main_menu_sfx.play()
+        main_menu_sfx.set_volume(0.5)
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -329,8 +341,10 @@ def audio_settings():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if AUD_SET_BACK.checkForInput(AUD_SET_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
                     options()
                 if MAIN_MENU_SFX_BUTTON.checkForInput(AUD_SET_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
                     main_menu_sound()
 
         pygame.display.update()
@@ -377,6 +391,7 @@ def controls():
 
         main_menu_sfx = pygame.mixer.Sound("assets/intro/sounds/main menu.wav")
         main_menu_sfx.play()
+        main_menu_sfx.set_volume(0.5)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -384,6 +399,7 @@ def controls():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if CONTROLS_BACK.checkForInput(CONTROLS_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
                     options()
 
         pygame.display.update()
@@ -434,6 +450,7 @@ def resolution():
         
         main_menu_sfx = pygame.mixer.Sound("assets/intro/sounds/main menu.wav")
         main_menu_sfx.play()
+        main_menu_sfx.set_volume(0.5)
         
         for button in (FULLSCREEN_BUTTON, FIRST_BUTTON, SECOND_BUTTON, THIRD_BUTTON, FOURTH_BUTTON, FIFTH_BUTTON, SIXTH_BUTTON, SEVENTH_BUTTON, EIGHT_BUTTON, RESOLUTION_BACK):
             button.changeColor(RESOLUTION_MOUSE_POS)
@@ -445,24 +462,34 @@ def resolution():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if FULLSCREEN_BUTTON.checkForInput(RESOLUTION_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
                     pygame.display.set_mode((SCREEN.get_width(), SCREEN.get_height()), pygame.FULLSCREEN)
                 if FIRST_BUTTON.checkForInput(RESOLUTION_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
                     pygame.display.set_mode((7680, 4320), pygame.RESIZABLE)
                 if SECOND_BUTTON.checkForInput(RESOLUTION_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
                     pygame.display.set_mode((3840, 2160), pygame.RESIZABLE)
                 if THIRD_BUTTON.checkForInput(RESOLUTION_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
                     pygame.display.set_mode((2704, 1520), pygame.RESIZABLE)
                 if FOURTH_BUTTON.checkForInput(RESOLUTION_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
                     pygame.display.set_mode((2560, 1440), pygame.RESIZABLE)
                 if FIFTH_BUTTON.checkForInput(RESOLUTION_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
                     pygame.display.set_mode((1920, 1080), pygame.RESIZABLE)
                 if SIXTH_BUTTON.checkForInput(RESOLUTION_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
                     pygame.display.set_mode((1280, 720), pygame.RESIZABLE)
                 if SEVENTH_BUTTON.checkForInput(RESOLUTION_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
                     pygame.display.set_mode((854, 480), pygame.RESIZABLE)
                 if EIGHT_BUTTON.checkForInput(RESOLUTION_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
                     pygame.display.set_mode((640, 320), pygame.RESIZABLE)
                 if RESOLUTION_BACK.checkForInput(RESOLUTION_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
                     video_settings()
                 
             pygame.display.update()
@@ -500,6 +527,7 @@ def video_settings():
 
         main_menu_sfx = pygame.mixer.Sound("assets/intro/sounds/main menu.wav")
         main_menu_sfx.play()
+        main_menu_sfx.set_volume(0.5)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -507,10 +535,13 @@ def video_settings():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if VID_SET_BACK.checkForInput(VID_SET_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
                     options()
                 if RES_BUTTON.checkForInput(VID_SET_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
                     resolution()
                 if VSYNC_BUTTON.checkForInput(VID_SET_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
                     VSYNC_ON = get_font(30).render("Vsync on!", True, "White")
                     VSYNC_ON_RECT = VSYNC_ON.get_rect(center=((SCREEN.get_width() / 2), (SCREEN.get_height() - 200)))
                     SCREEN.blit(VSYNC_ON, VSYNC_ON_RECT)
@@ -543,6 +574,7 @@ def main_menu():
 
         main_menu_sfx = pygame.mixer.Sound("assets/intro/sounds/main menu.wav")
         main_menu_sfx.play()
+        main_menu_sfx.set_volume(0.5)
 
         for button in [PLAY_BUTTON, OPTIONS_BUTTON, QUIT_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
@@ -554,9 +586,11 @@ def main_menu():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
                     main(SCREEN, window_flags)
                     # play()
                 if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound("assets/intro/sounds/button click.mp3"))
                     options()
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
                     pygame.quit()
@@ -588,9 +622,9 @@ def loading_screen():
         TEXT = get_font(10).render("MADE BY", True, "White")
         TEXT_RECT = TEXT.get_rect(center=(300, 250))
         SCREEN.blit(TEXT, TEXT_RECT)
-
+        
         BRAND_LOGO = pygame.image.load("assets/intro/okapjfinish.png")
-        SCREEN.blit(BRAND_LOGO, (350, 200))
+        SCREEN.blit(BRAND_LOGO, (100, 150))
 
         LOADING_TEXT = get_font(30).render("LOADING...", True, "White")
         LOADING_TEXT_RECT = LOADING_TEXT.get_rect(center=((300, 800)))
@@ -635,6 +669,8 @@ def intro():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if NEXT_BUTTON.checkForInput(INTRO_MOUSE_POS):
+                    BUTTON_CLICK = pygame.mixer.Sound("assets/intro/sounds/button click.mp3")
+                    BUTTON_CLICK.play()
                     loading_screen()
         
         pygame.display.update()
