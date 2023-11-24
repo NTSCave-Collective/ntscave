@@ -36,14 +36,20 @@ def draw_hud(window, state):
     for i in range(0, len(hudtext)):
         window.blit(hudtext[i], (0, window.get_height()-textsize*(i+1)))
 
-    
-    for i in range(1, int(state.hearts*2+1)):
-        if not (i % 2) :
-            hud = get_image(tiles.hud["heart_full"])
-            window.blit(hud, ((i/2-1)*CONSTANTS.PIXELS, 0))
-        elif i == int(state.hearts*2):
-            hud = get_image(tiles.hud["heart_half"])
-            window.blit(hud, ((i/2-0.5)*CONSTANTS.PIXELS, 0))
+    if state.hearts < 10:
+        for i in range(1, int(state.hearts*2+1)):
+            if not (i % 2) :
+                hud = get_image(tiles.hud["heart_full"])
+                window.blit(hud, ((i/2-1)*CONSTANTS.PIXELS, 0))
+            elif i == int(state.hearts*2):
+                hud = get_image(tiles.hud["heart_half"])
+                window.blit(hud, ((i/2-0.5)*CONSTANTS.PIXELS, 0))
+    else:
+        hud = get_image(tiles.hud["heart_full"])
+        window.blit(hud, (0, 0))
+        hearttext = get_font(CONSTANTS.PIXELS).render(f"x {state.hearts}", True, CONSTANTS.TEXT_COLOR)
+        window.blit(hearttext, (CONSTANTS.PIXELS, 0))
+
 
     for e in range(0, len(state.activeEffects)):
             hud = get_image(effects.effects[state.activeEffects[e].effect])
