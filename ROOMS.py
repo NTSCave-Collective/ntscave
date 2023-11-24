@@ -17,7 +17,6 @@ def swap_map(state, map):
                 print(generatedMap, originMap)
             floorList = list(zip(*np.where(originMap==1.0)))
 
-
             # GENERATE ROOMS
             if len(floorList) >= 12:
                 isValidTile = False
@@ -30,9 +29,9 @@ def swap_map(state, map):
                         continue
             else:
                 continue
-            
 
-            
+            npMap = np.array(generatedMap)
+            spikesPos = list(zip(*np.where(npMap=="spike")))
             
             # SELECT PLAYER SPAWN POSITION
             playerStartTile = random.choice(floorList)
@@ -45,7 +44,7 @@ def swap_map(state, map):
             finder = AStarFinder(diagonal_movement=DiagonalMovement.never)
             path, runs = finder.find_path(start, end, grid)
 
-            if len(path) <= 4:
+            if len(path) <= 4 or playerStartTile in spikesPos:
                 continue
             else:
                 state.x = playerStartTile[1] * 64 + 32
