@@ -1,0 +1,16 @@
+*.ogg
+*.midi
+*.zip
+*.7z
+*.rar
+
+*.pyc
+__pycache__/*
+__pycache__/player.cpython-311.pyc
+__pycache__/renderer.cpython-311.pyc
+__pycache__/button.cpython-312.pyc
+player.py
+
+main.spec
+dist/
+build/
