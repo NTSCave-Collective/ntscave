@@ -140,8 +140,10 @@ def next_level(state):
     state.level += 1
     CONSTANTS.roomHeight = 12 + 2*state.level
     CONSTANTS.roomWidth = 12 + 2*state.level
+    """
     if CONSTANTS.roomHeight > 150 or CONSTANTS.roomWidth > 150:
         CONSTANTS.TICK = 30
+    """
     CONSTANTS.SURFACE_WIDTH = CONSTANTS.PIXELS * CONSTANTS.roomWidth
     CONSTANTS.SURFACE_HEIGHT = CONSTANTS.PIXELS * CONSTANTS.roomHeight
     state.newLevel_frame = state.frame

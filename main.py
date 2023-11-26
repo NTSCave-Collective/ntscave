@@ -9,7 +9,9 @@ import ROOMS
 import math
 from time import sleep
 
+pygame.mixer.pre_init(44100, 16, 2, 4096)
 pygame.init()
+pygame.event.set_allowed([pygame.QUIT, pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN])
 
 window_flags = pygame.RESIZABLE #| pygame.FULLSCREEN
 SCREEN = pygame.display.set_mode(CONSTANTS.SCREEN_SIZE, window_flags, vsync=CONSTANTS.VSYNC)

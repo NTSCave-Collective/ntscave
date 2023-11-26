@@ -8,6 +8,7 @@ from pathfinding.core.grid import Grid
 from pathfinding.core.diagonal_movement import DiagonalMovement
 
 def swap_map(state, map):
+    del CONSTANTS.MAP
     if map == "random":
         valid_map = False
         global stairTile
@@ -59,8 +60,11 @@ def swap_map(state, map):
     CONSTANTS.SURFACE_WIDTH = CONSTANTS.PIXELS * len(CONSTANTS.MAP)
     CONSTANTS.SURFACE_HEIGHT = CONSTANTS.PIXELS * max([len(y) for y in CONSTANTS.MAP])
     state.newLevelWidth = True
+    del state.enemies
     enemy.generate_enemies(state)
+    del state.effects
     state.effects = list()
+    del state.animations
     state.animations = list()
 
 def generateRoom():
