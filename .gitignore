@@ -14,3 +14,5 @@ player.py
 main.spec
 dist/
 build/
+save.ntsc
+save.ntsc.bak

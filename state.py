@@ -121,7 +121,6 @@ class State():
         self.update_hitbox_position()
 
         self.moving = False
-        self.clock = pygame.time.Clock()
 
         CONSTANTS.WORM_COUNTER = 0
         CONSTANTS.TROJAN_COUNTER = 0
