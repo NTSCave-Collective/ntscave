@@ -24,7 +24,7 @@ def draw_hud(window, state):
     textsize = round(CONSTANTS.PIXELS/3)
 
     hudtext = [
-        get_font(textsize).render(f"FPS: {state.clock.get_fps():.2f}", True, CONSTANTS.TEXT_COLOR),
+        get_font(textsize).render(f"FPS: {state.fps:.2f}", True, CONSTANTS.TEXT_COLOR),
         get_font(textsize).render(f"LVL: {state.level}", True, CONSTANTS.TEXT_COLOR),
         
         get_font(textsize).render(f"RAN: {CONSTANTS.ATTACKDISTANCE/64:.1f}", True, CONSTANTS.TEXT_COLOR),

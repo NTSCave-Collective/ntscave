@@ -1,13 +1,12 @@
-import pygame, sys, threading
+import pygame, sys
 from button import Button
 import player
 import CONSTANTS
-import random
-import enemy
 import rendering
 import ROOMS
 import math
 from time import sleep
+import state as states
 
 pygame.mixer.pre_init(44100, 16, 2, 4096)
 pygame.init()
@@ -27,7 +26,7 @@ def main(window, window_flags):
 
 def create_main_surface(state, window, window_flags):
     # Tuple representing width and height in pixels
-    state.clock = pygame.time.Clock()
+    clock = pygame.time.Clock()
 
     state.running = True
 
@@ -60,6 +59,10 @@ def create_main_surface(state, window, window_flags):
                     ROOMS.swap_map(state, CONSTANTS.BACKGROUND_IMAGES)
                 if event.key == pygame.K_i and CONSTANTS.DEBUG:
                     ROOMS.swap_map(state, "random")
+                if event.key == pygame.K_j:
+                    states.save(state)
+                if event.key == pygame.K_l:
+                    state = states.load()
                 if event.key == pygame.K_f:
                     CONSTANTS.VSYNC = 0
                     rendering.toggle_fullscreen()
@@ -84,137 +87,12 @@ def create_main_surface(state, window, window_flags):
         rendering.render_frame(window, gameObjects, gameOver, state)
 
         # Set fps value
-        state.clock.tick(CONSTANTS.TICK)
+        clock.tick(CONSTANTS.TICK)
         state.frame += 1
+        state.fps = clock.get_fps()
 
-        if not CONSTANTS.DEBUG:
-            print(state.clock.get_fps())
-
-
-class State():
-    def __init__(self):
-        map = CONSTANTS.MAP
-        self.running = True
-        self.gameOver = False
-        validTile = False
-        while not validTile:
-            randY = random.randint(0, len(map))
-            randX = random.randint(0, len(map[0]))
-            try:
-                if "floor" in map[randY][randX]:
-                    self.x = randX * CONSTANTS.PIXELS + 32
-                    self.y = randY * CONSTANTS.PIXELS + 32
-                    validTile = True
-            except:
-                pass
-        self.vel = CONSTANTS.PLAYER_SPEED
-        self.frame = 0
-
-        self.level = 1
-
-        self.last_hit = CONSTANTS.TICK
-        self.hearts = 5
-        
-        self.attack = 1
-        self.attacking = False
-        self.attackframe = None
-        self.hit_grace = None
-        self.crit = 0.1
-
-        self.leftFacing = False
-        self.rightFacing = False
-        self.upFacing = False
-        self.downFacing = True  # Default facing down
-
-        self.enemies = list()
-        self.animations = list()
-        self.effects = list()
-        self.activeEffects = list()
-
-        self.newLevel = False
-        self.newLevel_frame = None
-        self.newLevelWidth = False
-
-        # Define hitbox dimensions
-        self.hitbox_width = CONSTANTS.PIXELS/2
-        self.hitbox_height = CONSTANTS.PIXELS *3/4
-        self.hitbox_x = self.x - self.hitbox_width / 2
-        self.hitbox_y = self.y - self.hitbox_height
-
-        # Initialize hitbox position based on enemy position
-        self.update_hitbox_position()
-
-    def update_hitbox_position(self):
-        # Update hitbox position based on enemy position
-        self.hitbox_x = self.x - self.hitbox_width / 2
-        self.hitbox_y = self.y - self.hitbox_height
-
-    def resetVars(self):
-        CONSTANTS.MAP = CONSTANTS.BACKGROUND_IMAGES
-        map = CONSTANTS.MAP
-        self.running = False
-        self.gameOver = False
-        validTile = False
-        while not validTile:
-            randY = random.randint(0, len(map))
-            randX = random.randint(0, len(map[0]))
-            try:
-                if "floor" in map[randY][randX]:
-                    self.x = randX * CONSTANTS.PIXELS + 32
-                    self.y = randY * CONSTANTS.PIXELS + 32
-                    validTile = True
-            except:
-                pass
-        self.vel = CONSTANTS.PLAYER_SPEED
-        self.frame = 0
-
-        self.level = 1
-
-        self.last_hit = CONSTANTS.TICK
-        self.hearts = 5
-        
-        self.attack = 1
-        self.attacking = False
-        self.attackframe = None
-        self.hit_grace = None
-        self.crit = 0.1
-
-        self.leftFacing = False
-        self.rightFacing = False
-        self.upFacing = False
-        self.downFacing = True  # Default facing down
-
-        self.enemies = list()
-        self.animations = list()
-        self.effects = list()
-        self.activeEffects = list()
-
-        self.newLevel = False
-        self.newLevel_frame = None
-        self.newLevelWidth = False
-
-        # Define hitbox dimensions
-        self.hitbox_width = CONSTANTS.PIXELS/2
-        self.hitbox_height = CONSTANTS.PIXELS *3/4
-        self.hitbox_x = self.x - self.hitbox_width / 2
-        self.hitbox_y = self.y - self.hitbox_height
-
-        # Initialize hitbox position based on enemy position
-        self.update_hitbox_position()
-
-        self.moving = False
-        self.clock = pygame.time.Clock()
-
-        CONSTANTS.WORM_COUNTER = 0
-        CONSTANTS.TROJAN_COUNTER = 0
-        CONSTANTS.VIRUS_COUNTER = 0
-
-        #CONSTANTS.
-        CONSTANTS.roomHeight = 12
-        CONSTANTS.roomWidth = 12
-        CONSTANTS.PLAYER_SPEED = 5
-        CONSTANTS.ATTACKDISTANCE = CONSTANTS.PIXELS
-        CONSTANTS.MAP = CONSTANTS.BACKGROUND_IMAGES
+        if CONSTANTS.DEBUG:
+            print(clock.get_fps())
 
 global font_cache
 font_cache = {}
@@ -668,7 +546,7 @@ def main_menu():
 
         pygame.display.update()
 
-state = State()
+state = states.State()
 
 def loading_screen():
 

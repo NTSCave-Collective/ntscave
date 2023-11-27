@@ -141,7 +141,8 @@ class Enemy:
                     if state.last_hit + CONSTANTS.TICK < state.frame:
                         state.last_hit = state.frame + CONSTANTS.TICK
                         state.hearts -= enemy.damage
-                        print(enemy.damage, state.hearts)
+                        if CONSTANTS.DEBUG:
+                            print(enemy.damage, state.hearts)
 
         except ZeroDivisionError:
             pass

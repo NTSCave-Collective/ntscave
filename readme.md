@@ -8,6 +8,7 @@ Run the game with the command: `py main.py`
 - pygame
 - pathfinder
 - numpy
+- dill
 
 # Licenses
 

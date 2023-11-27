@@ -3,7 +3,7 @@ import math
 import random
 
 # Initial Screen constants
-DEBUG = True
+DEBUG = False
 
 SCREEN_WIDTH = 1080
 SCREEN_HEIGHT = 720
